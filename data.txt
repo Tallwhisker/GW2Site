@@ -1,0 +1,70 @@
+account -> wallet https://wiki.guildwars2.com/wiki/API:2/currencies
+    /currencies
+
+account -> material storage https://wiki.guildwars2.com/wiki/API:2/account/materials
+    /account/materials
+
+account -> bank https://wiki.guildwars2.com/wiki/API:2/account/bank
+    /account/bank
+
+trading post item value https://wiki.guildwars2.com/wiki/API:2/commerce/prices
+    /commerce/prices
+
+account -> wallet https://wiki.guildwars2.com/wiki/API:2/account/wallet
+    /account/wallet
+
+items -> information https://api.guildwars2.com/v2/items?ids=[ID],... OR https://api.guildwars2.com/v2/items/[ID]
+    
+
+
+
+
+IF [inventory].length = 0 => fetch materials, bank, bag, wallet => just write everything
+IF [inventory].length > 0 => fetchAll => update values per category
+
+TP Values =>  find item with binding:null, put into array and request values => replace values
+
+
+if token = '' => popup input token => save to local
+then use token
+
+
+
+
+
+
+
+Jobbigt uppdrag där output är string med komma separation exkl. sista som ska vara "and"
+
+// Write function below
+let list1 = [{item: 'Carrots'}, {item: 'Hummus'}, {item: 'Pesto'}, {item: 'Rigatoni'}, {item: 'Rigatoni'}, {item: 'Rigatoni'}, {item: 'Rigatoni'}, {item: 'Rigatoni'}]
+let list2 = [{item: 'Bread'}, {item: 'Butter'}]
+let list3 = [{item: 'Cheese Balls'}]
+
+
+function groceries(array) {
+  let temp = [];
+  console.log(`ArrayLength: ${array.length}`);
+
+  if (array.length < 2) {
+    array.forEach(word => temp.push(word.item));
+    return temp.join('')
+
+  } else if (array.length === 2) {
+    array.forEach(word => temp.push(word.item));
+    temp.splice(-1, 0, ' and ');
+    return temp.join('');
+
+  } else {
+    array.forEach(word => {
+      temp.push(word.item);
+      temp.push(', ');
+    })
+      temp.pop();
+      temp.splice(-2, 1, ' and ');
+      return temp.join('');
+  }
+  return temp;
+}
+
+console.log(groceries(list1));
