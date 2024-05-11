@@ -1,0 +1,16 @@
+{
+  "id": "A3654FC9-D58C-4042-90A4-DADEC5420D9C",
+  "name": "All permissions",
+  "permissions": [
+    "tradingpost",
+    "characters",
+    "pvp",
+    "progression",
+    "wallet",
+    "guilds",
+    "builds",
+    "account",
+    "inventories",
+    "unlocks"
+  ]
+}

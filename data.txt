@@ -14,6 +14,8 @@ account -> wallet https://wiki.guildwars2.com/wiki/API:2/account/wallet
     /account/wallet
 
 items -> information https://api.guildwars2.com/v2/items?ids=[ID],... OR https://api.guildwars2.com/v2/items/[ID]
+
+account information (username, age, etc.)
     
 
 
@@ -28,7 +30,11 @@ TP Values =>  find item with binding:null, put into array and request values => 
 if token = '' => popup input token => save to local
 then use token
 
-
+// /account/materials
+// /account/bank
+// /account/wallet
+//- account/characters then /characters/'character' for BAGS
+// https://wiki.guildwars2.com/wiki/API:2/characters/:id/inventory
 
 
 
