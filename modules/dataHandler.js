@@ -1,5 +1,8 @@
-import { getStorageArray, getStorageObject, getStorageString, setStorage } from "./modules/storageHandler.js";
+import { getStorageArray, getStorageObject, getStorageString, setStorage } 
+from "./storageHandler.js";
+
 const apiUrl = 'https://api.guildwars2.com/v2/';
+const authToken = getStorageString('authToken');
 
 //Check API key and/or request info
 
@@ -34,10 +37,11 @@ async function fetchMatStorage() {
             if(!response.ok) {
                 throw new Error('Fetch: Response not ok');
             }
-            console.log(`Fetch matStorage OK`);
+            console.log(`Fetched Material Storage`);
             return response.json();
         })
         .then(data => {
+            categorySorter(data);
             data.forEach(element => {
                 inventory[element.id] = {
                     'count' : element.count,
@@ -51,6 +55,22 @@ async function fetchMatStorage() {
             console.error('Error:', error);
         })
 }
+
+    //Sort materialStorage into category - should only run if 'Category' key does not exist
+async function categorySorter(data) {
+    if(!localStorage.getItem('Categories')) {
+        let categories = {5:[], 6:[], 29:[], 30:[], 37:[], 38:[], 46:[], 49:[], 50:[]};
+        data.forEach(item => {
+            categories[item.category].push(item.id);
+        })
+        setStorage('Categories', categories);
+    }
+}
+
+
+    //Fetch item info 
+// async function fetchItemInfo(array) {}
+
 
 export {
     fetchMatStorage,
