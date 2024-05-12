@@ -17,6 +17,33 @@ items -> information https://api.guildwars2.com/v2/items?ids=[ID],... OR https:/
 
 account information (username, age, etc.)
     
+category 5 -> Cooking Materials
+12134 Carrot
+
+category 6 -> Basic Crafting Materials
+19724 Hard Wood log
+
+category 29 -> Intermediate Crafting Materials
+24342 Bone Chip
+
+category 30 -> Gemstones and Jewels
+24467 Tiger's Eye Pebble
+
+category 37 -> Advanced Crafting Materials
+24326 Crystal Sliver
+
+category 38 -> Festive Materials
+36041 Piece of candy corn
+
+category 46 -> Ascended Materials
+46731 Pile of bloodstone dust
+
+category 49 -> Cooking Ingredients
+12169 Bowl of Baker's Dry Ingredients
+
+category 50 -> Scribing Materials
+76708 Green wood pulp
+
 
 
 
