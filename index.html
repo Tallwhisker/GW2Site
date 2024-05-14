@@ -11,7 +11,7 @@
     </head>
     <body>
         <header>
-            <nav>
+            <nav id="controlPanel">
                 <h3>Control Panel</h3>
                 <button id="fetchToken" type="button">Set API Key</button>
                 <button id="fetchMatStorage" type="button">Fetch Material Storage</button>
@@ -20,32 +20,33 @@
         </header>
         <main>
             <h1>Guild wars 2 API testing grounds!</h1>
-            <nav>
+            <nav id="inventoryTypes">
                 <button id="matStorageButton" type="button">Material Storage</button>
                 <button id="bankButton" type="button">Bank</button>
                 <button id="charInventoryButton" type="button">Character Inventory</button>
-                <button id="dataDownloadButton" type="button">Data Download</button>
             </nav>
-            <section id="materialStorage" class="itemSection">
-                <!-- <div id="" class="itemCategory"> -->
-                    <h2>Category 1</h2>
-                    <div class="itemGrid">
-                        <div id="" class="item">
-                            <img class="itemImg" src="./icons/63265.png">
-                            <p class="itemName">Cured Thin Leather Square</p>
-                            <p class="itemAmount">1342</p>
-                        </div>
-                    </div>
-                <!-- </div> -->
+            <nav id="categoryNav">
+                <ul>
+                    <li><a href="#Cat6">Basic Crafting</a></li>
+                    <li><a href="#Cat29">Intermediate Crafting</a></li>
+                    <li><a href="#Cat37">Advanced Crafting</a></li>
+                    <li><a href="#Cat46">Ascended</a></li>
+                    <li><a href="#Cat30">Gemstones and Jewels</a></li>
+                    <li><a href="#Cat5">Cooking Ing.</a></li>
+                    <li><a href="#Cat49">Cooking Mats.</a></li>
+                    <li><a href="#Cat50">Scribing</a></li>
+                    <li><a href="#Cat38">Festive</a></li>
+                </ul>
+            </nav>
+            <section id="materialStorageTab" class="itemSection">
             </section>
-            <section id="bank" class="itemSection"></section>
-            <section id="charInventory" class="itemSection"></section>
-            <section id="dataDownload" class="dataSection">
+            <section id="bankTab" class="itemSection"></section>
+            <section id="charInventoryTab" class="itemSection"></section>
+            <section id="dataDownloadTab" class="dataSection">
                 <p id="dataoutput">Output</p>
             </section>
         </main>
         <footer>
-
         </footer>
     </body>
 </html>
