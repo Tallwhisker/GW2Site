@@ -44,6 +44,7 @@ async function getNewToken() {
     //Fetch material storage and write to inventory
 
 async function fetchMatStorage() {
+    // linkFixer(inventory);
         fetch(`${apiUrl}account/materials?access_token=${authToken}`)
         .then(response => {
             if(!response.ok) {
@@ -53,7 +54,7 @@ async function fetchMatStorage() {
             return response.json();
         })
         .then(data => {
-            itemInfoParser(data);
+            // itemInfoParser(data);
             data.forEach(element => {
                 if(inventory[element.id]) {
                  
@@ -142,26 +143,29 @@ async function itemInfoParser(data) {
         else {
             fetchItemInfo(itemArray.splice(0, itemArray.length).toString());
         }
-    },10000)
-
-    // data.forEach(item => {
-    //     if(!inventory[item.id].icon){
-    //         itemArray.push(item.id)
-    //         i --;
-    //     }
-    //     if(itemArray.length >= 60 || i === 0) {
-    //         console.log(itemArray.toString());
-    //         // setTimeout(fetchItemInfo, 10000, itemArray.toString());
-    //         itemArray.splice(0, itemArray.length);
-    //     }
-    // })
-    // fetchItemInfo(itemArray.toString());
+    },7500)
 }
 
+function linkFixer(input) {
+    let newURL = [];
+    console.log('linkFixer go!')
+    for (let obj in input) {
+        // console.log(obj);
+        if(inventory[obj].icon) {
+            let oldURL = inventory[obj].icon.split("").reverse();
+            // console.log(oldString);
+            while(oldURL[0] !== '/') {
+                newURL.unshift(oldURL.shift());
+            }
+            inventory[obj]['localIcon'] = newURL.join("");
+            // console.log(`${obj} : ${newString.join("")}`);
+            newURL.splice(0, newURL.length);
+        }
+    }
+}
 
 
 export {
     fetchMatStorage,
     getNewToken
-    // fetchReturn
 }

@@ -114,6 +114,13 @@ async function populateOnLoad() {
     //     populateMatStorage();
     // } 
 }
+
+async function hideCategory(targetId) {
+    let target = document.getElementById(targetId);
+    if(target.style.display === 'none') {
+        target.style.display = 'block';
+    } else {target.style.display = 'none'}
+}
 async function populateMatStorage() {
 
     materialStorageTab.textContent = '';  
@@ -126,6 +133,12 @@ async function populateMatStorage() {
         const newH2 = document.createElement('h2');
         newH2.setAttribute('id', `Cat${category}`);
         newH2.innerHTML = name;
+        newH2.addEventListener('click', () => {
+            let target = document.getElementById(`Grid${category}`);
+            if(target.style.display === 'none') {
+                target.style.display = 'grid';
+            } else {target.style.display = 'none'}
+        });
         materialStorageTab.appendChild(newH2);
         
         // let parent = document.getElementById(`Cat${category}`);
@@ -148,8 +161,8 @@ async function populateMatStorage() {
                 parentDiv.appendChild(newItemDiv);
 
                 newItemImg.setAttribute('class', 'itemImg');
-                newItemImg.setAttribute('src', inventory[item].icon ?
-                 inventory[item].icon : './icons/63265.png');
+                newItemImg.setAttribute('src', `./icons/${inventory[item].localIcon}` ?
+                 `./icons/${inventory[item].localIcon}` : inventory[item].icon);
                 document.getElementById(item).appendChild(newItemImg);
 
                 nameP.setAttribute('class', 'itemName');

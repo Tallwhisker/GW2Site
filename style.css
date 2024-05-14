@@ -80,14 +80,14 @@ main section {
     display: grid;
     grid-template-columns: repeat(10, 80px);
     gap: 8px 8px;
-    grid-template-rows: repeat(2, 120px);
+    grid-template-rows: repeat(2, 130px);
     grid-auto-flow: row;
     justify-content: center;
 }
 
 .itemGrid .item {
     width: 80px;
-    height: 120px;
+    height: 130px;
     contain: strict;
     border: 1px solid black;
     border-radius: 5px;
@@ -103,15 +103,17 @@ main section {
     max-width: 100%;
     position: absolute;
     top: 56px;
-    left: 5px;
     color: white;
     z-index: 2;
+    padding: 0 4px;
+    background-color: rgb(0, 0, 0, 0.6);
 }
 
 .item .itemName {
     margin-top: -4px;
     display: inline-block;
-    font-size: 0.7rem;
+    vertical-align: middle;
+    font-size: 0.8rem;
     line-height: 0.7rem;
     max-width: 100%;
 }
