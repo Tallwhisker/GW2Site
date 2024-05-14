@@ -1,3 +1,21 @@
+Fetch API data
+Utilize localStorage for database
+
+Display method: CSS - Grid
+Display:
+    Material storage (per category)
+    Bank
+    Characters
+    Character inventory
+
+    Item ID -> icons
+    Tooltip with item name
+
+  Possible extras:
+    Trading post for item value
+    Wallet (if I can be arsed to translate the IDs)
+
+
 account -> wallet https://wiki.guildwars2.com/wiki/API:2/currencies
     /currencies
 
@@ -62,7 +80,7 @@ then use token
 // /account/wallet
 //- account/characters then /characters/'character' for BAGS
 // https://wiki.guildwars2.com/wiki/API:2/characters/:id/inventory
-
+// ?access_token=A3654FC9-D58C-4042-90A4-DADEC5420D9C27304699-B424-4768-8444-D84564C142A7
 
 
 
@@ -70,7 +88,11 @@ then use token
 Jobbigt uppdrag där output är string med komma separation exkl. sista som ska vara "and"
 
 // Write function below
-let list1 = [{item: 'Carrots'}, {item: 'Hummus'}, {item: 'Pesto'}, {item: 'Rigatoni'}, {item: 'Rigatoni'}, {item: 'Rigatoni'}, {item: 'Rigatoni'}, {item: 'Rigatoni'}]
+let list1 = [{item: 'Carrots'}, {item: 'Hummus'}, {item: 'Pesto'},
+ {item: 'Rigatoni'}, {item: 'Rigatoni'}, {item: 'Rigatoni'},
+  {item: 'Rigatoni'}, {item: 'Rigatoni'}
+]
+
 let list2 = [{item: 'Bread'}, {item: 'Butter'}]
 let list3 = [{item: 'Cheese Balls'}]
 

@@ -1,31 +1,55 @@
 import { getStorageArray, getStorageObject, getStorageString, setStorage } 
 from "./storageHandler.js";
 
+// import { matStorageIds, matStorageNames } 
+// from "../data/categories.json"
+
 const apiUrl = 'https://api.guildwars2.com/v2/';
 const authToken = getStorageString('authToken');
 
 //Check API key and/or request info
 
-async function fetchPermissions() {
-    //No token -> ask for token
-    if (!localStorage.getItem('authToken')) {
-        let getToken = window.prompt('GW2 API Key');
-        localStorage.setItem('authToken', getToken.toString());
-    }
-    //Token permissions
-    fetch(`${apiUrl}tokeninfo?access_token=${authToken}`)
-    .then(response => {
-        if(!response.ok) {
-            throw new Error('Fetch: Response not ok');
+async function fetchToStorage(target, key) {
+    // console.log('FetchToStorage triggered');
+    fetch(`https://api.guildwars2.com/v2/${target}?access_token=${authToken}`)
+        .then(response => {
+            if(!response.ok) {
+            throw new Error('FetchReturn Error');
         }
-        return response.json();
-    })
-    .then(data => {
-        setStorage('Permissions', data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    })
+            console.log(`FetchReturn ${target} OK`);
+            return response.json();
+        })
+        .then(data => {
+            console.log(`FetchReturn: Sending ${target} data`);
+            setStorage(key, data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+}
+
+async function getNewToken() {
+    //No token -> ask for token
+        let getToken = window.prompt('Insert new API Key. This will ->RESET<- any stored data.');
+        localStorage.setItem('authToken', getToken);
+        // setStorage('authToken', getToken);
+        fetchToStorage('tokeninfo', 'tokenInfo');
+        fetchToStorage('account', 'accountInfo');
+
+    //Token permissions
+    // fetch(`${apiUrl}tokeninfo?access_token=${authToken}`)
+    // .then(response => {
+    //     if(!response.ok) {
+    //         throw new Error('Fetch: Response not ok');
+    //     }
+    //     return response.json();
+    // })
+    // .then(data => {
+    //     setStorage('Permissions', data);
+    // })
+    // .catch(error => {
+    //     console.error('Error:', error);
+    // })
 }
 
     //Fetch material storage and write to inventory
@@ -35,13 +59,12 @@ async function fetchMatStorage() {
         fetch(`${apiUrl}account/materials?access_token=${authToken}`)
         .then(response => {
             if(!response.ok) {
-                throw new Error('Fetch: Response not ok');
+                throw new Error(`Fetch Error`);
             }
             console.log(`Fetched Material Storage`);
             return response.json();
         })
         .then(data => {
-            categorySorter(data);
             data.forEach(element => {
                 inventory[element.id] = {
                     'count' : element.count,
@@ -50,9 +73,10 @@ async function fetchMatStorage() {
                 }
             })
             setStorage('Inventory', inventory);
+            categorySorter(data);
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error(error);
         })
 }
 
@@ -72,7 +96,10 @@ async function categorySorter(data) {
 // async function fetchItemInfo(array) {}
 
 
+
+
 export {
     fetchMatStorage,
-    fetchPermissions
+    getNewToken
+    // fetchReturn
 }

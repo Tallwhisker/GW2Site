@@ -3,22 +3,34 @@
     <head>
         <meta charset="UTF-8">
         <link href="./style.css" rel="stylesheet" type="text/css">
+        <link rel="icon" type="image/x-icon" href="./favicon.png">
         <script async type="module" src="./main.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>GW2Site</title>
     </head>
     <body>
         <header>
-
+            <nav>
+                <h3>Control Panel</h3>
+                <button id="fetchToken" type="button">Set API Key</button>
+                <button id="fetchMatStorage" type="button">Fetch Material Storage</button>
+                <button id="download" type="button">Download localStorage</button>
+            </nav>
         </header>
         <main>
             <h1>Guild wars 2 API testing grounds!</h1>
-            <button id="fetchToken" type="button">Check API Key</button>
-            <button id="fetchMatStorage" type="button">Fetch Material Storage</button>
-            <button id="download" type="button">Download localStorage</button>
-            <button id="" type="button"></button>
-            <button id="" type="button"></button>
-            <p id="dataoutput">Output</p>
+            <nav>
+                <button id="matStorageButton" type="button">Material Storage</button>
+                <button id="bankButton" type="button">Bank</button>
+                <button id="charInventoryButton" type="button">Character Inventory</button>
+                <button id="dataDownloadButton" type="button">Data Download</button>
+            </nav>
+            <section id="materialStorage" class=""></section>
+            <section id="bank" class=""></section>
+            <section id="charInventory" class=""></section>
+            <section id="dataDownload" class="">
+                <p id="dataoutput">Output</p>
+            </section>
         </main>
         <footer>
 

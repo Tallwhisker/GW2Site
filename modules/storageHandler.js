@@ -5,7 +5,7 @@
 
 function setStorage (key, value) {
 localStorage.setItem(key, JSON.stringify(value));
-console.log(`Writing: ${key}`);
+console.log(`Writing local: ${key}`);
 }
 
 
@@ -41,7 +41,15 @@ function getStorageString (key) {
         return '';
     }
     console.log(`Retrieving String: ${key}`);
-    return localStorage.getItem(key);
+    return localStorage.getItem(key).toString();
 }
 
-export {setStorage, getStorageArray, getStorageObject, getStorageString};
+//Output the selected 'key' to the dataOutput element
+function downloadStorage() {
+    let key = window.prompt('LocalStorage Key');
+    let data = localStorage.getItem(key)
+    dataOutput.style.display = 'block';
+    dataOutput.innerHTML = data;
+}
+
+export {setStorage, getStorageArray, getStorageObject, getStorageString, downloadStorage};

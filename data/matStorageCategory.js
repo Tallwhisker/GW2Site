@@ -1,3 +1,4 @@
+const matStorageIds = 
 {
     "5": [
         12134,
@@ -672,4 +673,19 @@
         82996,
         82761
     ]
-}
+};
+
+const matStorageNames = [
+    { 6 : 'Basic Crafting Materials'},
+    { 29 : 'Intermediate Crafting Materials'},
+    { 37 : 'Advanced Crafting Materials'},
+    { 46 : 'Ascended Materials'},
+    { 30 : 'Gemstones and Jewels'},
+    { 5 : 'Cooking Materials'},
+    { 49 : 'Cooking Ingredients'},
+    { 50 : 'Scribing Materials'},
+    { 38 : 'Festive Materials'}
+];
+
+
+export { matStorageIds, matStorageNames };
