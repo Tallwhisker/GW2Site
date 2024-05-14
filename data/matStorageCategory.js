@@ -1,6 +1,6 @@
 const matStorageIds = 
 {
-    "5": [
+     5: [
         12134,
         12238,
         12147,
@@ -137,7 +137,7 @@ const matStorageIds =
         95663,
         95673
     ],
-    "6": [
+     6: [
         19704,
         19679,
         19697,
@@ -218,7 +218,7 @@ const matStorageIds =
         70426,
         74982
     ],
-    "29": [
+     29: [
         24290,
         24342,
         24346,
@@ -285,7 +285,7 @@ const matStorageIds =
         86967,
         87153
     ],
-    "30": [
+     30: [
         24534,
         24464,
         24466,
@@ -347,7 +347,7 @@ const matStorageIds =
         96471,
         97102
     ],
-    "37": [
+     37: [
         24326,
         24321,
         24336,
@@ -481,7 +481,7 @@ const matStorageIds =
         100055,
         100930
     ],
-    "38": [
+     38: [
         36041,
         47909,
         36060,
@@ -502,7 +502,7 @@ const matStorageIds =
         43319,
         43320
     ],
-    "46": [
+     46: [
         46731,
         46682,
         46733,
@@ -562,7 +562,7 @@ const matStorageIds =
         95813,
         100569
     ],
-    "49": [
+     49: [
         12169,
         12166,
         12199,
@@ -602,7 +602,7 @@ const matStorageIds =
         91722,
         97105
     ],
-    "50": [
+     50: [
         76708,
         72579,
         76876,
@@ -676,14 +676,14 @@ const matStorageIds =
 };
 
 const matStorageNames = [
-    { 6 : 'Basic Crafting Materials'},
-    { 29 : 'Intermediate Crafting Materials'},
-    { 37 : 'Advanced Crafting Materials'},
-    { 46 : 'Ascended Materials'},
-    { 30 : 'Gemstones and Jewels'},
-    { 5 : 'Cooking Materials'},
-    { 49 : 'Cooking Ingredients'},
-    { 50 : 'Scribing Materials'},
+     {6 : 'Basic Crafting Materials'},
+     {29 : 'Intermediate Crafting Materials'},
+     {37 : 'Advanced Crafting Materials'},
+     {46 : 'Ascended Materials'},
+     {30 : 'Gemstones and Jewels'},
+     {5 : 'Cooking Materials'},
+     {49 : 'Cooking Ingredients'},
+     {50 : 'Scribing Materials'},
     { 38 : 'Festive Materials'}
 ];
 

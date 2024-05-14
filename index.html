@@ -5,6 +5,7 @@
         <link href="./style.css" rel="stylesheet" type="text/css">
         <link rel="icon" type="image/x-icon" href="./favicon.png">
         <script async type="module" src="./main.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Platypi:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>GW2Site</title>
     </head>
@@ -25,10 +26,21 @@
                 <button id="charInventoryButton" type="button">Character Inventory</button>
                 <button id="dataDownloadButton" type="button">Data Download</button>
             </nav>
-            <section id="materialStorage" class=""></section>
-            <section id="bank" class=""></section>
-            <section id="charInventory" class=""></section>
-            <section id="dataDownload" class="">
+            <section id="materialStorage" class="itemSection">
+                <!-- <div id="" class="itemCategory"> -->
+                    <h2>Category 1</h2>
+                    <div class="itemGrid">
+                        <div id="" class="item">
+                            <img class="itemImg" src="./icons/63265.png">
+                            <p class="itemName">Cured Thin Leather Square</p>
+                            <p class="itemAmount">1342</p>
+                        </div>
+                    </div>
+                <!-- </div> -->
+            </section>
+            <section id="bank" class="itemSection"></section>
+            <section id="charInventory" class="itemSection"></section>
+            <section id="dataDownload" class="dataSection">
                 <p id="dataoutput">Output</p>
             </section>
         </main>
