@@ -21,7 +21,7 @@ function getStorageObject (key) {
     return JSON.parse(tempData);
 }
 
-//Get localStorage from input 'key' -> return as ARRAY
+//Get localStorage from input 'key' -> return as screwed up ARRAY
 
 function getStorageArray (key) {
     if(!localStorage.getItem(key)) {
@@ -30,7 +30,7 @@ function getStorageArray (key) {
     }
     let tempData = localStorage.getItem(key);
     console.log(`Retrieving Array: ${key}`);
-    return tempData.split(',');
+    return JSON.parse(tempData);
 }
 
 //Get localStorage from input 'key' -> return as STRING
@@ -47,10 +47,11 @@ function getStorageString (key) {
 //Output the selected 'key' to the dataOutput element
 const dataOutput = document.getElementById('dataoutput');
 function downloadStorage() {
-    let key = window.prompt('LocalStorage Key');
-    let data = localStorage.getItem(key)
+    let storageKey = window.prompt('LocalStorage Key');
+    let downloadData = localStorage.getItem(storageKey)
     dataOutput.style.display = 'block';
-    dataOutput.innerHTML = data;
+    dataOutput.innerHTML = JSON.parse(downloadData);
 }
 
-export {setStorage, getStorageArray, getStorageObject, getStorageString, downloadStorage};
+export {setStorage, getStorageArray, getStorageObject,
+     getStorageString, downloadStorage};

@@ -1,50 +1,55 @@
 import { getStorageArray, getStorageObject, getStorageString, setStorage } 
 from "./storageHandler.js";
 
-import { populateMatStorage } 
+import { populateMatStorage, displayAccountName } 
 from "../main.js";
+
+
 
 // import { matStorageIds, matStorageNames } 
 // from "../data/categories.json"
 
 const apiUrl = 'https://api.guildwars2.com/v2/';
 const authToken = getStorageString('authToken');
-let inventory = getStorageObject('Inventory');
+const materialStorage = getStorageObject('materialStorage');
+const matStorageCategories = getStorageObject('matStorageCategories');
+const itemInfo = getStorageObject('itemInfo');
+const newItemInfo = getStorageArray('newItemInfo');
 
 
-//Check API key and/or request info
-
+//Fetch target info and send to localStorage
 async function fetchToStorage(target, key) {
-    // console.log('FetchToStorage triggered');
     fetch(`https://api.guildwars2.com/v2/${target}?access_token=${authToken}`)
-        .then(response => {
-            if(!response.ok) {
-            throw new Error('FetchReturn Error');
-        }
-            console.log(`FetchReturn ${target} OK`);
-            return response.json();
-        })
-        .then(data => {
-            console.log(`FetchReturn: Sending ${target} data`);
-            setStorage(key, data);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+    .then(response => {
+        if(!response.ok) {
+        throw new Error('FetchReturn Error');
+    }
+        return response.json();
+    })
+    .then(data => {
+        setStorage(key, data);
+    })
+    .catch(error => {
+        console.log(error);
+    })
 }
 
+//Get API key information
 async function getNewToken() {
-    //No token -> ask for token
-        let getToken = window.prompt('Insert new API Key. This will ->RESET<- any stored data.');
+        let getToken = window.prompt(
+        `Insert API Key. This will ->RESET<- any stored data.
+         "Inventories" and "characters" permissions needed`);
         localStorage.setItem('authToken', getToken);
         fetchToStorage('tokeninfo', 'tokenInfo');
         fetchToStorage('account', 'accountInfo');
+        localStorage.removeItem('materialStorage');
+        localStorage.removeItem('Bank');
+        localStorage.removeItem('Characters');
+        displayAccountName();
 }
 
-    //Fetch material storage and write to inventory
-
+    //Fetch material storage and write to materialStorage
 async function fetchMatStorage() {
-    // linkFixer(inventory);
         fetch(`${apiUrl}account/materials?access_token=${authToken}`)
         .then(response => {
             if(!response.ok) {
@@ -54,23 +59,27 @@ async function fetchMatStorage() {
             return response.json();
         })
         .then(data => {
-            // itemInfoParser(data);
+            const newItems = [];
             data.forEach(element => {
-                if(inventory[element.id]) {
-                 
-                inventory[element.id]['count'] = element.count,
-                inventory[element.id]['category'] = element.category,
-                inventory[element.id]['binding'] = element.binding
-                } else {
-                    inventory[element.id] = {
-                        'count' : element.count,
-                        'category' : element.category,
-                        'binding' : element.binding
-                    }
+                let elID = (element.id);
+                let elCat = (element.category);
+                // if(materialStorage[element.id]) {
+                // materialStorage[element.id]['count'] = element.count
+                // } else {
+                materialStorage[elID] = {
+                    'count' : element.count
                 }
-
+                // }
+                if(!itemInfo.elID) {
+                    newItems.push(elID);
+                }
+                if(!matStorageCategories[elCat].includes(elID)) {
+                    matStorageCategories[elCat].push(elID);
+                }
         })
-            setStorage('Inventory', inventory);
+            itemInfoParser(newItems);
+            setStorage('materialStorage', materialStorage);
+            setStorage('matStorageCategories', matStorageCategories);
             // categorySorter(data);
             populateMatStorage();
         })
@@ -79,61 +88,16 @@ async function fetchMatStorage() {
         })
 }
 
-    //Sort materialStorage into category - should only run if 'Category' key does not exist
-async function categorySorter(data) {
-    if(!localStorage.getItem('Categories')) {
-        let categories = {6:[], 29:[], 37:[], 46:[], 30:[], 5:[], 49:[], 50:[], 38:[]};
-        data.forEach(item => {
-            categories[item.category].push(item.id);
-        })
-        setStorage('Categories', categories);
-    }
-}
-
-
-    //Fetch item info 
-async function fetchItemInfo(items) {
-    let itemInfo = getStorageArray('itemInfo');
-    fetch(`https://api.guildwars2.com/v2/items?ids=${items}`)
-        .then(response => {
-            if(!response.ok) {
-            throw new Error('FetchReturn Error');
-        }
-            console.log(`FetchItemInfo OK`);
-            return response.json();
-        })
-        .then(data => {
-            data.forEach(item => {
-                inventory[item.id]['icon'] = item.icon;
-                inventory[item.id]['name'] = item.name;
-
-                itemInfo.push({
-                    [item.id] : {
-                        'name' : item.name,
-                        'icon' : item.icon
-                    }
-                });
-
-            })
-            setStorage('Inventory', inventory);
-            setStorage('itemInfo', itemInfo);
-        })
-        .catch(error => {
-            console.log(error);
-        })
-}
-
-
+    //Split item array and slow down fetch
 async function itemInfoParser(data) {
+    if(data.length < 1) {return}
+
     let itemArray = [];
-    console.log('itemparser predata')
-    data.forEach(item => {
-        inventory[item.id].icon ? true : itemArray.push(item.id);
-    })
-   const interval = setInterval(() => {
+    console.log('InfoParser Starting')
+    const interval = setInterval(() => {
         if (itemArray.length === 0) {
             clearInterval(interval);
-            console.log('InfoParser Interval stopped')
+            console.log('InfoParser stopped')
         } 
         else if(itemArray.length > 50) {
             // itemArray = data.splice(0, 50);
@@ -146,24 +110,78 @@ async function itemInfoParser(data) {
     },7500)
 }
 
+    //Fetch item info 
+async function fetchItemInfo(items) {
+    let itemInfo = getStorageObject('itemInfo');
+    fetch(`https://api.guildwars2.com/v2/items?ids=${items}`)
+        .then(response => {
+            if(!response.ok) {
+            throw new Error('FetchReturn Error');
+        }
+            console.log(`FetchItemInfo OK`);
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(item => {
+                itemInfo[item] =  {
+                name : item.name,
+                webIcon : item.icon,
+                localIcon : ''
+            }
+            newItemInfo.push(item);
+            }
+            )
+            setStorage('newItemInfo', newItemInfo);
+            setStorage('itemInfo', itemInfo);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+        linkFixer();
+}
+
+
+
 function linkFixer(input) {
     let newURL = [];
     console.log('linkFixer go!')
     for (let obj in input) {
         // console.log(obj);
-        if(inventory[obj].icon) {
-            let oldURL = inventory[obj].icon.split("").reverse();
+        if(materialStorage[obj].icon) {
+            let oldURL = materialStorage[obj].icon.split("").reverse();
             // console.log(oldString);
             while(oldURL[0] !== '/') {
                 newURL.unshift(oldURL.shift());
             }
-            inventory[obj]['localIcon'] = newURL.join("");
+            materialStorage[obj]['localIcon'] = newURL.join("");
             // console.log(`${obj} : ${newString.join("")}`);
             newURL.splice(0, newURL.length);
         }
     }
 }
 
+
+//Anonymous function trigger for custom data manipulation
+
+// document.getElementById('functionTrigger').addEventListener('click',() => {
+//     const newItemInfo = {};
+//     for(let obj in materialStorage) {
+//         // newItemInfo.obj = [obj];
+//         // newItemInfo.obj.name = materialStorage[obj].name;
+//         // newItemInfo[obj]['category'] = [obj].category;
+//         // newItemInfo[obj]['webIcon'] = [obj].icon;
+//         // newItemInfo[obj]['localIcon'] = [obj].localIcon;
+//         newItemInfo[obj] =  {
+//             name : materialStorage[obj].name,
+//             category : materialStorage[obj].category,
+//             webIcon : materialStorage[obj].icon,
+//             localIcon : materialStorage[obj].localIcon
+//         }
+//     }
+//     setStorage('itemInfo', newItemInfo);
+//     console.log(newItemInfo);
+//     console.log('CustomFunction done');
+// })
 
 export {
     fetchMatStorage,

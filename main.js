@@ -1,22 +1,29 @@
 
-import { getStorageArray, getStorageObject, getStorageString, downloadStorage } 
+import { getStorageArray, getStorageObject, getStorageString, downloadStorage, setStorage } 
 from "./modules/storageHandler.js";
 
 import { fetchMatStorage, getNewToken } 
 from "./modules/dataHandler.js";
 
-import { matStorageIds, matStorageNames } 
-from "./data/matStorageCategory.js";
+import { itemInfo, matStorageCategoryNames } 
+from "./data/itemInfo.js";
 
 
 // const authToken = getStorageString('authToken');
 // const authPermissions = getStorageString('tokenPermissions');
-const inventory = getStorageObject('Inventory');
+
 // const wallet = getStorageArray('Wallet');
 
 
 
 //Control panel buttons for MODULE FUNCTIONS
+
+    //if accountInfo exists, display after Control panel
+const accountNameSpan = document.getElementById('accountName');
+    async function displayAccountName() {
+        let accOjb = getStorageObject('accountInfo');
+        accountNameSpan.innerHTML = ` - ${accOjb.name}`
+    }
 
     //Button to trigger API Key function
 const permissionTrigger = document.getElementById('fetchToken');
@@ -34,8 +41,11 @@ downloadData.addEventListener('click', downloadStorage);
 const aboutProjectTrigger = document.getElementById('aboutProject');
 const projectInfoDiv = document.getElementById('projectInfo');
 
-projectInfoDiv.addEventListener('click', () => projectInfoDiv.style.display = 'none');
-aboutProjectTrigger.addEventListener('click', () => projectInfoDiv.style.display = 'block');
+    //Triggers to show and hide the aboutProject
+projectInfoDiv.addEventListener('click', () =>
+     projectInfoDiv.style.display = 'none');
+aboutProjectTrigger.addEventListener('click', () =>
+     projectInfoDiv.style.display = 'block');
 
 
 
@@ -50,12 +60,12 @@ const matStorageBtn = document.getElementById('matStorageButton');
 
 matStorageBtn.addEventListener('click', showMatTab);
     async function showMatTab() {
-        if(localStorage.getItem('Inventory')) {
+        if(localStorage.getItem('materialStorage')) {
             hideTabs();
             materialStorageTab.style.display = 'block';
             document.getElementById('categoryNav').style.display = 'block';
         } else {
-            alert('No local inventory data, API Key required.');
+            alert('No local materialStorage data, API Key required.');
             return;
         }
 }
@@ -112,39 +122,52 @@ async function hideTabs(trigger) {
     document.getElementById('categoryNav').style.display = 'none';
 }
 
-    //When material storage tab is loaded, prerender items IF inventory exists
+    //When material storage tab is loaded, check this
 materialStorageTab.onload = populateOnLoad();
     async function populateOnLoad() {
-        if(localStorage.getItem('Inventory')) {
+        if(localStorage.getItem('materialStorage')) {
             populateMatStorage();
         } 
+        if(!localStorage.getItem('matStorageCategories')) {
+            setStorage('matStorageCategories', 
+            {6:[], 29:[], 37:[], 46:[], 30:[], 5:[], 49:[], 50:[], 38:[]});
+        }
         // if(localStorage.getItem('bank')) {
-        //     populateMatStorage();
+        //     populateBankTab();
         // }     
         // if(localStorage.getItem('Characters')) {
-        //     populateMatStorage();
-        // } 
+        //     populateCharactersTab();
+        // }
+        if(localStorage.getItem('accountInfo')) {
+            displayAccountName();
+        }
+        if(!localStorage.getItem('itemInfo')) {
+            setStorage('itemInfo', itemInfo);
+        }
 }
 
     //Function for rendering the material storage items
 async function populateMatStorage() {
 
+const materialStorage = getStorageObject('materialStorage');
+const matStorageCategories = getStorageObject('matStorageCategories');
+
     //Remove content in the material storage tab
     materialStorageTab.textContent = '';  
 
     //Primary array iterator for categories
-    matStorageNames.forEach(cat => {
-        let category = Object.keys(cat).toString();
-        let name = Object.values(cat).toString();
+    matStorageCategoryNames.forEach(cat => {
+        let categoryID = Object.keys(cat).toString();
+        let categoryName = Object.values(cat).toString();
 
         //Create H2 Elements for category names
         const newH2 = document.createElement('h2');
-        newH2.setAttribute('id', `Cat${category}`);
-        newH2.innerHTML = name;
+        newH2.setAttribute('id', `Cat${categoryID}`);
+        newH2.innerHTML = categoryName;
 
         //Set new H2 Element event listener to hide the category grid
         newH2.addEventListener('click', () => {
-            let target = document.getElementById(`Grid${category}`);
+            let target = document.getElementById(`Grid${categoryID}`);
             if(target.style.display === 'none') {
                 target.style.display = 'grid';
             } else {target.style.display = 'none'}
@@ -154,14 +177,14 @@ async function populateMatStorage() {
         //Create DIV Elements for category item grid
         const newItemGrid = document.createElement('div');
         newItemGrid.setAttribute('class', 'itemGrid');
-        newItemGrid.setAttribute('id', `Grid${category}`);
+        newItemGrid.setAttribute('id', `Grid${categoryID}`);
         materialStorageTab.appendChild(newItemGrid);
 
         //Set parentDiv to the newly created itemgrid
-        let parentDiv = document.getElementById(`Grid${category}`);
+        let parentDiv = document.getElementById(`Grid${categoryID}`);
 
         //Secondary array iterator for items
-        matStorageIds[category].forEach(item => {
+        matStorageCategories[categoryID].forEach(item => {
             const newItemDiv = document.createElement('div');
             const newItemImg = document.createElement('img');
             const nameP = document.createElement('p');
@@ -174,18 +197,18 @@ async function populateMatStorage() {
 
             //Create IMG Element for item image
             newItemImg.setAttribute('class', 'itemImg');
-            newItemImg.setAttribute('src', `./icons/${inventory[item].localIcon}` ?
-                `./icons/${inventory[item].localIcon}` : inventory[item].icon);
+            newItemImg.setAttribute('src', `./icons/${itemInfo[item].localIcon}` ?
+                `./icons/${itemInfo[item].localIcon}` : itemInfo[item].icon);
             document.getElementById(item).appendChild(newItemImg);
 
             //Create P Element for item name
             nameP.setAttribute('class', 'itemName');
-            nameP.innerHTML = inventory[item].name;
+            nameP.innerHTML = itemInfo[item].name;
             document.getElementById(item).appendChild(nameP);
 
             //Create P Element for item amount
             countP.setAttribute('class', 'itemAmount');
-            countP.innerHTML = inventory[item].count;
+            countP.innerHTML = materialStorage[item].count;
             document.getElementById(item).appendChild(countP);
 
         //End secondary iterator
@@ -199,4 +222,4 @@ async function populateMatStorage() {
 
 
 
-export { populateMatStorage };
+export { populateMatStorage, displayAccountName };
