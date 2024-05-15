@@ -70,7 +70,7 @@ async function fetchMatStorage() {
                     'count' : element.count
                 }
                 // }
-                if(!itemInfo.elID) {
+                if(!itemInfo[elID]) {
                     newItems.push(elID);
                 }
                 if(!matStorageCategories[elCat].includes(elID)) {
@@ -78,6 +78,7 @@ async function fetchMatStorage() {
                 }
         })
             itemInfoParser(newItems);
+            console.log(`fetchmat sent ${newItems.length}`)
             setStorage('materialStorage', materialStorage);
             setStorage('matStorageCategories', matStorageCategories);
             // categorySorter(data);
@@ -92,27 +93,25 @@ async function fetchMatStorage() {
 async function itemInfoParser(data) {
     if(data.length < 1) {return}
 
-    let itemArray = [];
-    console.log('InfoParser Starting')
+    console.log('InfoParser Starting: ' +data.length + ' items')
     const interval = setInterval(() => {
-        if (itemArray.length === 0) {
+        if (data.length === 0) {
             clearInterval(interval);
             console.log('InfoParser stopped')
         } 
-        else if(itemArray.length > 50) {
-            // itemArray = data.splice(0, 50);
-            fetchItemInfo(itemArray.splice(0, 50).toString());
-            // itemArray.splice(0, itemArray.length);
+        else if(data.length > 50) {
+            fetchItemInfo(data.splice(0, 50).toString());
+            console.log(`Sent 50 items to fetchItemInfo`);
         } 
         else {
-            fetchItemInfo(itemArray.splice(0, itemArray.length).toString());
+            fetchItemInfo(data.splice(0, data.length).toString());
+            console.log(`Sent ${data.length} items to fetchItemInfo`)
         }
     },7500)
 }
 
     //Fetch item info 
 async function fetchItemInfo(items) {
-    let itemInfo = getStorageObject('itemInfo');
     fetch(`https://api.guildwars2.com/v2/items?ids=${items}`)
         .then(response => {
             if(!response.ok) {
@@ -123,42 +122,76 @@ async function fetchItemInfo(items) {
         })
         .then(data => {
             data.forEach(item => {
-                itemInfo[item] =  {
+                itemInfo[item.id] =  {
                 name : item.name,
                 webIcon : item.icon,
                 localIcon : ''
             }
-            newItemInfo.push(item);
+            newItemInfo.push(item.id);
             }
             )
             setStorage('newItemInfo', newItemInfo);
             setStorage('itemInfo', itemInfo);
+            linkFixer();
         })
         .catch(error => {
             console.log(error);
         })
+        console.log('FetchItemInfo done')
         linkFixer();
 }
 
 
 
-function linkFixer(input) {
+function linkFixer() {
     let newURL = [];
     console.log('linkFixer go!')
-    for (let obj in input) {
+    for (let obj in itemInfo) {
         // console.log(obj);
-        if(materialStorage[obj].icon) {
-            let oldURL = materialStorage[obj].icon.split("").reverse();
+        if(itemInfo[obj].webIcon && !itemInfo[obj].localIcon) {
+            let oldURL = itemInfo[obj].webIcon.split("").reverse();
             // console.log(oldString);
             while(oldURL[0] !== '/') {
                 newURL.unshift(oldURL.shift());
             }
-            materialStorage[obj]['localIcon'] = newURL.join("");
+            itemInfo[obj]['localIcon'] = newURL.join("");
             // console.log(`${obj} : ${newString.join("")}`);
             newURL.splice(0, newURL.length);
         }
     }
+    console.log('LinkFixer done');
 }
+
+//Fetch bank and handle bankStorage
+async function fetchBank() {
+    fetch(`${apiUrl}account/bank?access_token=${authToken}`)
+    .then(response => {
+        if(!response.ok) {
+            throw new Error('FetchReturn Error');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const newBankStorage = {};
+        const newItems = [];
+        data.forEach(item => {
+            if(item) {
+            newBankStorage[item.id] = {
+                'count' : item.count
+            }
+            if(!itemInfo[item.id]) {
+                newItems.push(item.id);
+            }
+            }
+        })
+        setStorage('bankStorage', newBankStorage);
+        itemInfoParser(newItems);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+}
+
 
 
 //Anonymous function trigger for custom data manipulation
@@ -185,5 +218,6 @@ function linkFixer(input) {
 
 export {
     fetchMatStorage,
+    fetchBank,
     getNewToken
 }

@@ -5,7 +5,7 @@
 
 function setStorage (key, value) {
 localStorage.setItem(key, JSON.stringify(value));
-console.log(`Writing local: ${key}`);
+// console.log(`Writing local: ${key}`);
 }
 
 
@@ -17,7 +17,7 @@ function getStorageObject (key) {
         return {};
     }
     let tempData = localStorage.getItem(key);
-    console.log(`Retrieving Object: ${key}`);
+    // console.log(`Retrieving Object: ${key}`);
     return JSON.parse(tempData);
 }
 
@@ -29,7 +29,7 @@ function getStorageArray (key) {
         return [];
     }
     let tempData = localStorage.getItem(key);
-    console.log(`Retrieving Array: ${key}`);
+    // console.log(`Retrieving Array: ${key}`);
     return JSON.parse(tempData);
 }
 
@@ -40,7 +40,7 @@ function getStorageString (key) {
         console.log(`No local data for ${key}`);
         return '';
     }
-    console.log(`Retrieving String: ${key}`);
+    // console.log(`Retrieving String: ${key}`);
     return localStorage.getItem(key).toString();
 }
 
@@ -50,7 +50,7 @@ function downloadStorage() {
     let storageKey = window.prompt('LocalStorage Key');
     let downloadData = localStorage.getItem(storageKey)
     dataOutput.style.display = 'block';
-    dataOutput.innerHTML = JSON.parse(downloadData);
+    dataOutput.innerHTML = downloadData;
 }
 
 export {setStorage, getStorageArray, getStorageObject,

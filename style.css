@@ -171,3 +171,6 @@ main section {
     max-width: 100%;
 }
 
+#dataoutput {
+    word-wrap: break-word;
+}

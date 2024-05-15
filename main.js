@@ -2,7 +2,7 @@
 import { getStorageArray, getStorageObject, getStorageString, downloadStorage, setStorage } 
 from "./modules/storageHandler.js";
 
-import { fetchMatStorage, getNewToken } 
+import { fetchMatStorage, getNewToken, fetchBank } 
 from "./modules/dataHandler.js";
 
 import { itemInfo, matStorageCategoryNames } 
@@ -11,7 +11,6 @@ from "./data/itemInfo.js";
 
 // const authToken = getStorageString('authToken');
 // const authPermissions = getStorageString('tokenPermissions');
-
 // const wallet = getStorageArray('Wallet');
 
 
@@ -30,8 +29,11 @@ const permissionTrigger = document.getElementById('fetchToken');
 permissionTrigger.addEventListener('click', getNewToken);
 
     //Button to trigger material storage fetch
-const matStorageTrigger = document.getElementById('fetchMatStorage');
-matStorageTrigger.addEventListener('click', fetchMatStorage);
+const matStorageTrigger = document.getElementById('updateInventory');
+matStorageTrigger.addEventListener('click', () => {
+    fetchMatStorage();
+    fetchBank();
+});
 
     //Button to trigger localStorage export
 const downloadData = document.getElementById('download');
@@ -76,7 +78,7 @@ const bankBtn = document.getElementById('bankButton');
 
 bankBtn.addEventListener('click', showBankTab);
     async function showBankTab() {
-        if(localStorage.getItem('bank')) {
+        if(localStorage.getItem('bankStorage')) {
             hideTabs();
             bankTab.style.display = 'block';
         }
@@ -132,11 +134,11 @@ materialStorageTab.onload = populateOnLoad();
             setStorage('matStorageCategories', 
             {6:[], 29:[], 37:[], 46:[], 30:[], 5:[], 49:[], 50:[], 38:[]});
         }
-        // if(localStorage.getItem('bank')) {
+        // if(localStorage.getItem('bankStorage')) {
         //     populateBankTab();
         // }     
-        // if(localStorage.getItem('Characters')) {
-        //     populateCharactersTab();
+        // if(localStorage.getItem('characterBags')) {
+        //     populateCharacterBagsTab();
         // }
         if(localStorage.getItem('accountInfo')) {
             displayAccountName();
