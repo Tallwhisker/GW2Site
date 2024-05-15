@@ -7,23 +7,51 @@
         <script async type="module" src="./main.js"></script>
         <link href="https://fonts.googleapis.com/css2?family=Platypi:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>GW2Site</title>
+        <title>GW2 Inventory Viewer</title>
     </head>
     <body>
+        <div id="projectInfo">
+            <h1>About <span class="redText">GuildWars 2</span> Inventory Viewer</h1>
+            <p>The goal of my project was to retrieve and display the inventories
+                of my game account dynamically with JavaScript.</p>
+            <br>
+            <h2>To achieve this, I</h2>
+            <ul>
+                <li>Set up GIT to easier track progress and changes</li>
+                <li>Request API data with API keys via ?query (I initially tried request headers,
+                     but they didn't work in browser due to CORS)</li>
+                <li>Store/retrieve the data in the browsers localStorage</li>
+                <li>Created a HTML & CSS structure to support JavaScript implementation</li>
+                <li>Use JavaScript module structure to isolate by concern</li>
+                <li>Use JavaScript to dynamically create elements with gathered
+                    data that adjusted elements to a predetermined structure.</li>
+                <li>Reduced initial API load by pre-loading ~650 items worth of name and URL data
+                    via exporting a module.</li>
+            </ul>
+            <br>
+            <p>The biggest challenge was modifying the data and converting it to/from storage.<br>
+                
+            </p>
+            <br>
+            <br>
+            <p style="font-size: 1rem;">Media displayed are properties
+                 of <a href="https://www.arena.net/en" class="redText">ArenaNet</a> &copy;</p>
+        </div>
         <header>
             <nav id="controlPanel">
                 <h3>Control Panel</h3>
                 <button id="fetchToken" type="button">Set API Key</button>
-                <button id="fetchMatStorage" type="button">Fetch Material Storage</button>
+                <button id="fetchMatStorage" type="button">Update Inventory</button>
                 <button id="download" type="button">Download localStorage</button>
+                <button id="aboutProject" type="button">About The Project</button>
             </nav>
         </header>
         <main>
-            <h1>Guild wars 2 API testing grounds!</h1>
+            <h1>Guild wars 2 Inventory Viewer</h1>
             <nav id="inventoryTypes">
                 <button id="matStorageButton" type="button">Material Storage</button>
                 <button id="bankButton" type="button">Bank</button>
-                <button id="charInventoryButton" type="button">Character Inventory</button>
+                <button id="charInventoryButton" type="button">Character Inventories</button>
             </nav>
             <nav id="categoryNav">
                 <ul>
