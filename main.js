@@ -13,6 +13,7 @@ from "./data/itemInfo.js";
 // const authPermissions = getStorageString('tokenPermissions');
 // const wallet = getStorageArray('Wallet');
 
+document.getElementById('functionTrigger').addEventListener('click', populateBank);
 
 
 //Control panel buttons for MODULE FUNCTIONS
@@ -22,7 +23,7 @@ const accountNameSpan = document.getElementById('accountName');
     async function displayAccountName() {
         let accOjb = getStorageObject('accountInfo');
         accountNameSpan.innerHTML = ` - ${accOjb.name}`
-    }
+    };
 
     //Button to trigger API Key function
 const permissionTrigger = document.getElementById('fetchToken');
@@ -43,11 +44,11 @@ downloadData.addEventListener('click', downloadStorage);
 const aboutProjectTrigger = document.getElementById('aboutProject');
 const projectInfoDiv = document.getElementById('projectInfo');
 
-    //Triggers to show and hide the aboutProject
+//Triggers to show and hide the aboutProject
 projectInfoDiv.addEventListener('click', () =>
-     projectInfoDiv.style.display = 'none');
+    projectInfoDiv.style.display = 'none');
 aboutProjectTrigger.addEventListener('click', () =>
-     projectInfoDiv.style.display = 'block');
+    projectInfoDiv.style.display = 'block');
 
 
 
@@ -56,7 +57,7 @@ aboutProjectTrigger.addEventListener('click', () =>
 
 //Item tab controls
 
-    //Material Storage Tab
+//Material Storage Tab
 const materialStorageTab = document.getElementById('materialStorageTab');
 const matStorageBtn = document.getElementById('matStorageButton');
 
@@ -70,7 +71,7 @@ matStorageBtn.addEventListener('click', showMatTab);
             alert('No local materialStorage data, API Key required.');
             return;
         }
-}
+};
 
     //Bank tab
 const bankTab = document.getElementById('bankTab');
@@ -86,7 +87,7 @@ bankBtn.addEventListener('click', showBankTab);
             alert('No local bank data, API Key required');
             return;
         }
-}
+};
 
     //Character Inventory tab
 const charInventoryTab = document.getElementById('charInventoryTab');
@@ -102,7 +103,7 @@ characterInvBtn.addEventListener('click', showInventoryTab);
             alert('No local character data, API Key required');
             return;
         }
-}
+};
 
     //Datadownload Tab
 const dataDownloadTab = document.getElementById('dataDownloadTab');
@@ -111,32 +112,28 @@ downloadData.addEventListener('click', showDownloadTab);
     async function showDownloadTab() {
         hideTabs();
         dataDownloadTab.style.display = 'block';
-}
+};
 
 
 
     //Hide all tabs
-async function hideTabs(trigger) {
+async function hideTabs() {
     materialStorageTab.style.display = 'none';
     bankTab.style.display = 'none';
     charInventoryTab.style.display = 'none';
     dataDownloadTab.style.display = 'none';
     document.getElementById('categoryNav').style.display = 'none';
-}
+};
 
-    //When material storage tab is loaded, check this
-materialStorageTab.onload = populateOnLoad();
-    async function populateOnLoad() {
+    //When window is loaded, check this
+window.onload = function onLoadFunction() {
+        // console.log(`Autoload trigger`);
         if(localStorage.getItem('materialStorage')) {
             populateMatStorage();
-        } 
-        if(!localStorage.getItem('matStorageCategories')) {
-            setStorage('matStorageCategories', 
-            {6:[], 29:[], 37:[], 46:[], 30:[], 5:[], 49:[], 50:[], 38:[]});
         }
-        // if(localStorage.getItem('bankStorage')) {
-        //     populateBankTab();
-        // }     
+        if(localStorage.getItem('bankStorage')) {
+            populateBank();
+        }     
         // if(localStorage.getItem('characterBags')) {
         //     populateCharacterBagsTab();
         // }
@@ -146,7 +143,7 @@ materialStorageTab.onload = populateOnLoad();
         if(!localStorage.getItem('itemInfo')) {
             setStorage('itemInfo', itemInfo);
         }
-}
+};
 
     //Function for rendering the material storage items
 async function populateMatStorage() {
@@ -197,10 +194,14 @@ const matStorageCategories = getStorageObject('matStorageCategories');
             newItemDiv.setAttribute('class', 'item');
             parentDiv.appendChild(newItemDiv);
 
+            //Imagecheck
+            let iconURL;
+            !itemInfo[item].localIcon === '' ? iconURL=
+             `./icons/${itemInfo[item].localIcon}` : iconURL = itemInfo[item].webIcon;
+
             //Create IMG Element for item image
             newItemImg.setAttribute('class', 'itemImg');
-            newItemImg.setAttribute('src', `./icons/${itemInfo[item].localIcon}` ?
-                `./icons/${itemInfo[item].localIcon}` : itemInfo[item].icon);
+            newItemImg.setAttribute('src', iconURL);
             document.getElementById(item).appendChild(newItemImg);
 
             //Create P Element for item name
@@ -220,8 +221,64 @@ const matStorageCategories = getStorageObject('matStorageCategories');
     })
 
 //Function end
-}
+};
 
 
+async function populateBank() {
+    const bankStorage = getStorageObject('bankStorage');
+    bankTab.textContent = '';
 
-export { populateMatStorage, displayAccountName };
+
+    //Create the new item grid container
+    const newItemGrid = document.createElement('div');
+    newItemGrid.setAttribute('class', 'itemGrid');
+    newItemGrid.setAttribute('id', `GridBank`);
+    bankTab.appendChild(newItemGrid);
+
+    //Set parentDiv to the newly created itemgrid
+    let parentDiv = document.getElementById(`GridBank`);
+
+
+    for (let obj in bankStorage) {
+        let itemID = obj;
+        let itemCount = bankStorage[obj].count;
+        
+
+        //Define new element creators
+        const newItemDiv = document.createElement('div');
+        const newItemImg = document.createElement('img');
+        const nameP = document.createElement('p');
+        const countP = document.createElement('p');
+        
+        //Create DIV Element for item container
+        newItemDiv.setAttribute('id', itemID);
+        newItemDiv.setAttribute('class', 'item');
+        parentDiv.appendChild(newItemDiv);
+
+        //Imagecheck - If no local icon exists, use from API
+        let iconURL;
+        !itemInfo[itemID].localIcon === '' ? iconURL=
+         `./icons/${itemInfo[itemID].localIcon}` : iconURL = itemInfo[itemID].webIcon;
+
+        //Create IMG Element for item image
+        newItemImg.setAttribute('class', 'itemImg');
+        newItemImg.setAttribute('src', iconURL);
+        document.getElementById(itemID).appendChild(newItemImg);
+
+        //Create P Element for item name
+        nameP.setAttribute('class', 'itemName');
+        nameP.innerHTML = itemInfo[itemID].name;
+        document.getElementById(itemID).appendChild(nameP);
+
+        //Create P Element for item amount
+        countP.setAttribute('class', 'itemAmount');
+        countP.innerHTML = itemCount;
+        document.getElementById(itemID).appendChild(countP);
+
+    //End iterator
+    };
+
+};
+
+
+export { populateMatStorage, displayAccountName, populateBank };

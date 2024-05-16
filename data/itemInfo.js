@@ -1,4 +1,9 @@
 const itemInfo = {
+    "0": {
+        "name": "Empty slots",
+        "webIcon": "0.png",
+        "localIcon": "0.png"
+    },
     "8469": {
         "name": "Utility Primer",
         "webIcon": "https://render.guildwars2.com/file/CD9AE149AEB121C53522C814B7C809CA0BC3A5A6/849451.png",
@@ -12,7 +17,7 @@ const itemInfo = {
     "12132": {
         "name": "Loaf of Bread",
         "webIcon": "https://render.guildwars2.com/file/5FF179044A0DC9D491333A1A6760054E0E3B6F09/63111.png",
-        "localIcon": ""
+        "localIcon": "63111.png"
     },
     "12134": {
         "name": "Carrot",
@@ -137,7 +142,7 @@ const itemInfo = {
     "12167": {
         "name": "Bowl of Staple Soup Vegetables",
         "webIcon": "https://render.guildwars2.com/file/0B7B6F6568FC90411B71D5C19D4516920145ACF0/63267.png",
-        "localIcon": ""
+        "localIcon": "63267.png"
     },
     "12169": {
         "name": "Bowl of Baker's Dry Ingredients",
@@ -147,42 +152,42 @@ const itemInfo = {
     "12170": {
         "name": "Bowl of Baker's Wet Ingredients",
         "webIcon": "https://render.guildwars2.com/file/08EFE0B5291B2BB75766224E08CB465CFC9368E8/63270.png",
-        "localIcon": ""
+        "localIcon": "63270.png"
     },
     "12172": {
         "name": "Jar of Tomato Sauce",
         "webIcon": "https://render.guildwars2.com/file/2CBD5D5F4F076716CBE6B59434E9E12A38B37C62/63272.png",
-        "localIcon": ""
+        "localIcon": "63272.png"
     },
     "12176": {
         "name": "Bottle of Simple Dressing",
         "webIcon": "https://render.guildwars2.com/file/9591D8DA7D73685659E0AAB8AA28139B937475CF/219401.png",
-        "localIcon": ""
+        "localIcon": "219401.png"
     },
     "12178": {
         "name": "Pile of Salt and Pepper",
         "webIcon": "https://render.guildwars2.com/file/DE066D3C502075B90ECE290F5B95FFA87875DFAB/63274.png",
-        "localIcon": ""
+        "localIcon": "63274.png"
     },
     "12179": {
         "name": "Pile of Simple Stew Herbs",
         "webIcon": "https://render.guildwars2.com/file/2D5B9BB20336CC06CC364FE699151C5621BA313B/219402.png",
-        "localIcon": ""
+        "localIcon": "219402.png"
     },
     "12199": {
         "name": "Bowl of Red Meat Stock",
         "webIcon": "https://render.guildwars2.com/file/B0D619F1A2542BD4095625697C2569A4223CBDE0/63288.png",
-        "localIcon": ""
+        "localIcon": "63288.png"
     },
     "12202": {
         "name": "Bowl of Poultry Stock",
         "webIcon": "https://render.guildwars2.com/file/541F34A15FB23B76BC3CA05BE1D15CEA925F5493/63289.png",
-        "localIcon": ""
+        "localIcon": "63289.png"
     },
     "12206": {
         "name": "Bowl of Vegetable Stock",
         "webIcon": "https://render.guildwars2.com/file/09EEC79E5F943301A61A61A39BDE45E810C5200D/63291.png",
-        "localIcon": ""
+        "localIcon": "63291.png"
     },
     "12229": {
         "name": "Chocolate Bar",
@@ -312,17 +317,17 @@ const itemInfo = {
     "12263": {
         "name": "Ball of Cookie Dough",
         "webIcon": "https://render.guildwars2.com/file/AF3F2D6F56C493802915792C02E1D4635C3E5E7C/63338.png",
-        "localIcon": ""
+        "localIcon": "63338.png"
     },
     "12267": {
         "name": "Bowl of Roux",
         "webIcon": "https://render.guildwars2.com/file/99765676C755D8C0249B53A36807E90B920533A4/63341.png",
-        "localIcon": ""
+        "localIcon": "63341.png"
     },
     "12268": {
         "name": "Bowl of Cream Soup Base",
         "webIcon": "https://render.guildwars2.com/file/380FF9D19DAF095FD62ACBA30D210C6C6F2C1704/63342.png",
-        "localIcon": ""
+        "localIcon": "63342.png"
     },
     "12271": {
         "name": "Bottle of Soy Sauce",
@@ -437,7 +442,7 @@ const itemInfo = {
     "12496": {
         "name": "Pile of Stirfry Spice Mix",
         "webIcon": "https://render.guildwars2.com/file/A5DA0704DC0AAB0808F93DA5DAF47BE6EDE9999E/219460.png",
-        "localIcon": ""
+        "localIcon": "219460.png"
     },
     "12502": {
         "name": "Eggplant",
@@ -522,7 +527,7 @@ const itemInfo = {
     "12519": {
         "name": "Pile of Pumpkin Pie Spice",
         "webIcon": "https://render.guildwars2.com/file/FF98B1BF45D9CB955B0500AFE9797F9C49D7A6D5/219404.png",
-        "localIcon": ""
+        "localIcon": "219404.png"
     },
     "12531": {
         "name": "Coriander Seed",
@@ -1752,7 +1757,7 @@ const itemInfo = {
     "36052": {
         "name": "Bowl of Candy Corn Glaze",
         "webIcon": "https://render.guildwars2.com/file/2ACFBC231FBB3B0DF9920D0800DEDFEB43DBB295/499390.png",
-        "localIcon": ""
+        "localIcon": "499390.png"
     },
     "36059": {
         "name": "Plastic Fangs",
@@ -1832,7 +1837,7 @@ const itemInfo = {
     "38216": {
         "name": "Bowl of Ice Cream Base",
         "webIcon": "https://render.guildwars2.com/file/010E650C71750F112E18D248D0E445E017E8425F/526285.png",
-        "localIcon": ""
+        "localIcon": "526285.png"
     },
     "39555": {
         "name": "Anton's Secret",
@@ -2272,7 +2277,7 @@ const itemInfo = {
     "70437": {
         "name": "Soft Wood Pulp",
         "webIcon": "https://render.guildwars2.com/file/5CEBD23612D63519A8FE02BF0B0DD1B1697507FD/1201949.png",
-        "localIcon": ""
+        "localIcon": "1201949.png"
     },
     "70447": {
         "name": "Frog's Breath",
@@ -2327,7 +2332,7 @@ const itemInfo = {
     "70926": {
         "name": "Simple Finishing Kit",
         "webIcon": "https://render.guildwars2.com/file/22680E4D9D0A3A5A24644DD2132370592A3570DD/1201941.png",
-        "localIcon": ""
+        "localIcon": "1201941.png"
     },
     "70931": {
         "name": "Bag of Radiant Blotting Powder",
@@ -2402,7 +2407,7 @@ const itemInfo = {
     "71583": {
         "name": "Copper Nib",
         "webIcon": "https://render.guildwars2.com/file/7B75593F05E0E5B6D9F8B0674B0F794DE5473065/1201889.png",
-        "localIcon": ""
+        "localIcon": "1201889.png"
     },
     "71613": {
         "name": "Platinum Nib",
@@ -2427,7 +2432,7 @@ const itemInfo = {
     "71724": {
         "name": "Coarse Book Cover",
         "webIcon": "https://render.guildwars2.com/file/D90CB863E7F4E4BCD458DE0575CC5745570F9D04/1201865.png",
-        "localIcon": ""
+        "localIcon": "1201865.png"
     },
     "71938": {
         "name": "Fine Book Cover",
@@ -2447,7 +2452,7 @@ const itemInfo = {
     "72022": {
         "name": "Rough Book Cover",
         "webIcon": "https://render.guildwars2.com/file/AE54EC283B06AA677C7AC1A25B43C2D7C769E440/1201866.png",
-        "localIcon": ""
+        "localIcon": "1201866.png"
     },
     "72205": {
         "name": "Chak Egg",
@@ -2467,7 +2472,7 @@ const itemInfo = {
     "72433": {
         "name": "Bag of Glittering Blotting Powder",
         "webIcon": "https://render.guildwars2.com/file/7F60E57D1A649809F30CC1B12DFB03CDF8809339/1201857.png",
-        "localIcon": ""
+        "localIcon": "1201857.png"
     },
     "72436": {
         "name": "Agate Orb",
@@ -2497,7 +2502,7 @@ const itemInfo = {
     "72579": {
         "name": "Sheet of Coarse Paper",
         "webIcon": "https://render.guildwars2.com/file/3E3CB8B5ED53AA4E099BE4F40160E45A2859F173/1201914.png",
-        "localIcon": ""
+        "localIcon": "1201914.png"
     },
     "72598": {
         "name": "Bag of Crystalline Blotting Powder",
@@ -2517,7 +2522,7 @@ const itemInfo = {
     "72920": {
         "name": "Sheet of Coarse Sandpaper",
         "webIcon": "https://render.guildwars2.com/file/0C960D7320F29E5050CC295CCD7D289C03BFEADF/1204186.png",
-        "localIcon": ""
+        "localIcon": "1204186.png"
     },
     "72925": {
         "name": "Journeyman's Scribing Kit",
@@ -2667,7 +2672,7 @@ const itemInfo = {
     "74852": {
         "name": "Sheet of Rough Paper",
         "webIcon": "https://render.guildwars2.com/file/E60F80EC16026306F8B397CE4D0555A8DFAABDA6/1201915.png",
-        "localIcon": ""
+        "localIcon": "1201915.png"
     },
     "74860": {
         "name": "Grandmaster's Ink Set",
@@ -2727,7 +2732,7 @@ const itemInfo = {
     "75570": {
         "name": "Simple Ink Set",
         "webIcon": "https://render.guildwars2.com/file/FB3BE6C2E6D84D9CCD94E037B55A780B91E15B55/1201903.png",
-        "localIcon": ""
+        "localIcon": "1201903.png"
     },
     "75654": {
         "name": "Ebony Orb",
@@ -2752,7 +2757,7 @@ const itemInfo = {
     "75762": {
         "name": "Bag of Mortar",
         "webIcon": "https://render.guildwars2.com/file/D4D43D9FF51498B204D1C83F6DF32A1394303373/63246.png",
-        "localIcon": ""
+        "localIcon": "63246.png"
     },
     "75857": {
         "name": "Resonating Fragment",
@@ -2807,7 +2812,7 @@ const itemInfo = {
     "76518": {
         "name": "Simple Scribing Kit",
         "webIcon": "https://render.guildwars2.com/file/ACA70CD705BB24EB1F4A9EFA4CD717FA5EA23617/1201935.png",
-        "localIcon": ""
+        "localIcon": "1201935.png"
     },
     "76603": {
         "name": "Flatbread",
@@ -2817,7 +2822,7 @@ const itemInfo = {
     "76708": {
         "name": "Green Wood Pulp",
         "webIcon": "https://render.guildwars2.com/file/BDA73F5C71D3FBA4A609E1906554034095693898/1201901.png",
-        "localIcon": ""
+        "localIcon": "1201901.png"
     },
     "76799": {
         "name": "Pouch of Green Pigment",
@@ -2832,7 +2837,7 @@ const itemInfo = {
     "76876": {
         "name": "Sheet of Extra Coarse Sandpaper",
         "webIcon": "https://render.guildwars2.com/file/0C960D7320F29E5050CC295CCD7D289C03BFEADF/1204186.png",
-        "localIcon": ""
+        "localIcon": "1204186.png"
     },
     "76933": {
         "name": "Fulgurite",
@@ -3067,7 +3072,7 @@ const itemInfo = {
     "82527": {
         "name": "Dollop of Choya Harissa",
         "webIcon": "https://render.guildwars2.com/file/FBF6229179F8AE417EE56A0491F82329DA12CA67/1766604.png",
-        "localIcon": ""
+        "localIcon": "1766604.png"
     },
     "82582": {
         "name": "Sliver of Twitching Forgemetal",
@@ -3107,7 +3112,7 @@ const itemInfo = {
     "82915": {
         "name": "Pile of Jacarandere",
         "webIcon": "https://render.guildwars2.com/file/0AA7E02964F3B9CEBAC99404C36D7FC9E1CAA674/1766610.png",
-        "localIcon": ""
+        "localIcon": "1766610.png"
     },
     "82991": {
         "name": "Bag of Coffee Beans",
@@ -3387,12 +3392,12 @@ const itemInfo = {
     "91677": {
         "name": "Jar of Salsa Garnish",
         "webIcon": "https://render.guildwars2.com/file/E35499B40F9C1D40DB7E9D777FB1697BBC1A28D7/2191068.png",
-        "localIcon": ""
+        "localIcon": "2191068.png"
     },
     "91684": {
         "name": "Rare Extract of Nourishment",
         "webIcon": "https://render.guildwars2.com/file/C6E4AD62C0C7FC9BECB7460727D87911FAC14928/2191014.png",
-        "localIcon": ""
+        "localIcon": "2191014.png"
     },
     "91692": {
         "name": "Varietal Cilantro Seed",
@@ -3402,7 +3407,7 @@ const itemInfo = {
     "91697": {
         "name": "Masterwork Extract of Nourishment",
         "webIcon": "https://render.guildwars2.com/file/B0E5DBB4943CA134C3CDA6DBDC751AEE90A350AE/2191011.png",
-        "localIcon": ""
+        "localIcon": "2191011.png"
     },
     "91699": {
         "name": "Varietal Peppercorn Seed",
@@ -3427,17 +3432,17 @@ const itemInfo = {
     "91719": {
         "name": "Jar of Sesame Syrup",
         "webIcon": "https://render.guildwars2.com/file/45C4A7D90995EF386B3379FDA8B1E8CBD949FA4D/2191094.png",
-        "localIcon": ""
+        "localIcon": "2191094.png"
     },
     "91722": {
         "name": "Glob of Gelatin",
         "webIcon": "https://render.guildwars2.com/file/E880437C04CA6002D80F54D429C2B7C10B5E336D/2191016.png",
-        "localIcon": ""
+        "localIcon": "2191016.png"
     },
     "91726": {
         "name": "Exotic Extract of Nourishment",
         "webIcon": "https://render.guildwars2.com/file/CBF80EA869FA095D7436D23FF6ED055CFE202ADB/2191012.png",
-        "localIcon": ""
+        "localIcon": "2191012.png"
     },
     "91731": {
         "name": "Varietal Mint Seed",
@@ -3452,7 +3457,7 @@ const itemInfo = {
     "91741": {
         "name": "Pile of Enriched Compost",
         "webIcon": "https://render.guildwars2.com/file/F0C9F8A535726D7719E613E4540B1AA7FC4D0304/2191009.png",
-        "localIcon": ""
+        "localIcon": "2191009.png"
     },
     "91751": {
         "name": "Cut of Quality Red Meat",
@@ -3462,7 +3467,7 @@ const itemInfo = {
     "91765": {
         "name": "Filet of Sous-Vide Meat",
         "webIcon": "https://render.guildwars2.com/file/0B243D46E7447145D30F5D6D33FD99C4FE455D79/2191018.png",
-        "localIcon": ""
+        "localIcon": "2191018.png"
     },
     "91768": {
         "name": "Varietal Clove Seed",
@@ -3472,7 +3477,7 @@ const itemInfo = {
     "91786": {
         "name": "Exquisite Extract of Nourishment",
         "webIcon": "https://render.guildwars2.com/file/06D50A051DE7074A9EDD492AA03AC5755FA308B3/2191013.png",
-        "localIcon": ""
+        "localIcon": "2191013.png"
     },
     "91793": {
         "name": "Cultivated Mint Leaf",
@@ -3487,22 +3492,22 @@ const itemInfo = {
     "91803": {
         "name": "Jar of Mint-Parsley Sauce",
         "webIcon": "https://render.guildwars2.com/file/E3CE40EB732DA4420B530864083D42B01B0804E0/2191062.png",
-        "localIcon": ""
+        "localIcon": "2191062.png"
     },
     "91825": {
         "name": "Bottle of Simple Syrup",
         "webIcon": "https://render.guildwars2.com/file/26BA35434902BFC9BC68D32500FE1C934DC2DC6A/2191095.png",
-        "localIcon": ""
+        "localIcon": "2191095.png"
     },
     "91826": {
         "name": "Piece of Cured Meat",
         "webIcon": "https://render.guildwars2.com/file/4824A10BF04AEE52C829DE5191A838E872CA0A95/223189.png",
-        "localIcon": ""
+        "localIcon": "223189.png"
     },
     "91838": {
         "name": "Fine Extract of Nourishment",
         "webIcon": "https://render.guildwars2.com/file/0D76ED68ECC3BEA8D476422AC33BC1A514BB351C/2191010.png",
-        "localIcon": ""
+        "localIcon": "2191010.png"
     },
     "91850": {
         "name": "Varietal Sesame Seed",
@@ -3512,17 +3517,17 @@ const itemInfo = {
     "91860": {
         "name": "Jar of Orange-Clove Syrup",
         "webIcon": "https://render.guildwars2.com/file/24AC29B442D6986BC11C5C9670B43FA96F16E0EE/2191020.png",
-        "localIcon": ""
+        "localIcon": "2191020.png"
     },
     "91861": {
         "name": "Jar of Hollandaise Sauce",
         "webIcon": "https://render.guildwars2.com/file/B25A9E045D7F0E70F5636E071EC5C1F97FFF0174/2191017.png",
-        "localIcon": ""
+        "localIcon": "2191017.png"
     },
     "91868": {
         "name": "Pile of Clove Spice Mix",
         "webIcon": "https://render.guildwars2.com/file/DFC07B209A93F8FE2EEC3C2CE790DFC4AB66FB11/2191008.png",
-        "localIcon": ""
+        "localIcon": "2191008.png"
     },
     "91869": {
         "name": "Cultivated Peppercorn",
@@ -3707,7 +3712,7 @@ const itemInfo = {
     "97105": {
         "name": "Pile of Soybeans",
         "webIcon": "https://render.guildwars2.com/file/D4F9E2DF1CC361E3E3D80F4F0C783A9A4E6951BE/2594846.png",
-        "localIcon": ""
+        "localIcon": "2594846.png"
     },
     "97185": {
         "name": "Jade Cathedral Statuette",

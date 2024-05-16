@@ -164,11 +164,10 @@ main section {
 
 .item .itemName {
     margin-top: -4px;
-    display: inline-block;
     vertical-align: middle;
     font-size: 0.8rem;
     line-height: 0.7rem;
-    max-width: 100%;
+    max-width: 128px;
 }
 
 #dataoutput {

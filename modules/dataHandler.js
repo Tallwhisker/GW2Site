@@ -1,18 +1,14 @@
 import { getStorageArray, getStorageObject, getStorageString, setStorage } 
 from "./storageHandler.js";
 
-import { populateMatStorage, displayAccountName } 
+import { populateMatStorage, displayAccountName, populateBank } 
 from "../main.js";
 
-
-
-// import { matStorageIds, matStorageNames } 
-// from "../data/categories.json"
 
 const apiUrl = 'https://api.guildwars2.com/v2/';
 const authToken = getStorageString('authToken');
 const materialStorage = getStorageObject('materialStorage');
-const matStorageCategories = getStorageObject('matStorageCategories');
+// const matStorageCategories = getStorageObject('matStorageCategories');
 const itemInfo = getStorageObject('itemInfo');
 const newItemInfo = getStorageArray('newItemInfo');
 
@@ -39,13 +35,15 @@ async function getNewToken() {
         let getToken = window.prompt(
         `Insert API Key. This will ->RESET<- any stored data.
          "Inventories" and "characters" permissions needed`);
-        localStorage.setItem('authToken', getToken);
-        fetchToStorage('tokeninfo', 'tokenInfo');
-        fetchToStorage('account', 'accountInfo');
-        localStorage.removeItem('materialStorage');
-        localStorage.removeItem('Bank');
-        localStorage.removeItem('Characters');
-        displayAccountName();
+         if(getToken) {
+            localStorage.setItem('authToken', getToken);
+            fetchToStorage('tokeninfo', 'tokenInfo');
+            fetchToStorage('account', 'accountInfo');
+            localStorage.removeItem('materialStorage');
+            localStorage.removeItem('bankStorage');
+            // localStorage.removeItem('Characters');
+            setTimeout(displayAccountName, 3000)
+        } else {alert('No token input')};
 }
 
     //Fetch material storage and write to materialStorage
@@ -60,28 +58,30 @@ async function fetchMatStorage() {
         })
         .then(data => {
             const newItems = [];
+            const matStorageCategories = {};
             data.forEach(element => {
                 let elID = (element.id);
                 let elCat = (element.category);
-                // if(materialStorage[element.id]) {
-                // materialStorage[element.id]['count'] = element.count
-                // } else {
+                if(!matStorageCategories[elCat]) {
+                    matStorageCategories[elCat] = [];
+                } 
+                matStorageCategories[elCat].push(elID);
+                
                 materialStorage[elID] = {
                     'count' : element.count
                 }
-                // }
                 if(!itemInfo[elID]) {
                     newItems.push(elID);
                 }
-                if(!matStorageCategories[elCat].includes(elID)) {
-                    matStorageCategories[elCat].push(elID);
-                }
+
         })
+            let stupidSoybeanIndex = matStorageCategories[49].indexOf(97105, 0);
+            let stupidSoybean = matStorageCategories[49].splice(stupidSoybeanIndex, 1);
+
             itemInfoParser(newItems);
-            console.log(`fetchmat sent ${newItems.length}`)
+            console.log(`fetchmat sent ${newItems.length} items`)
             setStorage('materialStorage', materialStorage);
             setStorage('matStorageCategories', matStorageCategories);
-            // categorySorter(data);
             populateMatStorage();
         })
         .catch(error => {
@@ -93,7 +93,7 @@ async function fetchMatStorage() {
 async function itemInfoParser(data) {
     if(data.length < 1) {return}
 
-    console.log('InfoParser Starting: ' +data.length + ' items')
+    console.log(`InfoParser Starting: ${data.length} items in queue.`)
     const interval = setInterval(() => {
         if (data.length === 0) {
             clearInterval(interval);
@@ -115,7 +115,7 @@ async function fetchItemInfo(items) {
     fetch(`https://api.guildwars2.com/v2/items?ids=${items}`)
         .then(response => {
             if(!response.ok) {
-            throw new Error('FetchReturn Error');
+            throw new Error('FetchItemInfo Error');
         }
             return response.json();
         })
@@ -139,7 +139,7 @@ async function fetchItemInfo(items) {
         console.log('FetchItemInfo done')
 }
 
-document.getElementById('functionTrigger').addEventListener('click', linkFixer);
+// document.getElementById('functionTrigger').addEventListener('click', linkFixer);
 
 function linkFixer(input) {
     console.log(`linkFixer: ${input}`);
@@ -162,46 +162,55 @@ async function fetchBank() {
     .then(data => {
         const newBankStorage = {};
         const newItems = [];
+        let emptyCount = 1;
+        newBankStorage[0] = { 'count' : 0};
         data.forEach(item => {
+            console.log(item);
             if(item) {
-            newBankStorage[item.id] = {
-                'count' : item.count
+                newBankStorage[item.id] = {
+                    'count' : item.count };
+
+                if(!itemInfo[item.id]) {
+                    newItems.push(item.id);}
             }
-            if(!itemInfo[item.id]) {
-                newItems.push(item.id);
-            }
-            }
-        })
+
+            else if (item === null) {
+                emptyCount++;
+            };
+
+    })
+        newBankStorage[0].count = emptyCount;
         setStorage('bankStorage', newBankStorage);
         itemInfoParser(newItems);
+        populateBank();
     })
     .catch(error => {
         console.log(error);
     })
-}
+};
 
 
 
 //Anonymous function trigger for custom data manipulation
 
 // document.getElementById('functionTrigger').addEventListener('click',() => {
-//     const newItemInfo = {};
-//     for(let obj in materialStorage) {
-//         // newItemInfo.obj = [obj];
-//         // newItemInfo.obj.name = materialStorage[obj].name;
-//         // newItemInfo[obj]['category'] = [obj].category;
-//         // newItemInfo[obj]['webIcon'] = [obj].icon;
-//         // newItemInfo[obj]['localIcon'] = [obj].localIcon;
-//         newItemInfo[obj] =  {
-//             name : materialStorage[obj].name,
-//             category : materialStorage[obj].category,
-//             webIcon : materialStorage[obj].icon,
-//             localIcon : materialStorage[obj].localIcon
+//         let newURL = [];
+//         console.log('linkFixer go!')
+//         for (let obj in itemInfo) {
+//             // console.log(obj);
+//             if(itemInfo[obj].webIcon && itemInfo[obj].localIcon === '') {
+//                 let oldURL = itemInfo[obj].webIcon.split("").reverse();
+//                 // console.log(oldString);
+//                 while(oldURL[0] !== '/') {
+//                     newURL.unshift(oldURL.shift());
+//                 }
+//                 itemInfo[obj].localIcon = newURL.join("");
+//                 console.log(`${obj} : ${newURL.join("")}`);
+//                 newURL.splice(0, newURL.length);
+//             }
 //         }
-//     }
-//     setStorage('itemInfo', newItemInfo);
-//     console.log(newItemInfo);
-//     console.log('CustomFunction done');
+//         console.log('LinkFixer done');
+//   setStorage('itemInfo', itemInfo);
 // })
 
 export {
