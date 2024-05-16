@@ -117,7 +117,6 @@ async function fetchItemInfo(items) {
             if(!response.ok) {
             throw new Error('FetchReturn Error');
         }
-            console.log(`FetchItemInfo OK`);
             return response.json();
         })
         .then(data => {
@@ -132,34 +131,23 @@ async function fetchItemInfo(items) {
             )
             setStorage('newItemInfo', newItemInfo);
             setStorage('itemInfo', itemInfo);
-            linkFixer();
+            linkFixer(newItemInfo);
         })
         .catch(error => {
             console.log(error);
         })
         console.log('FetchItemInfo done')
-        linkFixer();
 }
 
+document.getElementById('functionTrigger').addEventListener('click', linkFixer);
 
-
-function linkFixer() {
-    let newURL = [];
-    console.log('linkFixer go!')
-    for (let obj in itemInfo) {
-        // console.log(obj);
-        if(itemInfo[obj].webIcon && !itemInfo[obj].localIcon) {
-            let oldURL = itemInfo[obj].webIcon.split("").reverse();
-            // console.log(oldString);
-            while(oldURL[0] !== '/') {
-                newURL.unshift(oldURL.shift());
-            }
-            itemInfo[obj]['localIcon'] = newURL.join("");
-            // console.log(`${obj} : ${newString.join("")}`);
-            newURL.splice(0, newURL.length);
-        }
-    }
-    console.log('LinkFixer done');
+function linkFixer(input) {
+    console.log(`linkFixer: ${input}`);
+    input.forEach(element => {
+        if(itemInfo[element].webIcon && !itemInfo[element].localIcon) {
+            itemInfo[element].localIcon = itemInfo[element].webIcon.split('/').pop();
+        } 
+    });
 }
 
 //Fetch bank and handle bankStorage
