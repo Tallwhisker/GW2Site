@@ -1,9 +1,4 @@
-const itemInfo = {
-    "0": {
-        "name": "Empty slots",
-        "webIcon": "0.png",
-        "localIcon": "0.png"
-    },
+const baseItemInfo = {
     "8469": {
         "name": "Utility Primer",
         "webIcon": "https://render.guildwars2.com/file/CD9AE149AEB121C53522C814B7C809CA0BC3A5A6/849451.png",
@@ -3828,6 +3823,11 @@ const itemInfo = {
         "name": "Celestial Invisible Cat Cape",
         "webIcon": "https://render.guildwars2.com/file/F899DBBE0AC5EDC1D8E9E7351F9980CDF373F27C/3272980.png",
         "localIcon": "3272980.png"
+    },
+    "EmptySlot": {
+        "name": "Empty slots",
+        "webIcon": "emptyslot.png",
+        "localIcon": "emptyslot.png"
     }
 };
 
@@ -3861,5 +3861,4 @@ const matStorageCategoryNames = [
     }
 ];
 
-export { itemInfo, matStorageCategoryNames
-}
+export { baseItemInfo, matStorageCategoryNames }
