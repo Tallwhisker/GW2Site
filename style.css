@@ -103,7 +103,6 @@ main section {
 }
 
 #categoryNav {
-    display: none;
     margin: 8px 0;
 }
 
@@ -172,4 +171,11 @@ main section {
 
 #dataoutput {
     word-wrap: break-word;
+}
+
+
+footer > #kittycat {
+    position: fixed;
+    bottom: 1px;
+    right: 5px;
 }

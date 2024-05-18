@@ -10,7 +10,7 @@ import {
 } from "./storageHandler.js";
 
 import { 
-    itemInfoParser 
+    itemInformationStart 
 } from './dataHandler.js'
 
 //Bank tab
@@ -39,6 +39,7 @@ async function fetchBank() {
 //Check for permissions
 if(permissionInventory === 1 && localStorage.getItem('itemInfo')) {
     const itemInfo = getStorageObject('itemInfo');
+    const newItems = [];
 
     fetch(`https://api.guildwars2.com/v2/account/bank?access_token=${authToken}`)
     .then(response => {
@@ -49,7 +50,6 @@ if(permissionInventory === 1 && localStorage.getItem('itemInfo')) {
     })
     .then(data => {
         const newBankStorage = {};
-        const newItems = [];
         let emptyCount = 1;
         newBankStorage['EmptySlot'] = { 'count' : 0};
         data.forEach(item => {
@@ -63,17 +63,21 @@ if(permissionInventory === 1 && localStorage.getItem('itemInfo')) {
 
             else if (item === null) {
                 emptyCount++;
-            };
+        };
 
     })
         newBankStorage['EmptySlot'].count = emptyCount;
         setStorage('bankStorage', newBankStorage);
-        itemInfoParser(newItems);
+        if(newItems.length > 0) {
+            console.log(`BankModule found ${newItems.length} new items`);
+            itemInformationStart(newItems);
+        };
+        // populateBank();
+        console.log(`BANK${newItems}`)
     })
     .catch(error => {
         console.log(error);
     })
-    setTimeout(populateBank, 1000);
 }
 };
 
@@ -100,6 +104,9 @@ async function populateBank() {
     for (let obj in bankStorage) {
         let itemID = obj;
         let itemCount = bankStorage[obj].count;
+
+        //Random 4-digit number for each item to guard against duplicates
+        const RI = Math.ceil(Math.random() * 10000);
         
 
         //Define new element creators
@@ -109,28 +116,37 @@ async function populateBank() {
         const countP = document.createElement('p');
         
         //Create DIV Element for item container
-        newItemDiv.setAttribute('id', itemID);
+        newItemDiv.setAttribute('id', `BS${itemID}RI${RI}`);
         newItemDiv.setAttribute('class', 'item');
         parentDiv.appendChild(newItemDiv);
 
         //Imagecheck
-        let iconURL = itemInfo[itemID].localIcon ? 
-            `./icons/${itemInfo[itemID].localIcon}` : itemInfo[itemID].webIcon;
-
+        let iconURL ;
+        if(itemInfo[itemID]){
+            if(itemInfo[itemID].localIcon) {
+                iconURL = `./icons/${itemInfo[itemID].localIcon}`
+            } else if (itemInfo[itemID].webIcon) {
+                iconURL = itemInfo[itemID].webIcon
+            }
+        }
+        let itemNAME ;
+        if(itemInfo[itemID]) {
+            itemNAME = itemInfo[itemID].name;
+        } 
         //Create IMG Element for item image
         newItemImg.setAttribute('class', 'itemImg');
-        newItemImg.setAttribute('src', iconURL);
-        document.getElementById(itemID).appendChild(newItemImg);
+        newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
+        document.getElementById(`BS${itemID}RI${RI}`).appendChild(newItemImg);
 
         //Create P Element for item name
         nameP.setAttribute('class', 'itemName');
-        nameP.innerHTML = itemInfo[itemID].name;
-        document.getElementById(itemID).appendChild(nameP);
+        nameP.innerHTML = itemNAME ? itemNAME : 'Spaghetti';
+        document.getElementById(`BS${itemID}RI${RI}`).appendChild(nameP);
 
         //Create P Element for item amount
         countP.setAttribute('class', 'itemAmount');
         countP.innerHTML = itemCount;
-        document.getElementById(itemID).appendChild(countP);
+        document.getElementById(`BS${itemID}RI${RI}`).appendChild(countP);
 
     //End iterator
     };

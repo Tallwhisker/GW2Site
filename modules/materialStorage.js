@@ -14,7 +14,7 @@ import {
 } from '../data/itemInfo.js';
 
 import { 
-    itemInfoParser 
+    itemInformationStart 
 } from './dataHandler.js'
 
 
@@ -27,7 +27,6 @@ matStorageBtn.addEventListener('click', showMatTab);
         if(localStorage.getItem('materialStorage')) {
             hideTabs();
             materialStorageTab.style.display = 'block';
-            document.getElementById('categoryNav').style.display = 'block';
         } else {
             alert('No local materialStorage data, API Key required.');
             return;
@@ -39,22 +38,21 @@ matStorageBtn.addEventListener('click', showMatTab);
 //Fetch material storage and write to materialStorage
 
 async function fetchMatStorage() {
-
+    
     //Check for permissions
-if(permissionInventory === 1 && localStorage.getItem('itemInfo')) {
-
+    if(permissionInventory === 1 && localStorage.getItem('itemInfo')) {
     const itemInfo = getStorageObject('itemInfo');
+    const newItems = [];
+
 
     fetch(`https://api.guildwars2.com/v2/account/materials?access_token=${authToken}`)
     .then(response => {
         if(!response.ok) {
             throw new Error(`Fetch Error`);
         }
-        console.log(`Fetched Material Storage`);
         return response.json();
     })
     .then(data => {
-        const newItems = [];
         const matStorageCategories = {};
         const materialStorage = {}
         data.forEach(element => {
@@ -74,18 +72,22 @@ if(permissionInventory === 1 && localStorage.getItem('itemInfo')) {
             }
 
     })
-        let stupidSoybeanIndex = matStorageCategories[49].indexOf(97105, 0);
-        let stupidSoybean = matStorageCategories[49].splice(stupidSoybeanIndex, 1);
-
-        itemInfoParser(newItems);
-        console.log(`fetchmat: ${newItems.length} items -> infoParser`)
+        // let stupidSoybeanIndex = matStorageCategories[49].indexOf(97105, 0);
+        // let stupidSoybean = matStorageCategories[49].splice(stupidSoybeanIndex, 1);
         setStorage('materialStorage', materialStorage);
         setStorage('matStorageCategories', matStorageCategories);
     })
     .catch(error => {
         console.error(error);
     })
-    setTimeout(populateMatStorage, 2000);
+    setTimeout(populateMatStorage, 1000);
+
+    if(newItems.length > 0) {
+        console.log(`MatStorageModule found ${newItems.length} new items`)
+        itemInformationStart(newItems);
+    };
+    console.log(`MAT${newItems}`)
+
 }
 };
 
@@ -98,37 +100,36 @@ async function populateMatStorage() {
     const matStorageCategories = getStorageObject('matStorageCategories');
     
         //Remove content in the material storage tab
-        materialStorageTab.textContent = '';  
+        // materialStorageTab.textContent = '';  
     
         //Primary array iterator for categories
         matStorageCategoryNames.forEach(cat => {
             let categoryID = Object.keys(cat).toString();
-            let categoryName = Object.values(cat).toString();
     
-            //Create H2 Elements for category names
-            const newH2 = document.createElement('h2');
-            newH2.setAttribute('id', `Cat${categoryID}`);
-            newH2.innerHTML = categoryName;
-    
-            //Set new H2 Element event listener to hide the category grid
+            //Get H2 category element for category names
+            let newH2 = document.getElementById(`Cat${categoryID}`);
+
+            //Set category H2 element event listener to hide the category grid
             newH2.addEventListener('click', () => {
                 let target = document.getElementById(`Grid${categoryID}`);
                 if(target.style.display === 'none') {
                     target.style.display = 'grid';
                 } else {target.style.display = 'none'}
             });
-            materialStorageTab.appendChild(newH2);
             
             //Create DIV Elements for category item grid
             const newItemGrid = document.createElement('div');
             newItemGrid.setAttribute('class', 'itemGrid');
             newItemGrid.setAttribute('id', `Grid${categoryID}`);
             materialStorageTab.appendChild(newItemGrid);
+            newH2.insertAdjacentElement('afterend', newItemGrid);
     
             //Set parentDiv to the newly created itemgrid
             let parentDiv = document.getElementById(`Grid${categoryID}`);
-    
+            parentDiv.innerHTML = '';
+
             //Secondary array iterator for items
+            let i = 0; 
             matStorageCategories[categoryID].forEach(item => {
                 const newItemDiv = document.createElement('div');
                 const newItemImg = document.createElement('img');
@@ -136,28 +137,36 @@ async function populateMatStorage() {
                 const countP = document.createElement('p');
                 
                 //Create DIV Element for item container
-                newItemDiv.setAttribute('id', item);
+                newItemDiv.setAttribute('id', `MST${item}i${i}`);
                 newItemDiv.setAttribute('class', 'item');
                 parentDiv.appendChild(newItemDiv);
     
+
                 //Imagecheck
-                let iconURL = itemInfo[item].localIcon ? 
-                 `./icons/${itemInfo[item].localIcon}` : itemInfo[item].webIcon;
+                let iconURL ;
+                if(itemInfo[item]){
+                    if(itemInfo[item].localIcon) {
+                        iconURL = `./icons/${itemInfo[item].localIcon}`
+                    } else if (itemInfo[item].webIcon) {
+                        iconURL = itemInfo[item].webIcon
+                    }
+                }
     
                 //Create IMG Element for item image
                 newItemImg.setAttribute('class', 'itemImg');
-                newItemImg.setAttribute('src', iconURL);
-                document.getElementById(item).appendChild(newItemImg);
+                newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
+                document.getElementById(`MST${item}i${i}`).appendChild(newItemImg);
     
                 //Create P Element for item name
                 nameP.setAttribute('class', 'itemName');
-                nameP.innerHTML = itemInfo[item].name;
-                document.getElementById(item).appendChild(nameP);
+                nameP.innerHTML = itemInfo[item].name ? itemInfo[item].name : 'Unknown';
+                document.getElementById(`MST${item}i${i}`).appendChild(nameP);
     
                 //Create P Element for item amount
                 countP.setAttribute('class', 'itemAmount');
-                countP.innerHTML = materialStorage[item].count;
-                document.getElementById(item).appendChild(countP);
+                countP.innerHTML = materialStorage[item].count ? materialStorage[item].count : 0;
+                document.getElementById(`MST${item}i${i}`).appendChild(countP);
+                i++;
     
             //End secondary iterator
             })

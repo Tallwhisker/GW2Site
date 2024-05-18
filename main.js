@@ -11,6 +11,10 @@ import {
     baseItemInfo 
 } from "./data/itemInfo.js";
 
+// import {
+//     itemInformationStart
+// } from "./modules/dataHandler.js"
+
 import { 
     populateBank, 
     fetchBank 
@@ -21,8 +25,15 @@ import {
     fetchMatStorage 
 } from "./modules/materialStorage.js";
 
+import {
+    popCharTabOnLoad,
+    fetchCharactersList
+} from "./modules/characterBags.js"
+
+
 let authToken = getStorageString('authToken');
 let permissionInventory = 0;
+let permissionCharacters = 0;
 
 //Get API key information
 async function getNewToken() {
@@ -37,9 +48,15 @@ async function getNewToken() {
         localStorage.removeItem('materialStorage');
         localStorage.removeItem('bankStorage');
         // localStorage.removeItem('Characters');
-        setTimeout(displayAccountName, 3000);
-        setTimeout(checkPermissions, 3000);
-    } else {alert('No token input')};
+        setTimeout(displayAccountName, 1000);
+        setTimeout(checkPermissions, 1000);
+        setTimeout(fetchBank,2000);
+        setTimeout(fetchMatStorage,2000);
+        setTimeout(fetchCharactersList,2000);
+        if(!localStorage.getItem('itemInfo')) {
+            setStorage('itemInfo', baseItemInfo);
+        };
+    } else {alert('Input error, min length is 70')};
 };
 
 //Check permissions
@@ -51,36 +68,41 @@ async function checkPermissions() {
     ) {
         permissionInventory = 1;
     }
+    if(permissionsArray.includes('account') &&
+    permissionsArray.includes('characters')
+    ) {
+        permissionCharacters = 1;
+    }
 }
 
 //When window is loaded, check this
 window.onload = function onLoadFunction() {
-    // console.log(`Autoload trigger`);
+    console.log(`Autoload trigger`);
     if(localStorage.getItem('accountInfo')) {
         displayAccountName();
-    }
+    };
+
     if(localStorage.getItem('tokenInfo')) {
         checkPermissions();
-    }
-    // if(localStorage.getItem('characterBags')) {
-        //     populateCharacterBagsTab();
-    // }
-    if(!localStorage.getItem('itemInfo')) {
-        setStorage('itemInfo', baseItemInfo);
-    }
-    setTimeout(populateInventories, 1000);
+    };
+    populateInventories();
 };
 
 async function populateInventories() {
-    console.log(permissionInventory)
 
     if(localStorage.getItem('materialStorage') &&
     permissionInventory === 1) {
         populateMatStorage();
     };
+
     if(localStorage.getItem('bankStorage') &&
     permissionInventory === 1) {
         populateBank();
+    };
+
+    if(localStorage.getItem('characters') &&
+    permissionCharacters === 1 ) {
+        popCharTabOnLoad();
     };
 }
 
@@ -136,25 +158,10 @@ async function hideTabs() {
     bankTab.style.display = 'none';
     charInventoryTab.style.display = 'none';
     dataDownloadTab.style.display = 'none';
-    document.getElementById('categoryNav').style.display = 'none';
 };
 
 
-    //Character Inventory tab
-const charInventoryTab = document.getElementById('charInventoryTab');
-const characterInvBtn = document.getElementById('charInventoryButton');
 
-characterInvBtn.addEventListener('click', showInventoryTab);
-    async function showInventoryTab() {
-        if(localStorage.getItem('characters')) {
-            hideTabs();
-            charInventoryTab.style.display = 'block';
-        } 
-        else {
-            alert('No local character data, API Key required');
-            return;
-        }
-};
 
     //Datadownload Tab
 const dataDownloadTab = document.getElementById('dataDownloadTab');
@@ -168,25 +175,27 @@ downloadData.addEventListener('click', showDownloadTab);
 
 
 //Anonymous speciality function trigger for custom data manipulation
-
-document.getElementById('functionTrigger').addEventListener('click',() => {
-    let newURL = [];
-    const itemInfo = getStorageObject('itemInfo');
-    console.log('linkFixer go!')
-    for (let obj in itemInfo) {
-        console.log(obj);
-        if(itemInfo[obj].webIcon && !itemInfo[obj].localIcon) {
-            itemInfo[obj].localIcon = itemInfo[obj].webIcon.split('/').pop();
-        } 
+document.getElementById('functionTrigger').addEventListener('click', fetchCharactersList)
+// document.getElementById('functionTrigger').addEventListener('click',() => {
+//     let newURL = [];
+//     const itemInfo = getStorageObject('itemInfo');
+//     console.log('linkFixer go!')
+//     for (let obj in itemInfo) {
+//         console.log(obj);
+//         if(itemInfo[obj].webIcon && !itemInfo[obj].localIcon) {
+//             itemInfo[obj].localIcon = itemInfo[obj].webIcon.split('/').pop();
+//         } 
         
-    }
-    setStorage('itemInfo', itemInfo);
-    console.log('LinkFixer done');
-})
+//     }
+//     setStorage('itemInfo', itemInfo);
+//     console.log('LinkFixer done');
+// })
 
 export { 
     displayAccountName,
     permissionInventory,
+    permissionCharacters,
     authToken,
-    hideTabs
+    hideTabs,
+    populateInventories
 };
