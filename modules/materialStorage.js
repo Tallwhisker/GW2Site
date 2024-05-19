@@ -103,7 +103,10 @@ async function populateMatStorage() {
     
             //Get H2 category element for category names
             let newH2 = document.getElementById(`Cat${categoryID}`);
-
+            
+            let charTabExists = document.getElementById(`Grid${categoryID}`);
+            
+            if(!charTabExists) {
             //Set category H2 element event listener to hide the category grid
             newH2.addEventListener('click', () => {
                 let target = document.getElementById(`Grid${categoryID}`);
@@ -112,13 +115,15 @@ async function populateMatStorage() {
                 } else {target.style.display = 'none'}
             });
             
+
             //Create DIV Elements for category item grid
             const newItemGrid = document.createElement('div');
             newItemGrid.setAttribute('class', 'itemGrid');
             newItemGrid.setAttribute('id', `Grid${categoryID}`);
             materialStorageTab.appendChild(newItemGrid);
             newH2.insertAdjacentElement('afterend', newItemGrid);
-    
+            }
+            
             //Set parentDiv to the newly created itemgrid
             let parentDiv = document.getElementById(`Grid${categoryID}`);
             parentDiv.innerHTML = '';
