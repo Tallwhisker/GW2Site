@@ -25,13 +25,9 @@ const matStorageBtn = document.getElementById('matStorageButton');
 
 matStorageBtn.addEventListener('click', showMatTab);
     async function showMatTab() {
-        if(localStorage.getItem('materialStorage')) {
             hideTabs();
             materialStorageTab.style.display = 'block';
-        } else {
-            alert('No local materialStorage data, API Key required.');
-            return;
-        }
+
 };
 
 
@@ -87,8 +83,6 @@ async function fetchMatStorage() {
         console.log(`MatStorageModule found ${newItems.length} new items`)
         itemInformationStart(newItems);
     };
-    console.log(`MAT${newItems}`)
-
 }
 };
 

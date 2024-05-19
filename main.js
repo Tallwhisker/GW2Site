@@ -43,6 +43,7 @@ async function getNewToken() {
      if(getToken.length > 70) {
         authToken = getToken;
         localStorage.setItem('authToken', getToken);
+        setStorage('itemInfo', baseItemInfo);
         fetchToStorage('tokeninfo', 'tokenInfo');
         fetchToStorage('account', 'accountInfo');
         localStorage.removeItem('materialStorage');
@@ -53,9 +54,7 @@ async function getNewToken() {
         setTimeout(fetchBank,2000);
         setTimeout(fetchMatStorage,2000);
         setTimeout(fetchCharactersList,2000);
-        if(!localStorage.getItem('itemInfo')) {
-            setStorage('itemInfo', baseItemInfo);
-        };
+
     } else {alert('Input error, min length is 70')};
 };
 
@@ -135,6 +134,8 @@ const matStorageTrigger = document.getElementById('updateInventory');
 matStorageTrigger.addEventListener('click', () => {
     fetchMatStorage();
     fetchBank();
+    fetchCharactersList();
+    status
 });
 
     //Button to trigger localStorage export

@@ -18,6 +18,7 @@ import {
 
 const charQueueOutput = document.getElementById('charQueueOutput');
 // const characterModuleStatus = 0;
+const statusOutput = document.getElementById('statusOutput');
 
 
 //Character Inventory tab
@@ -26,19 +27,14 @@ const characterInvBtn = document.getElementById('charInventoryButton');
 
 characterInvBtn.addEventListener('click', showInventoryTab);
 async function showInventoryTab() {
-    if(localStorage.getItem('characters')) {
         hideTabs();
         charInventoryTab.style.display = 'block';
 
-    } 
-    else {
-        alert('No local character data, API Key required');
-        return;
-    }
 };
 
 function fetchCharactersList() {
     if(permissionCharacters === 1) {
+    statusOutput.innerText = 'Requesting character data'
     charQueueOutput.innerHTML = 'Getting characters from servers.';
     fetch(`https://api.guildwars2.com/v2/characters?access_token=${authToken}`)
     .then(response => {
@@ -82,16 +78,18 @@ async function characterQueueManager(input) {
         if(charQueue.length < 1) {
             clearInterval(charInterval)
             setTimeout(setStorage('characters', characters),2500);
+            popCharTabOnLoad(characters);
             charQueueOutput.innerHTML = '';
+            statusOutput.innerText = 'idle';
         }
         else {
-            charQueueOutput.innerHTML = `Retrieving data for: ${characterNames[0]}
+            charQueueOutput.innerHTML = `Retrieving data for: ${characterNames[0]},
              ${charQueue.length -1} remaining`;
             
             fetchCharacterData(charQueue.shift(), characterNames.shift());
         }
 
-    },5000);
+    },4000);
 };
 
 

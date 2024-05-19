@@ -122,7 +122,7 @@ main {
         margin: 1rem auto;
         display: none;
         min-width: fit-content;
-        max-width: 65%;
+        max-width: 80%;
         background-color:navajowhite;
         box-shadow: 0 0 15px 5px black;
         border-radius: 5px;
@@ -179,6 +179,8 @@ main {
         grid-template-columns: repeat(10, minmax(5rem, min-content));
     }
 }
+
+
 .item {
     height: 8.125rem;
     width: 5rem;

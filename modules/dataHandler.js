@@ -24,7 +24,7 @@ async function itemInformationStart(inputArray) {
 
     inputArray.forEach(item => {
         newItems[item] =  {
-            name : 'Placeholder',
+            name : `Unknown ID: ${item}`,
             webIcon : '',
             localIcon : 'spaghet.png'
         }});
@@ -40,8 +40,8 @@ async function itemInformationStart(inputArray) {
 };
 
 
-const itemInfo = getStorageObject('itemInfo');
 function itemQueueHandler() {
+const itemInfo = getStorageObject('itemInfo');
 
 const queueHandler = setInterval(() => {
 
@@ -68,10 +68,11 @@ const queueHandler = setInterval(() => {
         else {
             // console.log(`Sent ${itemQueue.length} items to fetchItemInfo`);
             fetchItemInfo(itemQueue.splice(0, itemQueue.length).toString());
-            statusOutput.innerText =`Items remaining in queue: ${itemQueue.length}`
+            statusOutput.innerText =`Items remaining in queue: ${itemQueue.length}. 
+            Refreshing when done.`
         }
 
-}, 7500);
+}, 5000);
 };
 
 
@@ -79,6 +80,7 @@ const queueHandler = setInterval(() => {
 
     //Split item array and slow down fetch
 function itemNameChecker(inputId) {
+    const itemInfo = getStorageObject('itemInfo');
     let name = [];
     let nameSplit = [];
     if(itemInfo[inputId]) {

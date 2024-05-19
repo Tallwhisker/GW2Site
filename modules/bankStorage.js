@@ -22,14 +22,9 @@ const bankBtn = document.getElementById('bankButton');
 
 bankBtn.addEventListener('click', showBankTab);
     async function showBankTab() {
-        if(localStorage.getItem('bankStorage')) {
             hideTabs();
             bankTab.style.display = 'block';
-        }
-        else {
-            alert('No local bank data, API Key required');
-            return;
-        }
+
 };
 
 
@@ -73,8 +68,7 @@ if(permissionInventory === 1 && localStorage.getItem('itemInfo')) {
             console.log(`BankModule found ${newItems.length} new items`);
             itemInformationStart(newItems);
         };
-        // populateBank();
-        console.log(`BANK${newItems}`)
+        setTimeout(populateBank, 1000);
     })
     .catch(error => {
         console.log(error);
