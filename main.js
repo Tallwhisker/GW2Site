@@ -39,7 +39,7 @@ let permissionCharacters = 0;
 async function getNewToken() {
     let getToken = window.prompt(
     `Insert API Key. This will RESET inventory data.
-     "Inventories" and "characters" permissions needed`);
+     "inventories" and "characters" permissions needed`);
      if(getToken.length > 70) {
         authToken = getToken;
         localStorage.setItem('authToken', getToken);
@@ -78,6 +78,9 @@ async function checkPermissions() {
 //When window is loaded, check this
 window.onload = function onLoadFunction() {
     console.log(`Autoload trigger`);
+    if(!localStorage.getItem('aboutSeen')) {
+        projectInfoDiv.style.display = 'block';
+    }
     if(localStorage.getItem('accountInfo')) {
         displayAccountName();
     };
@@ -124,6 +127,9 @@ const accountNameSpan = document.getElementById('accountName');
 const permissionTrigger = document.getElementById('fetchToken');
 permissionTrigger.addEventListener('click', getNewToken);
 
+
+
+
     //Button to trigger inventory fetch
 const matStorageTrigger = document.getElementById('updateInventory');
 matStorageTrigger.addEventListener('click', () => {
@@ -132,16 +138,20 @@ matStorageTrigger.addEventListener('click', () => {
 });
 
     //Button to trigger localStorage export
-const downloadData = document.getElementById('download');
-downloadData.addEventListener('click', downloadStorage);
+// const downloadData = document.getElementById('download');
+// downloadData.addEventListener('click', downloadStorage);
+
+
 
     //Button to show aboutProject
 const aboutProjectTrigger = document.getElementById('aboutProject');
 const projectInfoDiv = document.getElementById('projectInfo');
 
 //Triggers to show and hide the aboutProject
-projectInfoDiv.addEventListener('click', () =>
-    projectInfoDiv.style.display = 'none');
+projectInfoDiv.addEventListener('click', () => {
+    projectInfoDiv.style.display = 'none';
+    localStorage.setItem('aboutSeen', 'seen');
+});
 aboutProjectTrigger.addEventListener('click', () =>
     projectInfoDiv.style.display = 'block');
 
@@ -164,18 +174,19 @@ async function hideTabs() {
 
 
     //Datadownload Tab
-const dataDownloadTab = document.getElementById('dataDownloadTab');
+// const dataDownloadTab = document.getElementById('dataDownloadTab');
 
-downloadData.addEventListener('click', showDownloadTab);
-    async function showDownloadTab() {
-        hideTabs();
-        dataDownloadTab.style.display = 'block';
-};
+// downloadData.addEventListener('click', showDownloadTab);
+//     async function showDownloadTab() {
+//         hideTabs();
+//         dataDownloadTab.style.display = 'block';
+// };
 
 
 
 //Anonymous speciality function trigger for custom data manipulation
-document.getElementById('functionTrigger').addEventListener('click', fetchCharactersList)
+// document.getElementById('functionTrigger').addEventListener('click', fetchCharactersList)
+
 // document.getElementById('functionTrigger').addEventListener('click',() => {
 //     let newURL = [];
 //     const itemInfo = getStorageObject('itemInfo');
@@ -199,3 +210,14 @@ export {
     hideTabs,
     populateInventories
 };
+
+
+// const kittyCatImg = document.getElementById('kittycat');
+// let kittyJumpInt;
+// const kittyJump = setInterval(() => {
+//     kittyJumpInt = Math.ceil(Math.random() * 20);
+
+
+// },);
+
+// const screenMax700 = window.matchMedia('(max-width: 600px)');

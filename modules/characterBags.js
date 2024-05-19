@@ -12,7 +12,8 @@ import {
  } from "./storageHandler.js";
 
 import { 
-    itemInformationStart
+    itemInformationStart,
+    itemNameChecker
 } from './dataHandler.js'
 
 const charQueueOutput = document.getElementById('charQueueOutput');
@@ -84,9 +85,10 @@ async function characterQueueManager(input) {
             charQueueOutput.innerHTML = '';
         }
         else {
-            charQueueOutput.innerHTML = `Retrieving data for: ${characterNames[0]}`
+            charQueueOutput.innerHTML = `Retrieving data for: ${characterNames[0]}
+             ${charQueue.length -1} remaining`;
+            
             fetchCharacterData(charQueue.shift(), characterNames.shift());
-            // console.log((charQueue.shift() + ' ' + characterNames.shift()));
         }
 
     },5000);
@@ -126,7 +128,7 @@ async function fetchCharacterData(inputName, char) {
         populateCharacterBagsTab(characters[char], char);
         // setStorage('characters', characters);
         if(newItems.length > 0) {
-        console.log(`CharModule found ${newItems.length} new items`);
+        // console.log(`CharModule found ${newItems.length} new items`);
         itemInformationStart(newItems);
         };
     })
@@ -138,7 +140,7 @@ async function fetchCharacterData(inputName, char) {
 
 //Function to get stored characters and slap them into the tab on page load.
 function popCharTabOnLoad() {
-
+    charQueueOutput.innerHTML = '';
     let characters = getStorageObject('characters');
     for(let char in characters) {
         populateCharacterBagsTab(characters[char], char);
@@ -152,7 +154,8 @@ function populateCharacterBagsTab(inventoryArray, charName) {
     //Input: OBJ[[]]
 
 const itemInfo = getStorageObject('itemInfo');
-    //Check if character tab exist, if so -> remove.
+
+    //Check if character tab exist, if so -> skip making new H2
     let charTabExists = document.getElementById(charName);
 
     if(!charTabExists) {
@@ -206,10 +209,6 @@ const itemInfo = getStorageObject('itemInfo');
                 iconURL = itemInfo[itemID].webIcon
             }
         }
-        let itemNAME ;
-        if(itemInfo[itemID]) {
-            itemNAME = itemInfo[itemID].name;
-        } 
         //Create IMG Element for item image
         newItemImg.setAttribute('class', 'itemImg');
         newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
@@ -217,7 +216,7 @@ const itemInfo = getStorageObject('itemInfo');
 
         //Create P Element for item name
         nameP.setAttribute('class', 'itemName');
-        nameP.innerHTML = itemNAME ? itemNAME : 'Unknown';
+        nameP.innerHTML = itemNameChecker(itemID);
         document.getElementById(`BAG${itemID}RI${RI}`).appendChild(nameP);
 
         //Create P Element for item amount

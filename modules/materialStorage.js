@@ -14,7 +14,8 @@ import {
 } from '../data/itemInfo.js';
 
 import { 
-    itemInformationStart 
+    itemInformationStart,
+    itemNameChecker
 } from './dataHandler.js'
 
 
@@ -137,8 +138,8 @@ async function populateMatStorage() {
                 const countP = document.createElement('p');
                 
                 //Create DIV Element for item container
-                newItemDiv.setAttribute('id', `MST${item}i${i}`);
                 newItemDiv.setAttribute('class', 'item');
+                newItemDiv.setAttribute('id', `MST${item}i${i}`);
                 parentDiv.appendChild(newItemDiv);
     
 
@@ -159,7 +160,7 @@ async function populateMatStorage() {
     
                 //Create P Element for item name
                 nameP.setAttribute('class', 'itemName');
-                nameP.innerHTML = itemInfo[item].name ? itemInfo[item].name : 'Unknown';
+                nameP.innerHTML = itemNameChecker(item);
                 document.getElementById(`MST${item}i${i}`).appendChild(nameP);
     
                 //Create P Element for item amount
@@ -175,7 +176,7 @@ async function populateMatStorage() {
         })
     
     //Function end
-    console.log('Populated Material tab');
+    // console.log('Populated Material tab');
 
 };
 

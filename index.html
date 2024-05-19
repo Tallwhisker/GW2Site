@@ -10,28 +10,33 @@
         <title>GW2 Inventory Viewer</title>
     </head>
     <body>
-        <div id="projectInfo">
+        <div class="aside" id="projectInfo" aria-label="about project">
             <h1>About <span class="redText">GuildWars 2</span> Inventory Viewer</h1>
-            <p>The goal of my project was to retrieve and display the inventories
-                of my game account dynamically with JavaScript.</p>
+            <p>I wanted a way to see the inventory of my account and characters outside of the game,
+                so I decided to make a tool to do so.
+            </p>
+            <br><p>This website is entirely client-side and stores all data in your browsers localStorage.
+                This means that the website host has absolutely 0 of your data. 
+                It's all contained in your browser.
+            </p>
             <br>
-            <h2>To achieve this, I</h2>
-            <ul>
-                <li>Set up GIT to easier track progress and changes</li>
-                <li>Request API data with API keys via ?query (I initially tried request headers,
-                     but they didn't work in browser due to CORS)</li>
-                <li>Store/retrieve the data in the browsers localStorage</li>
-                <li>Created a HTML & CSS structure to support JavaScript implementation</li>
-                <li>Use JavaScript module structure to isolate by concern</li>
-                <li>Use JavaScript to dynamically create elements with gathered
-                    data that adjusted elements to a predetermined structure.</li>
-                <li>Reduced initial API load by pre-loading ~650 items worth of name and URL data
-                    via exporting a module.</li>
-            </ul>
-            <br>
-            <p>The biggest challenge was modifying the data and converting it to/from storage.</p>
-            <br>
-            <br>
+            <p>An <a href="https://account.arena.net/applications">API key</a>
+                from your GW2 account is required with the permissions:</p>
+                 <ul>
+                    <li>account</li>
+                    <li>inventories</li>
+                    <li>characters</li>
+                 </ul>
+                 <br>
+                 <p>Due to the character requests being slow, it takes a bit to retrieve the data.
+                    After any new data has been downloaded, unknown items will show with temporary
+                    icons. When the item data has been downloaded the inventories will refresh.
+                    <br><br>
+                    If you see some icons of Spaghetti named "Unknown Item" this is because the 
+                    GW2 API did not return any data for that item.
+                 </p>
+                 <br>
+                 <br>
             <p style="font-size: 1rem;">Media displayed are properties
                  of <a href="https://www.arena.net/en" class="redText">ArenaNet</a> &copy;</p>
         </div>
@@ -40,19 +45,23 @@
                 <h3>Control Panel<span id="accountName"></span></h3>
                 <button id="fetchToken" type="button">Set API Key</button>
                 <button id="updateInventory" type="button">Update Inventory</button>
-                <button id="download" type="button">Download localStorage</button>
+                <!-- <button id="download" type="button">Download localStorage</button> -->
                 <button id="aboutProject" type="button">About The Project</button>
-                <button id="functionTrigger" type="button">Trigger Function</button>
+                <!-- <button id="functionTrigger" type="button">Trigger Function</button> -->
+                <img id="kittycat" src="./media/PixelCalico128x48.png">
             </nav>
+            <p>Status: <span id="statusOutput">idle</span></p>
         </header>
         <main>
             <h1><span class="redText">GuildWars 2</span> Inventory Viewer</h1>
+            <p> </p>
             <nav id="inventoryTypes">
                 <button id="matStorageButton" type="button">Material Storage</button>
                 <button id="bankButton" type="button">Bank</button>
                 <button id="charInventoryButton" type="button">Character Inventories</button>
             </nav>
             <section id="materialStorageTab" class="itemSection">
+                <h2>Material Storage</h2>
                 <nav id="categoryNav">
                     <ul>
                         <li><a href="#Cat6">Basic Crafting</a></li>
@@ -67,6 +76,28 @@
                     </ul>
                 </nav>
                 <h2 id="Cat6">Basic Crafting Materials</h2>
+                <!-- <div class="itemGrid" id="GridCat6">
+                    <div class="item" id="MST0000i0">
+                        <img class="itemImg" src="./icons/emptyslot.png" alt="Empty Slot">
+                        <p class="itemName">Mists-Infused ... Oyster Soup</p>
+                        <p class="itemAmount">9999</p>
+                    </div>
+                    <div class="item" id="MST0000i0">
+                        <img class="itemImg" src="./icons/emptyslot.png" alt="Empty Slot">
+                        <p class="itemName">Wurm's ... Blessing Enrichment</p>
+                        <p class="itemAmount">9999</p>
+                    </div>
+                    <div class="item" id="MST0000i0">
+                        <img class="itemImg" src="./icons/emptyslot.png" alt="Empty Slot">
+                        <p class="itemName">Test Item Unknown Identification</p>
+                        <p class="itemAmount">9999</p>
+                    </div>
+                    <div class="item" id="MST0000i0">
+                        <img class="itemImg" src="./icons/emptyslot.png" alt="Empty Slot">
+                        <p class="itemName">Test Item Unknown Identification</p>
+                        <p class="itemAmount">9999</p>
+                    </div>
+                </div> -->
                 <h2 id="Cat29">Intermediate Crafting Materials</h2>
                 <h2 id="Cat37">Advanced Crafting Materials</h2>
                 <h2 id="Cat46">Ascended Materials</h2>
@@ -76,16 +107,25 @@
                 <h2 id="Cat50">Scribing Materials</h2>
                 <h2 id="Cat38">Festive Materials</h2>
             </section>
-            <section id="bankTab" class="itemSection">Nothing here yet.</section>
+            <section id="bankTab" class="itemSection">
+                <h2>Bank Storage</h2>
+                <div class="itemGrid" id="GridBank">
+                    <div class="item" id="MST0000i0">
+                        <img class="itemImg" src="./icons/emptyslot.png" alt="Empty Slot">
+                        <p class="itemName">No data</p>
+                        <p class="itemAmount"></p>
+                    </div>                
+                </div>
+            </section>
             <section id="charInventoryTab" class="itemSection">
-                <p id="charQueueOutput"></p>
+                <h2>Character Inventories</h2>
+                <p id="charQueueOutput">No character info</p>
             </section>
             <section id="dataDownloadTab" class="dataSection">
                 <p id="dataoutput">Output</p>
             </section>
         </main>
         <footer>
-            <img id="kittycat" src="./media/PixelCalico128x48.png">
         </footer>
     </body>
 </html>

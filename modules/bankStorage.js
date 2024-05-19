@@ -10,7 +10,8 @@ import {
 } from "./storageHandler.js";
 
 import { 
-    itemInformationStart 
+    itemInformationStart,
+    itemNameChecker
 } from './dataHandler.js'
 
 //Bank tab
@@ -88,17 +89,16 @@ async function populateBank() {
     const bankStorage = getStorageObject('bankStorage');
     const itemInfo = getStorageObject('itemInfo');
 
-    bankTab.textContent = '';
-
-
+    
     //Create the new item grid container
     const newItemGrid = document.createElement('div');
     newItemGrid.setAttribute('class', 'itemGrid');
     newItemGrid.setAttribute('id', `GridBank`);
     bankTab.appendChild(newItemGrid);
-
+    
     //Set parentDiv to the newly created itemgrid
     let parentDiv = document.getElementById(`GridBank`);
+    parentDiv.textContent = ''
 
 
     for (let obj in bankStorage) {
@@ -129,10 +129,7 @@ async function populateBank() {
                 iconURL = itemInfo[itemID].webIcon
             }
         }
-        let itemNAME ;
-        if(itemInfo[itemID]) {
-            itemNAME = itemInfo[itemID].name;
-        } 
+
         //Create IMG Element for item image
         newItemImg.setAttribute('class', 'itemImg');
         newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
@@ -140,7 +137,7 @@ async function populateBank() {
 
         //Create P Element for item name
         nameP.setAttribute('class', 'itemName');
-        nameP.innerHTML = itemNAME ? itemNAME : 'Spaghetti';
+        nameP.innerHTML = await itemNameChecker(itemID);
         document.getElementById(`BS${itemID}RI${RI}`).appendChild(nameP);
 
         //Create P Element for item amount
@@ -150,7 +147,7 @@ async function populateBank() {
 
     //End iterator
     };
-console.log('Populated Bank tab');
+// console.log('Populated Bank tab');
 };
 
 

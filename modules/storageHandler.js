@@ -62,8 +62,8 @@ function getStorageString (key) {
     return localStorage.getItem(key).toString();
 };
 
-//Output the selected 'key' to the dataOutput element
-const dataOutput = document.getElementById('dataoutput');
+// //Output the selected 'key' to the dataOutput element
+// const dataOutput = document.getElementById('dataoutput');
 function downloadStorage() {
     let storageKey = window.prompt('LocalStorage Key');
     let downloadData = localStorage.getItem(storageKey)

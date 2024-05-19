@@ -10,6 +10,8 @@ import {
 
 
 
+const statusOutput = document.getElementById('statusOutput');
+
 // const apiUrl = 'https://api.guildwars2.com/v2/';
 
 
@@ -33,17 +35,18 @@ async function itemInformationStart(inputArray) {
         itemQueueSignal = 1;
         itemQueueHandler();
         console.log('Starting itemQueueHandler');
+        statusOutput.innerText = 'New items found, starting download.'
     }
 };
 
 
+const itemInfo = getStorageObject('itemInfo');
 function itemQueueHandler() {
 
 const queueHandler = setInterval(() => {
 
         if (itemQueue.length === 0) {
             
-            const itemInfo = getStorageObject('itemInfo');
             for(let item in newItems) {
                 itemInfo[item] = newItems[item];
             }
@@ -52,17 +55,20 @@ const queueHandler = setInterval(() => {
             populateInventories();
             
             itemQueueSignal = 0;
-            console.log('ItemQueueHandler done');
+            // console.log('ItemQueueHandler done');
+            statusOutput.innerText = 'idle';
             clearInterval(queueHandler);
         } 
         else if(itemQueue.length > 50) {
             fetchItemInfo(itemQueue.splice(0, 50).toString());
             console.log(`Sent 50 items to fetchItemInfo`);
-            console.log(`Remaining in queue: ${itemQueue.length}`)
+            // console.log(`Remaining in queue: ${itemQueue.length}`);
+            statusOutput.innerText =`Items remaining in queue: ${itemQueue.length}`
         } 
         else {
-            console.log(`Sent ${itemQueue.length} items to fetchItemInfo`)
+            // console.log(`Sent ${itemQueue.length} items to fetchItemInfo`);
             fetchItemInfo(itemQueue.splice(0, itemQueue.length).toString());
+            statusOutput.innerText =`Items remaining in queue: ${itemQueue.length}`
         }
 
 }, 7500);
@@ -72,24 +78,32 @@ const queueHandler = setInterval(() => {
 
 
     //Split item array and slow down fetch
-async function itemInfoParser(data) {
+function itemNameChecker(inputId) {
+    let name = [];
+    let nameSplit = [];
+    if(itemInfo[inputId]) {
+        nameSplit = itemInfo[inputId].name.split(' ');
 
+        if(nameSplit.length > 3) {
+            name.push(nameSplit.pop());
+            name.unshift(nameSplit.pop());
+            name.unshift(' ... ');
+            name.unshift(nameSplit.shift());
+        } else {name = nameSplit}
 
-    console.log(`InfoParser Starting: ${data.length} items in queue.`)
-    const itemInterval = setInterval(() => {
-        if (data.length === 0) {
-            clearInterval(itemInterval);
-            console.log('InfoParser stopped')
-        } 
-        else if(data.length > 50) {
-            fetchItemInfo(data.splice(0, 50).toString());
-            console.log(`Sent 50 items to fetchItemInfo`);
-        } 
-        else {
-            fetchItemInfo(data.splice(0, data.length).toString());
-            console.log(`Sent ${data.length} items to fetchItemInfo`)
+        for(let i = 0; i < name.length; i++) {
+            if(name[i].length > 9) {
+                // let temp = name[i]
+                name[i] = `${name[i].split('').splice(0,7).join('')}..`
+            }
         }
-    },7500)
+
+        // console.log(name.join(' '))
+        return name.join(' ');
+
+        } else {
+        return name = `Unknown ID: ${inputId}`
+    }
 }
 
     //Fetch item info 
@@ -131,4 +145,5 @@ async function fetchItemInfo(items) {
 
 export {
     itemInformationStart,
+    itemNameChecker
 }
