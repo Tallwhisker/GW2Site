@@ -77,6 +77,7 @@ const queueHandler = setInterval(() => {
         itemQueueSignal = 0;
         statusOutput.innerText = 'idle';
         console.log('Stopped itemQueueHandler');
+        clearInterval(queueHandler);
     } 
     //If the queue is bigger than 50 items, send 50.
     else if(itemQueue.length > 50) {
