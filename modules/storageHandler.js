@@ -3,14 +3,13 @@ import {
 } from "../main.js";
 
 
-//Write localStorage data to parameter 'key' and input 'value'
-
+//Write localStorage data to parameter inputs.
 function setStorage (key, value) {
     localStorage.setItem(key, JSON.stringify(value));
-// console.log(`Writing local: ${key}`);
 };
 
-//Fetch target info and send to localStorage
+
+//Flexible fetch and send to storage directly. Input target and key value for setStorage.
 async function fetchToStorage(target, key) {
     fetch(`https://api.guildwars2.com/v2/${target}?access_token=${authToken}`)
     .then(response => {
@@ -24,58 +23,46 @@ async function fetchToStorage(target, key) {
     })
     .catch(error => {
         console.log(error);
-    })
+    });
 };
 
-//Get localStorage from input 'key' -> return as OBJECT
 
+//Get localStorage from input 'key' and return OBJECT
 function getStorageObject (key) {
     if(!localStorage.getItem(key)) {
         console.log(`No local data for ${key}`);
         return {};
-    }
+    };
     let tempData = localStorage.getItem(key);
-    // console.log(`Retrieving Object: ${key}`);
     return JSON.parse(tempData);
 };
 
-//Get localStorage from input 'key' -> return as screwed up ARRAY
 
+//Get localStorage from input 'key' and return ARRAY
 function getStorageArray (key) {
     if(!localStorage.getItem(key)) {
         console.log(`No local data for ${key}`);
         return [];
-    }
+    };
     let tempData = localStorage.getItem(key);
-    // console.log(`Retrieving Array: ${key}`);
     return JSON.parse(tempData);
 };
 
-//Get localStorage from input 'key' -> return as STRING
 
+//Get localStorage from input 'key' and return STRING
 function getStorageString (key) {
     if(!localStorage.getItem(key)) {
         console.log(`No local data for ${key}`);
         return '';
-    }
-    // console.log(`Retrieving String: ${key}`);
+    };
     return localStorage.getItem(key).toString();
 };
 
-// //Output the selected 'key' to the dataOutput element
-// const dataOutput = document.getElementById('dataoutput');
-function downloadStorage() {
-    let storageKey = window.prompt('LocalStorage Key');
-    let downloadData = localStorage.getItem(storageKey)
-    dataOutput.style.display = 'block';
-    dataOutput.innerHTML = downloadData;
-};
 
 export {
     setStorage,
     fetchToStorage,
     getStorageObject,
     getStorageString,
-    getStorageArray, 
-    downloadStorage
+    getStorageArray
 };

@@ -1,19 +1,14 @@
-
 import { 
     getStorageString, 
-    downloadStorage, 
     fetchToStorage,
     setStorage, 
     getStorageObject
 } from "./modules/storageHandler.js";
 
+//Item data to reduce initial setup load. Activates on new API key.
 import { 
     baseItemInfo 
-} from "./data/itemInfo.js";
-
-// import {
-//     itemInformationStart
-// } from "./modules/dataHandler.js"
+} from "./data/itemInfo.js"; 
 
 import { 
     populateBank, 
@@ -31,65 +26,98 @@ import {
 } from "./modules/characterBags.js"
 
 
+//Set up initial values for module export
 let authToken = getStorageString('authToken');
 let permissionInventory = 0;
 let permissionCharacters = 0;
 
-//Get API key information
+
+//Button to trigger API Key function
+const permissionTrigger = document.getElementById('fetchToken');
+permissionTrigger.addEventListener('click', getNewToken);
+
+
+//Function to ask for API key, then initialize setup
 async function getNewToken() {
+
+    //Ask user for their API key via prompt
     let getToken = window.prompt(
-    `Insert API Key. This will RESET inventory data.
+    `Insert API Key. This will reset all stored data.
      "inventories" and "characters" permissions needed`);
-     if(getToken.length > 70) {
+
+    //If provided key matches length
+    if(getToken.length > 70) {
+        //Clear all stored information
+        localStorage.clear();
+
+        //Set new key and fetch basic data structures
         authToken = getToken;
         localStorage.setItem('authToken', getToken);
         setStorage('itemInfo', baseItemInfo);
         fetchToStorage('tokeninfo', 'tokenInfo');
         fetchToStorage('account', 'accountInfo');
-        localStorage.removeItem('materialStorage');
-        localStorage.removeItem('bankStorage');
-        // localStorage.removeItem('Characters');
+        localStorage.setItem('aboutSeen', 'seen');
+
+        //Delayed start for data download.
         setTimeout(displayAccountName, 1000);
         setTimeout(checkPermissions, 1000);
         setTimeout(fetchBank,2000);
         setTimeout(fetchMatStorage,2000);
         setTimeout(fetchCharactersList,2000);
-
-    } else {alert('Input error, min length is 70')};
+    } else {
+        //If no key or incorrect length, show error.
+        alert('Input error, min length is 70')
+    };
 };
 
-//Check permissions
+
+//Check permissions and set exported permission signals
 async function checkPermissions() {
+
+    //Get stored permissions and extract them
     let tokenInfo = getStorageObject('tokenInfo');
     let permissionsArray = tokenInfo.permissions;
+
+    //Check and set inventory signal
     if(permissionsArray.includes('account') &&
     permissionsArray.includes('inventories')
     ) {
         permissionInventory = 1;
-    }
+    };
+
+    //Check and set characters signal
     if(permissionsArray.includes('account') &&
     permissionsArray.includes('characters')
     ) {
         permissionCharacters = 1;
-    }
-}
+    };
+};
 
-//When window is loaded, check this
+
+//When window is loaded, run these things.
 window.onload = function onLoadFunction() {
-    console.log(`Autoload trigger`);
+
+    //If you haven't seen the about window, show it.
     if(!localStorage.getItem('aboutSeen')) {
         projectInfoDiv.style.display = 'block';
-    }
+    };
+
+    //If there's an account name, show it.
     if(localStorage.getItem('accountInfo')) {
         displayAccountName();
     };
 
+    //If there's permission info, check it.
     if(localStorage.getItem('tokenInfo')) {
         checkPermissions();
     };
+
+    //Call for inventory creation
     populateInventories();
 };
 
+
+//Check if there's stored data + permissions and if so, create inventories.
 async function populateInventories() {
 
     if(localStorage.getItem('materialStorage') &&
@@ -106,102 +134,59 @@ async function populateInventories() {
     permissionCharacters === 1 ) {
         popCharTabOnLoad();
     };
-}
+};
 
 
-//Control panel buttons for MODULE FUNCTIONS
-
-    //if accountInfo exists, display after Control panel
+//Define the accountname output element
 const accountNameSpan = document.getElementById('accountName');
-    async function displayAccountName() {
-        if(localStorage.getItem('accountInfo')) {
-            let accOjb = getStorageObject('accountInfo');
-            accountNameSpan.innerHTML = ` - ${accOjb.name}`
-        } else {
-            accountNameSpan.innerHTML = '';
-        }
+
+//Function to extract account name from storage and display it.
+async function displayAccountName() {
+    if(localStorage.getItem('accountInfo')) {
+        let accOjb = getStorageObject('accountInfo');
+        accountNameSpan.innerHTML = ` - ${accOjb.name}`
+    } else {
+        accountNameSpan.innerHTML = '';
     };
-
-    //Button to trigger API Key function
-const permissionTrigger = document.getElementById('fetchToken');
-permissionTrigger.addEventListener('click', getNewToken);
+};
 
 
-
-
-    //Button to trigger inventory fetch
+//Define button to trigger inventory request
 const matStorageTrigger = document.getElementById('updateInventory');
+
 matStorageTrigger.addEventListener('click', () => {
     fetchMatStorage();
     fetchBank();
     fetchCharactersList();
-    status
 });
 
-    //Button to trigger localStorage export
-// const downloadData = document.getElementById('download');
-// downloadData.addEventListener('click', downloadStorage);
 
-
-
-    //Button to show aboutProject
+//Button to show aboutProject panel
 const aboutProjectTrigger = document.getElementById('aboutProject');
+
+aboutProjectTrigger.addEventListener('click', () => {
+    projectInfoDiv.style.display = 'block'
+});
+
+
+//Trigger to hide the aboutProject panel
 const projectInfoDiv = document.getElementById('projectInfo');
 
-//Triggers to show and hide the aboutProject
+//When you hide the panel, set it's value to seen
 projectInfoDiv.addEventListener('click', () => {
     projectInfoDiv.style.display = 'none';
     localStorage.setItem('aboutSeen', 'seen');
 });
-aboutProjectTrigger.addEventListener('click', () =>
-    projectInfoDiv.style.display = 'block');
 
 
 
-
-
-
-//Item tab controls
-
-//Hide all tabs
+//Hide all tabs, called from inventory Modules
 async function hideTabs() {
     materialStorageTab.style.display = 'none';
     bankTab.style.display = 'none';
     charInventoryTab.style.display = 'none';
-    dataDownloadTab.style.display = 'none';
 };
 
-
-
-
-    //Datadownload Tab
-// const dataDownloadTab = document.getElementById('dataDownloadTab');
-
-// downloadData.addEventListener('click', showDownloadTab);
-//     async function showDownloadTab() {
-//         hideTabs();
-//         dataDownloadTab.style.display = 'block';
-// };
-
-
-
-//Anonymous speciality function trigger for custom data manipulation
-// document.getElementById('functionTrigger').addEventListener('click', fetchCharactersList)
-
-// document.getElementById('functionTrigger').addEventListener('click',() => {
-//     let newURL = [];
-//     const itemInfo = getStorageObject('itemInfo');
-//     console.log('linkFixer go!')
-//     for (let obj in itemInfo) {
-//         console.log(obj);
-//         if(itemInfo[obj].webIcon && !itemInfo[obj].localIcon) {
-//             itemInfo[obj].localIcon = itemInfo[obj].webIcon.split('/').pop();
-//         } 
-        
-//     }
-//     setStorage('itemInfo', itemInfo);
-//     console.log('LinkFixer done');
-// })
 
 export { 
     displayAccountName,
@@ -211,14 +196,3 @@ export {
     hideTabs,
     populateInventories
 };
-
-
-// const kittyCatImg = document.getElementById('kittycat');
-// let kittyJumpInt;
-// const kittyJump = setInterval(() => {
-//     kittyJumpInt = Math.ceil(Math.random() * 20);
-
-
-// },);
-
-// const screenMax700 = window.matchMedia('(max-width: 600px)');
