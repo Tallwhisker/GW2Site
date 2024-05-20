@@ -59,9 +59,9 @@ if(permissionInventory === 1) {
 
             else if (item === null) {
                 emptyCount++;
-        };
+            };
 
-    })
+        })
         //Overwrite old bank data
         newBankStorage['EmptySlot'].count = emptyCount;
         setStorage('bankStorage', newBankStorage);

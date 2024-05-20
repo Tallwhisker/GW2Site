@@ -35,7 +35,7 @@ matStorageBtn.addEventListener('click', showMatTab);
 async function fetchMatStorage() {
     
     //Check for permissions because function can be triggered manually
-    if(permissionInventory === 1 && localStorage.getItem('itemInfo')) {
+    if(permissionInventory === 1) {
     const itemInfo = getStorageObject('itemInfo');
     const newItems = [];
 
@@ -62,25 +62,27 @@ async function fetchMatStorage() {
             };
 
             if(!itemInfo[element.id]) {
-                newItems.push(elID);
+                newItems.push(element.id);
             };
 
-    });
+        });
         //Overwrite any stored data with new data
         setStorage('materialStorage', materialStorage);
         setStorage('matStorageCategories', matStorageCategories);
+
+        //If any unknown items are found, send them to dataHandler
+        if(newItems.length > 0) {
+            console.log(`MatStorageModule found ${newItems.length} new items`)
+            itemInformationStart(newItems);
+        };
+        //Start the populating of material storage tab
+        setTimeout(populateMatStorage, 1000);
     })
     .catch(error => {
         console.error(error);
     });
 
-    setTimeout(populateMatStorage, 1000);
 
-    //If any unknown items are found, send them to dataHandler
-    if(newItems.length > 0) {
-        console.log(`MatStorageModule found ${newItems.length} new items`)
-        itemInformationStart(newItems);
-    };
 }
 };
 

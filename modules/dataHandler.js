@@ -80,8 +80,8 @@ const queueHandler = setInterval(() => {
         clearInterval(queueHandler);
     } 
     //If the queue is bigger than 50 items, send 50.
-    else if(itemQueue.length > 50) {
-        fetchItemInfo(itemQueue.splice(0, 50).toString());
+    else if(itemQueue.length > 100) {
+        fetchItemInfo(itemQueue.splice(0, 100).toString());
         statusOutput.innerText =`Items remaining in queue: ${itemQueue.length}`
     } 
     //If the queue is less than 50 items, send the remaining.
@@ -91,7 +91,7 @@ const queueHandler = setInterval(() => {
     };
 
     //Interval number
-}, 5000);
+}, 3000);
 };
 
 

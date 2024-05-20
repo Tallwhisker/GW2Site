@@ -61,16 +61,8 @@ async function characterQueueManager(input) {
 
     input.forEach(char => {
         characters[char] = [];
-        let requestName = [];
         characterNames.push(char);
-        char.split('').forEach(letter => {
-            if(letter === ' ') {
-                requestName.push('%20');
-            } else {
-                requestName.push(letter);
-            }
-        });
-        charQueue.push(requestName.join(''));
+        charQueue.push(encodeURIComponent(char));
     });
 
     //Primary iterator, send a character name & request name every 4s.
@@ -81,7 +73,7 @@ async function characterQueueManager(input) {
 
             //When queue is empty, save data and turn itself off.
             clearInterval(charInterval);
-            setTimeout(setStorage('characters', characters),2500);
+            setTimeout(setStorage('characters', characters),4000);
             popCharTabOnLoad(characters);
             charQueueOutput.innerHTML = '';
             characterInvBtn.style.backgroundColor = null;
@@ -91,7 +83,7 @@ async function characterQueueManager(input) {
              ${charQueue.length -1} remaining`;
             fetchCharacterData(charQueue.shift(), characterNames.shift());
         };
-    },4000);
+    },1500);
 };
 
 
