@@ -3824,6 +3824,16 @@ const baseItemInfo = {
         "webIcon": "https://render.guildwars2.com/file/F899DBBE0AC5EDC1D8E9E7351F9980CDF373F27C/3272980.png",
         "localIcon": "3272980.png"
     },
+    "20324": {
+        "name": "Black Lion Harvesting Sickle",
+        "webIcon": "https://render.guildwars2.com/file/BD0DC17564A9BC9B2354EAB2122F086DBF699D15/526356.png",
+        "localIcon": "526356.png"
+    },
+    "101651": {
+        "name": "Fool's Tall Tonic",
+        "webIcon": "https://render.guildwars2.com/file/7C5910071493C8EE367E5ADD77A51235F3D93B04/222702.png",
+        "localIcon": "222702.png"
+    },
     "EmptySlot": {
         "name": "Empty slots",
         "webIcon": "emptyslot.png",
