@@ -70,7 +70,7 @@ This being my favorite module, I want to explain more about it.
 >3. ELSE
 >    send remaining items to *fetchItemInfo*
 >
->The **fetchItemInfo** function receives a joined string with items, inserts it into the API URL and then iterates through the response, overwriting data in *newItems* (previous templates) as well as any itemID it receives back to *newItemInfo*.
+>The **fetchItemInfo** function receives a joined string with items, inserts it into the API URL and then iterates through the response, overwriting data in *newItems* (previous templates) as well as any itemID it receives to *newItemInfo*.
 >Then it saves *newItemInfo* to localStorage.
 >
 >The variable *newItemInfo* is needed to cross-check that any sent item request *actually* comes back with data, otherwise the template that *itemInformationStart* creates is saved to the *itemData*. 
@@ -83,7 +83,7 @@ This being my favorite module, I want to explain more about it.
 >**itemNameChecker** also lives in the **dataHandler** module.
 >This function is called from each inventory module and checks, corrects and returns the item names. (or if item doesn't exist, a default value)
 >
->Due to self-inflicted layout issues with some item names, I needed a solution to force them into some resemblance of order. 
+>Due to layout issues with some item names, I needed a solution to force them into some resemblance of order. 
 >So this function caps the word count and word length if they exceed the limits, then return the new more organized name.
 >
 >Take "Wurm's WvW Reward Track Blessing Enrichment" for example, it's veery long.
@@ -102,4 +102,4 @@ This being my favorite module, I want to explain more about it.
 > https://www.arena.net/en/legal/content-terms-of-use
 
 
-I do not allow any redistribution of the project, in parts or in its entirety without prior written approval.
+I do not allow any redistribution of the project, in parts or in its entirety.
