@@ -13,7 +13,7 @@
         <div class="aside" id="projectInfo" aria-label="about project">
             <h1>About <span class="redText">GuildWars 2</span> Inventory Viewer</h1>
             <p>I wanted a way to see the inventory of my account and characters outside of the game,
-                so I decided to make a tool to do so.
+                so I decided to create this unofficial webapp.
             </p>
             <br><p>This website is entirely client-side and stores all data in your browsers localStorage.
                 This means that the website host has absolutely 0 of your data. 
@@ -28,18 +28,17 @@
                     <li>characters</li>
                  </ul>
                  <br>
-                 <p>Due to the character requests being slow, it takes a bit to retrieve the data.
-                    They also fail regularly due to unknown reasons.
-                    After any new items have been found, they will show with temporary
-                    icons. When all modules are done downloading, they should refresh themselves.
-                    <br><br>
+                 <p>Due to the character requests being slow (it's a lot of data to request),
+                     it takes a while to receive and it does timeout sometimes.
                     If you see some icons of Spaghetti named "Unknown Item" this is because the 
-                    GW2 API did not return any data for that item.
+                    GW2 API did not return any data for that item, or it's still downloading.
                  </p>
                  <br>
                  <br>
-            <p style="font-size: 1rem;">Media displayed are properties
-                 of <a href="https://www.arena.net/en" class="redText">ArenaNet</a> &copy;</p>
+            <p id="ArenaNet">© ArenaNet LLC. All rights reserved. NCSOFT, ArenaNet, Guild Wars, Guild Wars 2, GW2,
+                 Guild Wars 2: Heart of Thorns, Guild Wars 2: Path of Fire, Guild Wars 2: End of Dragons,
+                  and Guild Wars 2: Secrets of the Obscure and all associated logos, designs, and composite marks
+                   are trademarks or registered trademarks of NCSOFT Corporation.</p>
         </div>
         <header>
             <nav id="controlPanel">
