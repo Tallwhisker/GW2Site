@@ -15,7 +15,8 @@ import {
 
 import { 
     itemInformationStart,
-    itemNameChecker
+    itemNameChecker,
+    itemInfo
 } from './dataHandler.js';
 
 
@@ -36,7 +37,7 @@ async function fetchMatStorage() {
     
     //Check for permissions because function can be triggered manually
     if(permissionInventory === 1) {
-    const itemInfo = getStorageObject('itemInfo');
+    // const itemInfo = getStorageObject('itemInfo');
     const newItems = [];
 
     fetch(`https://api.guildwars2.com/v2/account/materials?access_token=${authToken}`)
@@ -66,23 +67,24 @@ async function fetchMatStorage() {
             };
 
         });
+
         //Overwrite any stored data with new data
         setStorage('materialStorage', materialStorage);
         setStorage('matStorageCategories', matStorageCategories);
 
         //If any unknown items are found, send them to dataHandler
         if(newItems.length > 0) {
-            console.log(`MatStorageModule found ${newItems.length} new items`)
+            console.log(`MatStorage Module found ${newItems.length} new items`)
             itemInformationStart(newItems);
         };
+
         //Start the populating of material storage tab
         setTimeout(populateMatStorage, 1000);
+
     })
     .catch(error => {
         console.error(error);
     });
-
-
 }
 };
 
@@ -91,7 +93,7 @@ async function fetchMatStorage() {
 async function populateMatStorage() {
 
     //Get current item data
-    const itemInfo = getStorageObject('itemInfo');
+    // const itemInfo = getStorageObject('itemInfo');
     const materialStorage = getStorageObject('materialStorage');
     const matStorageCategories = getStorageObject('matStorageCategories');
     

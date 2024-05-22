@@ -11,7 +11,8 @@ import {
 
 import { 
     itemInformationStart,
-    itemNameChecker
+    itemNameChecker,
+    itemInfo
 } from './dataHandler.js'
 
 
@@ -34,7 +35,7 @@ async function fetchBank() {
 
 //Check for permissions
 if(permissionInventory === 1) {
-    const itemInfo = getStorageObject('itemInfo');
+    // const itemInfo = getStorageObject('itemInfo');
     const newItems = [];
 
     fetch(`https://api.guildwars2.com/v2/account/bank?access_token=${authToken}`)
@@ -68,7 +69,7 @@ if(permissionInventory === 1) {
 
         //If any unknown items are found, send them to dataHandler
         if(newItems.length > 0) {
-            console.log(`BankModule found ${newItems.length} new items`);
+            console.log(`Bank Module found ${newItems.length} new items`);
             itemInformationStart(newItems);
         };
 
@@ -85,7 +86,7 @@ if(permissionInventory === 1) {
 //Function to populate bank tab
 async function populateBank() {
     const bankStorage = getStorageObject('bankStorage');
-    const itemInfo = getStorageObject('itemInfo');
+    // const itemInfo = getStorageObject('itemInfo');
 
     
     //Set parentDiv to the bank itemGrid then reset it

@@ -11,7 +11,8 @@ import {
 
 import { 
     itemInformationStart,
-    itemNameChecker
+    itemNameChecker,
+    itemInfo
 } from './dataHandler.js'
 
 
@@ -60,7 +61,6 @@ async function characterQueueManager(input) {
     const characterNames = [];
 
     input.forEach(char => {
-        characters[char] = [];
         characterNames.push(char);
         charQueue.push(encodeURIComponent(char));
     });
@@ -99,14 +99,14 @@ async function fetchCharacterData(inputName, char) {
     })
     .then(data => {
         let newItems = [];
-        const itemInfo = getStorageObject('itemInfo');
+        characters[char] = [];
         let emptyCount = 0;
         for(let bag in data.bags) {
             if(data.bags[bag]) {
                 data.bags[bag].inventory.forEach(item => {
                     if (item) {
-                        characters[char].push( [item.id,item.count]
-                        )
+                        characters[char].push( [item.id,item.count] )
+
                         if(!itemInfo[item.id]) {
                             newItems.push(item.id);
                         }
@@ -124,12 +124,15 @@ async function fetchCharacterData(inputName, char) {
 
         //If any unknown items were found, they get sent to dataHandler module.
         if(newItems.length > 0) {
-        itemInformationStart(newItems);
+            console.log(`Character Module found ${newItems.length} new items`);
+            itemInformationStart(newItems);
         };
     })
     .catch(error => {
         console.log(error);
         console.log(`Fetch of character: ${char} failed.`);
+        populateCharacterBagsTab(['EmptySlot', 0] , char)
+        characters[`${char} - Error.`] = ['EmptySlot', 0];
     })
 };
 
@@ -148,7 +151,7 @@ function popCharTabOnLoad() {
 
 //Main function for creating character titles and their inventories.
 function populateCharacterBagsTab(inventoryArray, charName) {
-const itemInfo = getStorageObject('itemInfo');
+// const itemInfo = getStorageObject('itemInfo');
 
 
     //Check if character tab exist
