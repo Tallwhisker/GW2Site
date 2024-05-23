@@ -132,6 +132,7 @@ async function fetchCharacterData(inputName, char) {
         console.log(`Fetch of character: ${char} failed.`);
         populateCharacterBagsTab(['EmptySlot', 0] , `${char} - Error.`)
         characters[`${char} - Error.`] = ['EmptySlot', 0];
+        setStorage('characters', characters);
     })
 };
 

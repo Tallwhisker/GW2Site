@@ -5,10 +5,6 @@ import {
 } from "./storageHandler.js";
 
 import { 
-    populateInventories
-} from "../main.js";
-
-import { 
     baseItemInfo 
 } from "../data/itemInfo.js"; 
 

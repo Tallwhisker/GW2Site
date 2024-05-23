@@ -9,10 +9,6 @@ import {
     getStorageObject
  } from "./storageHandler.js";
 
-import {
-    matStorageCategoryNames
-} from '../data/itemInfo.js';
-
 import { 
     itemInformationStart,
     itemNameChecker,
