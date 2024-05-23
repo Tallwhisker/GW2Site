@@ -5,11 +5,6 @@ import {
     getStorageObject
 } from "./modules/storageHandler.js";
 
-//Item data to reduce initial setup load. Activates on new API key.
-import { 
-    baseItemInfo 
-} from "./data/itemInfo.js"; 
-
 import { 
     populateBank, 
     fetchBank 
@@ -24,6 +19,10 @@ import {
     popCharTabOnLoad,
     fetchCharactersList
 } from "./modules/characterBags.js"
+
+import {
+    coldStartItemInfo
+} from "./modules/dataHandler.js"
 
 
 //Set up initial values for module export
@@ -53,7 +52,7 @@ async function getNewToken() {
         //Set new key and fetch basic data structures
         authToken = getToken;
         localStorage.setItem('authToken', getToken);
-        setStorage('itemInfo', baseItemInfo);
+        coldStartItemInfo();
         fetchToStorage('tokeninfo', 'tokenInfo');
         fetchToStorage('account', 'accountInfo');
         localStorage.setItem('aboutSeen', 'seen');
@@ -120,7 +119,7 @@ window.onload = function onLoadFunction() {
 //Check if there's stored data + permissions and if so, create inventories.
 async function populateInventories() {
 
-    if(localStorage.getItem('materialStorage') &&
+    if(localStorage.getItem('matStorageCategories') &&
     permissionInventory === 1) {
         populateMatStorage();
     };

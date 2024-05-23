@@ -65,15 +65,13 @@ async function characterQueueManager(input) {
         charQueue.push(encodeURIComponent(char));
     });
 
-    //Primary iterator, send a character name & request name every 4s.
-    //When queue is empty, turn itself off and schedule writing of data.
+    //Primary iterator, send a character name & request name every 1.5s.
+    //When queue is empty, turn itself off and refresh tab.
     setStorage('characters', characters);
     let charInterval = setInterval(() => {
         if(charQueue.length < 1) {
 
-            //When queue is empty, save data and turn itself off.
             clearInterval(charInterval);
-            setTimeout(setStorage('characters', characters),4000);
             popCharTabOnLoad(characters);
             charQueueOutput.innerHTML = '';
             characterInvBtn.style.backgroundColor = null;
@@ -119,8 +117,9 @@ async function fetchCharacterData(inputName, char) {
         }
         characters[char].unshift( ['EmptySlot', emptyCount]);
 
-        //Send each finished character to be populated on the page.
-        populateCharacterBagsTab(characters[char], char);
+        //Send each finished character to be populated on the page and save to storage.
+        setTimeout(populateCharacterBagsTab(characters[char], char), 2000);
+        setStorage('characters', characters);
 
         //If any unknown items were found, they get sent to dataHandler module.
         if(newItems.length > 0) {
@@ -131,7 +130,7 @@ async function fetchCharacterData(inputName, char) {
     .catch(error => {
         console.log(error);
         console.log(`Fetch of character: ${char} failed.`);
-        populateCharacterBagsTab(['EmptySlot', 0] , char)
+        populateCharacterBagsTab(['EmptySlot', 0] , `${char} - Error.`)
         characters[`${char} - Error.`] = ['EmptySlot', 0];
     })
 };
@@ -151,8 +150,6 @@ function popCharTabOnLoad() {
 
 //Main function for creating character titles and their inventories.
 function populateCharacterBagsTab(inventoryArray, charName) {
-// const itemInfo = getStorageObject('itemInfo');
-
 
     //Check if character tab exist
     let charTabExists = document.getElementById(charName);

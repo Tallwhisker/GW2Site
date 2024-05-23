@@ -9,35 +9,39 @@ import {
 } from "../main.js";
 
 import { 
+    baseItemInfo 
+} from "../data/itemInfo.js"; 
+
+import { 
     populateBank 
 } from "./bankStorage.js";
 
+//Item data to reduce initial setup load. Activates on new API key.
 import { 
     populateMatStorage 
 } from "./materialStorage.js";
 
+//Get current itemInfo
+let itemInfo = getStorageObject('itemInfo');
+
+async function coldStartItemInfo() {
+    setStorage('itemInfo', baseItemInfo);
+    itemInfo = baseItemInfo;
+};
+
+
 //Define output element for status 
 const statusOutput = document.getElementById('statusOutput');
 
-//Get current itemInfo
-const itemInfo = getStorageObject('itemInfo');
 
 //Item information request controller
 let itemQueueSignal = 0;
-// let newItems = {};
 const itemQueue = [];
 
 
 //Queue creator, any unknown items go to this function.
-//Items are formated to a default template for the future
-//as well as being passed into the global itemQueue.
 async function itemInformationStart(inputArray) {
     inputArray.forEach(item => {
-        // newItems[item] =  {
-        //     name : `Unknown ID: ${item}`,
-        //     webIcon : '',
-        //     localIcon : 'spaghet.png'
-        // };
 
         //If item is not already in queue, add it.
         if(!itemQueue.includes(item)) {
@@ -45,7 +49,7 @@ async function itemInformationStart(inputArray) {
         };
     });
 
-    //If the runSignal for the queueHandler is OFF, turn it on!
+    //If the "run signal" for the queueHandler is OFF, turn it on!
     if(itemQueueSignal === 0) {
         itemQueueSignal = 1;
         itemQueueHandler();
@@ -55,24 +59,14 @@ async function itemInformationStart(inputArray) {
 };
 
 
-//Function with internal iterator for reducing the global itemQueue. Interval 5s
+//Function to split itemQueue into bits to not overload API. Timed.
 function itemQueueHandler() {
 
-    
 //Primary interval
 const queueHandler = setInterval(() => {
 
-
     //If the queue is empty, save the new data and turn itself off.
     if (itemQueue.length === 0) {
-        // const newItemInfo = getStorageArray('newItemInfo');
-        // newItemInfo.forEach(item => {
-        //     itemInfo[item] = newItems[item];
-        // });
-
-        // setStorage('itemInfo', itemInfo);
-        // localStorage.removeItem('newItemInfo');
-        // newItems = {};
         populateBank();
         populateMatStorage();
         
@@ -81,11 +75,13 @@ const queueHandler = setInterval(() => {
         // console.log('Stopped itemQueueHandler');
         clearInterval(queueHandler);
     } 
-    //If the queue is bigger than 200 items, send 200.
+
+    //If the queue is bigger than 200 items, send 200. (API MAX is 200)
     else if(itemQueue.length > 200) {
         fetchItemInfo(itemQueue.splice(0, 200).toString());
         statusOutput.innerText =`Items remaining in queue: ${itemQueue.length}`
     } 
+
     //If the queue is less than 200 items, send the remaining.
     else {
         statusOutput.innerText =`${itemQueue.length} items downloading.`
@@ -93,15 +89,13 @@ const queueHandler = setInterval(() => {
     };
 
     //Interval number
-}, 1500); //3s
+}, 1000); //1.5s
 };
 
 
 //Function that is called from other modules to retrieve the item names.
 function itemNameChecker(inputId) {
 
-    //Get current data
-    // const itemInfo = getStorageObject('itemInfo');
     let name = [];
     let nameSplit = [];
 
@@ -138,9 +132,8 @@ function itemNameChecker(inputId) {
 };
 
 
-//Main function for fetching and processing item data.
+//Main function for fetching and saving new item data.
 async function fetchItemInfo(items) {
-    // const newItemInfo = getStorageArray('newItemInfo');
 
     fetch(`https://api.guildwars2.com/v2/items?ids=${items}`)
     .then(response => {
@@ -156,29 +149,21 @@ async function fetchItemInfo(items) {
                 webIcon : item.icon,
                 localIcon : ''
             };
-            // newItems[item.id] =  {
-            //     name : item.name,
-            //     webIcon : item.icon,
-            //     localIcon : ''
-            // };
-            // newItemInfo.push(item.id);
-            });
-            setStorage('itemInfo', itemInfo);
+        });
+
+        //Saves data from recieved items to storage
+        setStorage('itemInfo', itemInfo);
     })
     .catch(error => {
         console.log(error);
         console.log(`Error fetching items: ${items}`);
     });
-
-    if(itemQueueSignal === 0) {
-        itemQueueSignal = 1;
-        itemQueueHandler();
-    };
 };
 
 
 export {
     itemInformationStart,
     itemNameChecker,
-    itemInfo
+    itemInfo,
+    coldStartItemInfo
 };
