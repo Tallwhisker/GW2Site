@@ -9,13 +9,10 @@ import {
     getStorageObject
  } from "./storageHandler.js";
 
-import {
-    matStorageCategoryNames
-} from '../data/itemInfo.js';
-
 import { 
     itemInformationStart,
-    itemNameChecker
+    itemNameChecker,
+    itemInfo
 } from './dataHandler.js';
 
 
@@ -30,13 +27,15 @@ matStorageBtn.addEventListener('click', showMatTab);
             materialStorageTab.style.display = 'block';
 };
 
+//Get current item data
+let matStorageCategories = getStorageObject('matStorageCategories');
 
 //Fetch the material storage and format data
 async function fetchMatStorage() {
     
     //Check for permissions because function can be triggered manually
     if(permissionInventory === 1) {
-    const itemInfo = getStorageObject('itemInfo');
+    // const itemInfo = getStorageObject('itemInfo');
     const newItems = [];
 
     fetch(`https://api.guildwars2.com/v2/account/materials?access_token=${authToken}`)
@@ -47,68 +46,56 @@ async function fetchMatStorage() {
         return response.json();
     })
     .then(data => {
-        const matStorageCategories = {};
-        const materialStorage = {}
+        matStorageCategories = {};
         data.forEach(element => {
             let elID = (element.id);
             let elCat = (element.category);
             if(!matStorageCategories[elCat]) {
                 matStorageCategories[elCat] = [];
             }; 
-            matStorageCategories[elCat].push(elID);
-            
-            materialStorage[elID] = {
-                'count' : element.count
-            };
+            matStorageCategories[elCat].push([ elID, element.count]);
 
+            //Check for unknown items
             if(!itemInfo[element.id]) {
                 newItems.push(element.id);
             };
-
         });
+
         //Overwrite any stored data with new data
-        setStorage('materialStorage', materialStorage);
         setStorage('matStorageCategories', matStorageCategories);
 
         //If any unknown items are found, send them to dataHandler
         if(newItems.length > 0) {
-            console.log(`MatStorageModule found ${newItems.length} new items`)
+            console.log(`MatStorage Module found ${newItems.length} new items`)
             itemInformationStart(newItems);
         };
+
         //Start the populating of material storage tab
         setTimeout(populateMatStorage, 1000);
     })
     .catch(error => {
         console.error(error);
     });
-
-
 }
 };
 
 
 //Main function to populate the Material Storage tab with items
 async function populateMatStorage() {
-
-    //Get current item data
-    const itemInfo = getStorageObject('itemInfo');
-    const materialStorage = getStorageObject('materialStorage');
-    const matStorageCategories = getStorageObject('matStorageCategories');
     
     //Primary iterator for categories
-    matStorageCategoryNames.forEach(cat => {
-        let categoryID = Object.keys(cat).toString();
+    for(let cat in matStorageCategories) {
 
         //Get H2 category element for category names
-        let newH2 = document.getElementById(`Cat${categoryID}`);
+        let newH2 = document.getElementById(`Cat${cat}`);
         
         //Check if the itemGrid already exists, else make a new one.
-        let matGridExists = document.getElementById(`Grid${categoryID}`);
+        let matGridExists = document.getElementById(`Grid${cat}`);
         if(!matGridExists) {
 
             //Set category H2 element event listener to hide the category grid
             newH2.addEventListener('click', () => {
-                let target = document.getElementById(`Grid${categoryID}`);
+                let target = document.getElementById(`Grid${cat}`);
                 if(target.style.display === 'none') {
                     target.style.display = 'grid';
                 } else {target.style.display = 'none'}
@@ -117,36 +104,39 @@ async function populateMatStorage() {
             //Create DIV Elements for category item grid
             const newItemGrid = document.createElement('div');
             newItemGrid.setAttribute('class', 'itemGrid');
-            newItemGrid.setAttribute('id', `Grid${categoryID}`);
+            newItemGrid.setAttribute('id', `Grid${cat}`);
             materialStorageTab.appendChild(newItemGrid);
             newH2.insertAdjacentElement('afterend', newItemGrid);
         };
         
         //Set parentDiv to the itemGrid then reset it
-        let parentDiv = document.getElementById(`Grid${categoryID}`);
+        let parentDiv = document.getElementById(`Grid${cat}`);
         parentDiv.innerHTML = '';
 
         //Secondary iterator for items. Iterator variable to prevent the Soybean incident.
         let i = 0; 
-        matStorageCategories[categoryID].forEach(item => {
+        matStorageCategories[cat].forEach(item => {
             const newItemDiv = document.createElement('div');
             const newItemImg = document.createElement('img');
             const nameP = document.createElement('p');
             const countP = document.createElement('p');
+
+            let itemID = item[0];
+            let itemCount = item[1];
             
             //Create DIV Element for item container
             newItemDiv.setAttribute('class', 'item');
-            newItemDiv.setAttribute('id', `MST${item}i${i}`);
+            newItemDiv.setAttribute('id', `MST${itemID}i${i}`);
             parentDiv.appendChild(newItemDiv);
 
             //Imagecheck because some items don't have an icon.
             //Alternatively they have a web-hosted icon and not a local one.
             let iconURL ;
-            if(itemInfo[item]){
-                if(itemInfo[item].localIcon) {
-                    iconURL = `./icons/${itemInfo[item].localIcon}`
-                } else if (itemInfo[item].webIcon) {
-                    iconURL = itemInfo[item].webIcon
+            if(itemInfo[itemID]){
+                if(itemInfo[itemID].localIcon) {
+                    iconURL = `./icons/${itemInfo[itemID].localIcon}`
+                } else if (itemInfo[itemID].webIcon) {
+                    iconURL = itemInfo[itemID].webIcon
                 };
             };
 
@@ -154,24 +144,24 @@ async function populateMatStorage() {
             //If no icon from above check, Give 'em the spaghet.
             newItemImg.setAttribute('class', 'itemImg');
             newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
-            document.getElementById(`MST${item}i${i}`).appendChild(newItemImg);
+            document.getElementById(`MST${itemID}i${i}`).appendChild(newItemImg);
 
             //Create P Element for item name
             nameP.setAttribute('class', 'itemName');
-            nameP.innerHTML = itemNameChecker(item); //Function in dataHandler module
-            document.getElementById(`MST${item}i${i}`).appendChild(nameP);
+            nameP.innerHTML = itemNameChecker(itemID); //Function in dataHandler module
+            document.getElementById(`MST${itemID}i${i}`).appendChild(nameP);
 
             //Create P Element for item amount
             countP.setAttribute('class', 'itemAmount');
-            countP.innerHTML = materialStorage[item].count ? materialStorage[item].count : 0;
-            document.getElementById(`MST${item}i${i}`).appendChild(countP);
+            countP.innerHTML = itemCount ? itemCount : 0;
+            document.getElementById(`MST${itemID}i${i}`).appendChild(countP);
             i++;
 
         //End secondary iterator
         });
 
     //End primary iterator
-    });
+    };
     
 //Function end
 };

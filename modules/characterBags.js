@@ -11,7 +11,8 @@ import {
 
 import { 
     itemInformationStart,
-    itemNameChecker
+    itemNameChecker,
+    itemInfo
 } from './dataHandler.js'
 
 
@@ -60,20 +61,17 @@ async function characterQueueManager(input) {
     const characterNames = [];
 
     input.forEach(char => {
-        characters[char] = [];
         characterNames.push(char);
         charQueue.push(encodeURIComponent(char));
     });
 
-    //Primary iterator, send a character name & request name every 4s.
-    //When queue is empty, turn itself off and schedule writing of data.
+    //Primary iterator, send a character name & request name every 1.5s.
+    //When queue is empty, turn itself off and refresh tab.
     setStorage('characters', characters);
     let charInterval = setInterval(() => {
         if(charQueue.length < 1) {
 
-            //When queue is empty, save data and turn itself off.
             clearInterval(charInterval);
-            setTimeout(setStorage('characters', characters),4000);
             popCharTabOnLoad(characters);
             charQueueOutput.innerHTML = '';
             characterInvBtn.style.backgroundColor = null;
@@ -99,14 +97,14 @@ async function fetchCharacterData(inputName, char) {
     })
     .then(data => {
         let newItems = [];
-        const itemInfo = getStorageObject('itemInfo');
+        characters[char] = [];
         let emptyCount = 0;
         for(let bag in data.bags) {
             if(data.bags[bag]) {
                 data.bags[bag].inventory.forEach(item => {
                     if (item) {
-                        characters[char].push( [item.id,item.count]
-                        )
+                        characters[char].push( [item.id,item.count] )
+
                         if(!itemInfo[item.id]) {
                             newItems.push(item.id);
                         }
@@ -119,17 +117,22 @@ async function fetchCharacterData(inputName, char) {
         }
         characters[char].unshift( ['EmptySlot', emptyCount]);
 
-        //Send each finished character to be populated on the page.
-        populateCharacterBagsTab(characters[char], char);
+        //Send each finished character to be populated on the page and save to storage.
+        setTimeout(populateCharacterBagsTab(characters[char], char), 2000);
+        setStorage('characters', characters);
 
         //If any unknown items were found, they get sent to dataHandler module.
         if(newItems.length > 0) {
-        itemInformationStart(newItems);
+            console.log(`Character Module found ${newItems.length} new items`);
+            itemInformationStart(newItems);
         };
     })
     .catch(error => {
         console.log(error);
         console.log(`Fetch of character: ${char} failed.`);
+        populateCharacterBagsTab(['EmptySlot', 0] , `${char} - Error.`)
+        characters[`${char} - Error.`] = ['EmptySlot', 0];
+        setStorage('characters', characters);
     })
 };
 
@@ -148,8 +151,6 @@ function popCharTabOnLoad() {
 
 //Main function for creating character titles and their inventories.
 function populateCharacterBagsTab(inventoryArray, charName) {
-const itemInfo = getStorageObject('itemInfo');
-
 
     //Check if character tab exist
     let charTabExists = document.getElementById(charName);
