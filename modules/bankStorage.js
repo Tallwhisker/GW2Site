@@ -6,7 +6,8 @@ import {
 
 import { 
     setStorage,
-    getStorageObject
+    getStorageObject,
+    getStorageArray
 } from "./storageHandler.js";
 
 import { 
@@ -15,7 +16,7 @@ import {
     itemInfo
 } from './dataHandler.js'
 
-
+let bankStorage = getStorageArray('bankStorage');
 
 //Bank tab & button
 const bankTab = document.getElementById('bankTab');
@@ -33,9 +34,6 @@ bankBtn.addEventListener('click', showBankTab);
 //Fetch bank and format data return
 async function fetchBank() {
 
-//Check for permissions
-if(permissionInventory === 1) {
-    // const itemInfo = getStorageObject('itemInfo');
     const newItems = [];
 
     fetch(`https://api.guildwars2.com/v2/account/bank?access_token=${authToken}`)
@@ -46,16 +44,15 @@ if(permissionInventory === 1) {
         return response.json();
     })
     .then(data => {
-        const newBankStorage = {};
+        let bankStorage = [];
         let emptyCount = 1;
-        newBankStorage['EmptySlot'] = { 'count' : 0};
         data.forEach(item => {
             if(item) {
-                newBankStorage[item.id] = {
-                    'count' : item.count };
+                bankStorage.push( [item.id, item.count] );
 
                 if(!itemInfo[item.id]) {
-                    newItems.push(item.id);}
+                    newItems.push(item.id);
+                }
             }
 
             else if (item === null) {
@@ -64,8 +61,8 @@ if(permissionInventory === 1) {
 
         })
         //Overwrite old bank data
-        newBankStorage['EmptySlot'].count = emptyCount;
-        setStorage('bankStorage', newBankStorage);
+        bankStorage.unshift( ['EmptySlot', emptyCount] );
+        setStorage('bankStorage', bankStorage);
 
         //If any unknown items are found, send them to dataHandler
         if(newItems.length > 0) {
@@ -79,14 +76,12 @@ if(permissionInventory === 1) {
     .catch(error => {
         console.log(error);
     })
-}
 };
 
 
 //Function to populate bank tab
 async function populateBank() {
-    const bankStorage = getStorageObject('bankStorage');
-    // const itemInfo = getStorageObject('itemInfo');
+    // const bankStorage = getStorageObject('bankStorage');
 
     
     //Set parentDiv to the bank itemGrid then reset it
@@ -94,9 +89,9 @@ async function populateBank() {
     parentDiv.textContent = ''
 
     //Primary bank iterator
-    for (let obj in bankStorage) {
-        let itemID = obj;
-        let itemCount = bankStorage[obj].count;
+    bankStorage.forEach(item => {
+        let itemID = item[0];
+        let itemCount = item[1];
 
         //Random 4-digit number for each item to guard against duplicates
         const RI = Math.ceil(Math.random() * 10000);
@@ -123,9 +118,14 @@ async function populateBank() {
             }
         };
 
+        let rarity;
+        if(itemInfo[itemID].rarity) {
+            rarity = itemInfo[itemID].rarity
+        } else {rarity = ""};
+
         //Create IMG Element for item image
         //If no icon from above check, Give 'em the spaghet.
-        newItemImg.setAttribute('class', 'itemImg');
+        newItemImg.setAttribute('class', `itemImg ${rarity}`);
         newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
         document.getElementById(`BS${itemID}RI${RI}`).appendChild(newItemImg);
 
@@ -140,7 +140,7 @@ async function populateBank() {
         document.getElementById(`BS${itemID}RI${RI}`).appendChild(countP);
 
     //End iterator
-    };
+    });
 };
 
 

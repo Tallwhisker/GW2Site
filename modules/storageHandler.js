@@ -45,7 +45,7 @@ function getStorageArray (key) {
         return [];
     };
     let tempData = localStorage.getItem(key);
-    return JSON.parse(tempData);
+    return JSON.parse(tempData.split());
 };
 
 

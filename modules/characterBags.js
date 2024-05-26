@@ -77,7 +77,7 @@ async function characterQueueManager(input) {
             characterInvBtn.style.backgroundColor = null;
         }
         else {
-            charQueueOutput.innerHTML = `Retrieving data for: ${characterNames[0]},
+            charQueueOutput.innerHTML = `Reuesting: ${characterNames[0]},
              ${charQueue.length -1} remaining`;
             fetchCharacterData(charQueue.shift(), characterNames.shift());
         };
@@ -103,7 +103,7 @@ async function fetchCharacterData(inputName, char) {
             if(data.bags[bag]) {
                 data.bags[bag].inventory.forEach(item => {
                     if (item) {
-                        characters[char].push( [item.id,item.count] )
+                        characters[char].push( [item.id,item.count] );
 
                         if(!itemInfo[item.id]) {
                             newItems.push(item.id);
@@ -115,7 +115,7 @@ async function fetchCharacterData(inputName, char) {
                 }
             )}
         }
-        characters[char].unshift( ['EmptySlot', emptyCount]);
+        characters[char].unshift( ['EmptySlot', emptyCount] );
 
         //Send each finished character to be populated on the page and save to storage.
         setTimeout(populateCharacterBagsTab(characters[char], char), 2000);
@@ -130,8 +130,8 @@ async function fetchCharacterData(inputName, char) {
     .catch(error => {
         console.log(error);
         console.log(`Fetch of character: ${char} failed.`);
-        populateCharacterBagsTab(['EmptySlot', 0] , `${char} - Error.`)
-        characters[`${char} - Error.`] = ['EmptySlot', 0];
+        populateCharacterBagsTab([['EmptySlot', 0]] , `${char} - Failed downloading.`)
+        characters[`${char} - Error.`] = [['EmptySlot', 0]];
         setStorage('characters', characters);
     })
 };
@@ -211,9 +211,14 @@ function populateCharacterBagsTab(inventoryArray, charName) {
             }
         };
 
+        let rarity;
+        if(itemInfo[itemID]) {
+            rarity = itemInfo[itemID].rarity
+        } else {rarity = ""};
+
         //Create IMG Element for item image
         //If no icon from above check, Give 'em the spaghet.
-        newItemImg.setAttribute('class', 'itemImg');
+        newItemImg.setAttribute('class', `itemImg ${rarity}`);
         newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
         document.getElementById(`BAG${itemID}RI${RI}`).appendChild(newItemImg);
 

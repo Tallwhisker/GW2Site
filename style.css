@@ -1,13 +1,19 @@
 html {
     font-size: 16px;
     font-family: 'Platypi', serif;
-    color: black;
+    color: var(--OffWhite);
     scroll-behavior: smooth;
+
+
+    --ColorBlack: rgb(40, 40, 40);
+    --ColorGray: rgb(100, 100, 100);
+    --ColorRed: rgb(220, 20, 60);
+    --OffWhite: rgb(231, 231, 231);
 }
 
 body {
     width: 100%;
-    background-color: burlywood;
+    background-color: var(--ColorBlack);
     min-height: 100vh;
 }
 
@@ -35,7 +41,7 @@ p {
 }
 
 .redText {
-    color:crimson;
+    color:var(--ColorRed);
 }
 
 button {
@@ -44,17 +50,54 @@ button {
     font-size: 1.25rem;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
-    border-top: 1px solid black;
-    border-right: 1px solid black;
-    border-left: 1px solid black;
-    background-color: #ffebcd;
+    border-top: 1px solid var(--ColorGray);
+    border-right: 1px solid var(--ColorGray);
+    border-left: 1px solid var(--ColorGray);
+    background-color: rgb(67, 66, 67);
+    color: var(--OffWhite);
 }
 
 button:hover {
     cursor: pointer;
-    background-color: brown;
+    background-color: var(--ColorRed);
 }
 
+
+.item {
+
+    .Legendary {
+        border-bottom: 2px solid #7416cc;
+    }
+
+    .Ascended {
+        border-bottom: 2px solid #cc5882;
+    }
+
+    .Exotic {
+        border-bottom: 2px solid #ff8800;
+    }
+
+    .Rare {
+        border-bottom: 2px solid #d8b735;
+    }
+
+    .Masterwork {
+        border-bottom: 2px solid #2eb33f;
+    }
+
+    .Fine {
+        border-bottom: 2px solid #315cb1;
+    }
+    
+    .Basic {
+        border-bottom: 2px solid #e7e7e7;
+    }
+
+    .Junk {
+        border-bottom: 2px solid gray;
+    }
+
+}
 
     /* Specific section styles */
 
@@ -63,7 +106,7 @@ header {
     #controlPanel {
         position: relative;
         padding: 0.5rem 1rem 0;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid var(--ColorGray);
 
         h3 {
             margin-bottom: 0.5rem;
@@ -97,7 +140,7 @@ header {
         text-align: center;
     }
     a {
-        color: crimson;
+        color: var(--ColorRed);
     }
 
     #ArenaNet {
@@ -112,7 +155,7 @@ main {
     #inventoryTypes {
         text-align: left;
         margin-top: 8px;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid var(--ColorGray);
         padding: 0 1rem;
     }
 
@@ -122,7 +165,7 @@ main {
         display: none;
         min-width: fit-content;
         max-width: 80%;
-        background-color:navajowhite;
+        background-color: var(--ColorBlack);
         box-shadow: 0 0 10px 1px black;
         border-radius: 5px;
     }
@@ -136,19 +179,19 @@ main {
     margin: 8px 0;
 
     a {
-        color:black;
+        color: var(--OffWhite);
         text-decoration: none;
     }
 
     a:hover {
-        color: crimson;
+        color: var(--ColorRed);
     }
 
     li {
         list-style-type: none;
         display: inline-block;
         margin: 0 8px;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid var(--OffWhite);
     }
 }
 
@@ -156,7 +199,7 @@ main {
 
 
 .itemSection h2 {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--ColorGray);
     padding: 16px 0 8px;
 }
 
@@ -184,16 +227,15 @@ main {
     height: 8.125rem;
     width: 5rem;
     contain: strict;
-    border: 1px solid black;
+    border: 1px solid var(--ColorGray);
     border-radius: 5px;
     box-shadow: 0 0 10px 1px black;
-    background-color:rgb(230, 211, 183);
 
     .itemImg {
         width: 100%;
         height: auto;
         z-index: 1;
-        border-bottom: 1px solid black;
+        /* border-bottom: 1px solid; */
     }
 
     p.itemAmount {
@@ -202,7 +244,7 @@ main {
         max-width: 100%;
         position: absolute;
         top: 58px;
-        color: white;
+        /* color: white; */
         z-index: 2;
         padding: 0 4px 4px;
         background-color: rgb(0, 0, 0, 0.8);

@@ -140,9 +140,14 @@ async function populateMatStorage() {
                 };
             };
 
+            let rarity;
+            if(itemInfo[itemID]) {
+                rarity = itemInfo[itemID].rarity
+            } else {rarity = ""};
+    
             //Create IMG Element for item image
             //If no icon from above check, Give 'em the spaghet.
-            newItemImg.setAttribute('class', 'itemImg');
+            newItemImg.setAttribute('class', `itemImg ${rarity}`);
             newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
             document.getElementById(`MST${itemID}i${i}`).appendChild(newItemImg);
 

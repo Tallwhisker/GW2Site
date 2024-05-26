@@ -142,6 +142,7 @@ async function fetchItemInfo(items) {
         data.forEach(item => {
             itemInfo[item.id] = {
                 name : item.name,
+                rarity : item.rarity,
                 webIcon : item.icon,
                 localIcon : ''
             };

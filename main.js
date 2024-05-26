@@ -21,9 +21,13 @@ import {
 } from "./modules/characterBags.js"
 
 import {
-    coldStartItemInfo
+    coldStartItemInfo,
+    itemInfo,
+    itemInformationStart
 } from "./modules/dataHandler.js"
 
+//Set version of itemInfo database
+const localVersion = 1;
 
 //Set up initial values for module export
 let authToken = getStorageString('authToken');
@@ -60,9 +64,9 @@ async function getNewToken() {
         //Delayed start for data download.
         setTimeout(displayAccountName, 1000);
         setTimeout(checkPermissions, 1000);
-        setTimeout(fetchBank,2000);
-        setTimeout(fetchMatStorage,2000);
-        setTimeout(fetchCharactersList,2000);
+        setTimeout(fetchBank,3000);
+        setTimeout(fetchMatStorage,3000);
+        setTimeout(fetchCharactersList,3000);
     } else {
         //If no key or incorrect length, show error.
         alert('Input error, min length is 70')
@@ -113,6 +117,9 @@ window.onload = function onLoadFunction() {
 
     //Call for inventory creation
     populateInventories();
+
+    //Check for updated itemInfo DB
+    dataVersion();
 };
 
 
@@ -187,6 +194,16 @@ async function hideTabs() {
 };
 
 
+function dataVersion() {
+
+    let dataV = localStorage.getItem('dataVersion');
+    if(dataV < localVersion) {
+        coldStartItemInfo();
+        localStorage.setItem('dataVersion', localVersion);
+        console.log('Data reset to new version.')
+    }
+}
+
 export { 
     displayAccountName,
     permissionInventory,
@@ -195,3 +212,4 @@ export {
     hideTabs,
     populateInventories
 };
+
