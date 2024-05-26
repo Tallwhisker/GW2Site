@@ -77,7 +77,7 @@ async function characterQueueManager(input) {
             characterInvBtn.style.backgroundColor = null;
         }
         else {
-            charQueueOutput.innerHTML = `Reuesting: ${characterNames[0]},
+            charQueueOutput.innerHTML = `Requesting: ${characterNames[0]},
              ${charQueue.length -1} remaining`;
             fetchCharacterData(charQueue.shift(), characterNames.shift());
         };
