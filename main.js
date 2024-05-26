@@ -40,6 +40,24 @@ const permissionTrigger = document.getElementById('fetchToken');
 permissionTrigger.addEventListener('click', getNewToken);
 
 
+//Menu
+const mainMenu = document.getElementById('mainMenu');
+const mainMenuList = document.getElementById('mainMenuList');
+
+mainMenu.addEventListener('mouseover', showMenu);
+mainMenuList.addEventListener('mouseover', showMenu);
+
+function showMenu() {
+    mainMenuList.style.display = 'block';
+};
+
+mainMenu.addEventListener('mouseout', hideMenu);
+mainMenuList.addEventListener('mouseout', hideMenu);
+
+function hideMenu() {
+    mainMenuList.style.display = 'none';
+};
+
 //Function to ask for API key, then initialize setup
 async function getNewToken() {
 
@@ -60,6 +78,7 @@ async function getNewToken() {
         fetchToStorage('tokeninfo', 'tokenInfo');
         fetchToStorage('account', 'accountInfo');
         localStorage.setItem('aboutSeen', 'seen');
+        localStorage.setItem('dataVersion', localVersion);
 
         //Delayed start for data download.
         setTimeout(displayAccountName, 1000);
@@ -72,6 +91,13 @@ async function getNewToken() {
         alert('Input error, min length is 70')
     };
 };
+
+document.getElementById('resetData').addEventListener('click', () => {
+   let confirmDelete = confirm('Are you sure you want to reset everything?');
+   if(confirmDelete) {
+    localStorage.clear();
+   }
+});
 
 
 //Check permissions and set exported permission signals
@@ -161,9 +187,15 @@ async function displayAccountName() {
 const matStorageTrigger = document.getElementById('updateInventory');
 
 matStorageTrigger.addEventListener('click', () => {
+
+    if(localStorage.getItem('authToken')) {
     fetchMatStorage();
     fetchBank();
     fetchCharactersList();
+    }
+    else {
+        getNewToken();
+    }
 });
 
 

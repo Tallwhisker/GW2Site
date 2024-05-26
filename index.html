@@ -44,12 +44,17 @@
             <nav id="controlPanel">
                 <h3>Control Panel<span id="accountName"></span></h3>
                 <button id="mainMenu" type="button">Menu</button>
-                <button id="fetchToken" type="button">Set API Key</button>
                 <button id="updateInventory" type="button">Update Inventory</button>
                 <button id="aboutProject" type="button">About</button>
                 <!-- <button id="functionTrigger" type="button">Trigger Function</button> -->
                 <img id="kittycat" src="./media/PixelCalico128x48.png">
             </nav>
+            <div id="mainMenuList">
+                <ul>
+                    <li id="fetchToken">Set API key</li>
+                    <li id="resetData">Delete all data</li>
+                </ul>
+            </div>
             <!-- <p>ItemQueue status: <span id="statusOutput">idle</span></p> -->
         </header>
         <main>
@@ -61,7 +66,7 @@
                 <button id="charInventoryButton" type="button">Character Inventories</button>
             </nav>
             <section id="materialStorageTab" class="itemSection">
-                <h2>Material Storage</h2>
+                <h2 style="color: var(--OffWhite)">Material Storage</h2>
                 <nav id="categoryNav">
                     <ul>
                         <li><a href="#Cat6">Basic Crafting</a></li>
@@ -73,6 +78,7 @@
                         <li><a href="#Cat49">Cooking Mats.</a></li>
                         <li><a href="#Cat50">Scribing</a></li>
                         <li><a href="#Cat38">Festive</a></li>
+                        <li id="matStCollapseAll">Collapse all</li>
                     </ul>
                 </nav>
                 <h2 id="Cat6">Basic Crafting Materials</h2>
@@ -96,8 +102,8 @@
                         <img class="itemImg" src="./icons/emptyslot.png" alt="Empty Slot" title="Testitem">
                         <p class="itemName">Test Item Unknown Identification</p>
                         <p class="itemAmount">9999</p>
-                    </div>  -->
-                </div>
+                    </div>
+                </div> -->
                 <h2 id="Cat29">Intermediate Crafting Materials</h2>
                 <h2 id="Cat37">Advanced Crafting Materials</h2>
                 <h2 id="Cat46">Ascended Materials</h2>
@@ -108,7 +114,7 @@
                 <h2 id="Cat38">Festive Materials</h2>
             </section>
             <section id="bankTab" class="itemSection">
-                <h2>Bank Storage</h2>
+                <h2 style="color: var(--OffWhite)">Bank Storage</h2>
                 <div class="itemGrid" id="GridBank">
                     <div class="item" id="MST0000i0">
                         <img class="itemImg" src="./icons/emptyslot.png" alt="Empty Slot">
@@ -118,7 +124,7 @@
                 </div>
             </section>
             <section id="charInventoryTab" class="itemSection">
-                <h2>Character Inventories</h2>
+                <h2 style="color: var(--OffWhite)">Character Inventories</h2>
                 <p id="charQueueOutput">No character info</p>
             </section>
             <section id="dataDownloadTab" class="dataSection">

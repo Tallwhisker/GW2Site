@@ -59,7 +59,7 @@ button {
 
 button:hover {
     cursor: pointer;
-    background-color: var(--ColorRed);
+    background-color: #910a25;
 }
 
 
@@ -100,6 +100,32 @@ button:hover {
 }
 
     /* Specific section styles */
+#mainMenu {
+    position: relative;
+}
+
+#mainMenuList {
+    background-color: var(--ColorBlack);
+    position: absolute;
+    left: 1rem;
+    top: 8%;
+    border: 1px solid var(--ColorGray);
+    z-index: 5;
+    display: none;
+
+    ul {
+        list-style-type: none;
+    }
+
+    li {
+        padding: 0.5rem 1rem;
+    }
+    li:hover {
+        background-color: #910a25;
+        cursor: pointer;
+    }
+}
+
 
 header {
 
@@ -192,15 +218,28 @@ main {
         display: inline-block;
         margin: 0 8px;
         border-bottom: 1px solid var(--OffWhite);
+        cursor: pointer;
+    }
+
+    li:hover {
+        color: var(--ColorRed);
     }
 }
 
 
 
 
-.itemSection h2 {
-    border-bottom: 1px solid var(--ColorGray);
-    padding: 16px 0 8px;
+.itemSection {
+
+    h2 {
+        border-bottom: 1px solid var(--ColorGray);
+        padding: 16px 0 8px;
+        cursor: pointer;
+    }
+
+    h2:hover {
+        color: var(--ColorRed);
+    }
 }
 
 .itemGrid {

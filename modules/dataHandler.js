@@ -27,7 +27,7 @@ async function coldStartItemInfo() {
 
 
 //Define output element for status 
-const statusOutput = document.getElementById('statusOutput');
+// const statusOutput = document.getElementById('statusOutput');
 
 
 //Item information request controller
@@ -50,7 +50,7 @@ async function itemInformationStart(inputArray) {
         itemQueueSignal = 1;
         itemQueueHandler();
         // console.log('Starting itemQueueHandler');
-        statusOutput.innerText = 'New items found, starting download.'
+        // statusOutput.innerText = 'New items found, starting download.'
     };
 };
 
@@ -67,7 +67,7 @@ const queueHandler = setInterval(() => {
         populateMatStorage();
         
         itemQueueSignal = 0;
-        statusOutput.innerText = 'idle';
+        // statusOutput.innerText = 'idle';
         // console.log('Stopped itemQueueHandler');
         clearInterval(queueHandler);
     } 
@@ -75,12 +75,12 @@ const queueHandler = setInterval(() => {
     //If the queue is bigger than 200 items, send 200. (API MAX is 200)
     else if(itemQueue.length > 200) {
         fetchItemInfo(itemQueue.splice(0, 200).toString());
-        statusOutput.innerText =`Items remaining in queue: ${itemQueue.length}`
+        // statusOutput.innerText =`Items remaining in queue: ${itemQueue.length}`
     } 
 
     //If the queue is less than 200 items, send the remaining.
     else {
-        statusOutput.innerText =`${itemQueue.length} items downloading.`
+        // statusOutput.innerText =`${itemQueue.length} items downloading.`
         fetchItemInfo(itemQueue.splice(0, itemQueue.length).toString());
     };
 

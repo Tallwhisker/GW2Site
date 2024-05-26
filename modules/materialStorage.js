@@ -100,6 +100,7 @@ async function populateMatStorage() {
                     target.style.display = 'grid';
                 } else {target.style.display = 'none'}
             });
+
             
             //Create DIV Elements for category item grid
             const newItemGrid = document.createElement('div');
@@ -107,6 +108,11 @@ async function populateMatStorage() {
             newItemGrid.setAttribute('id', `Grid${cat}`);
             materialStorageTab.appendChild(newItemGrid);
             newH2.insertAdjacentElement('afterend', newItemGrid);
+
+            document.getElementById('matStCollapseAll').addEventListener('click',
+             () => {
+                newItemGrid.style.display = 'none';
+             });
         };
         
         //Set parentDiv to the itemGrid then reset it
