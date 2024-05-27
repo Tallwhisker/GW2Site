@@ -90,7 +90,7 @@ button:hover {
     }
     
     .Basic {
-        border-bottom: 2px solid #e7e7e7;
+        border-bottom: 2px solid #cecece;
     }
 
     .Junk {
@@ -120,6 +120,7 @@ button:hover {
     li {
         padding: 0.5rem 1rem;
     }
+
     li:hover {
         background-color: #910a25;
         cursor: pointer;
@@ -165,12 +166,9 @@ header {
     h1 {
         text-align: center;
     }
+
     a {
         color: var(--ColorRed);
-    }
-
-    #ArenaNet {
-        font-size: 1rem;
     }
 }
 
@@ -189,45 +187,32 @@ main {
         padding: 0 1rem 1rem;
         margin: 1rem auto;
         display: none;
-        min-width: fit-content;
         max-width: 80%;
         background-color: var(--ColorBlack);
         box-shadow: 0 0 10px 1px black;
         border-radius: 5px;
     }
-
 }
-
-
-
 
 #categoryNav {
     margin: 8px 0;
 
     a {
         color: var(--OffWhite);
-        text-decoration: none;
     }
-
-    a:hover {
+    
+    a:hover, li:hover {
         color: var(--ColorRed);
     }
-
+    
     li {
+        text-decoration: underline;
         list-style-type: none;
         display: inline-block;
         margin: 0 8px;
-        border-bottom: 1px solid var(--OffWhite);
         cursor: pointer;
     }
-
-    li:hover {
-        color: var(--ColorRed);
-    }
 }
-
-
-
 
 .itemSection {
 
@@ -236,10 +221,18 @@ main {
         padding: 16px 0 8px;
         cursor: pointer;
     }
+}
 
-    h2:hover {
-        color: var(--ColorRed);
-    }
+.gridCategory:hover {
+    color: var(--ColorRed);
+    text-decoration: underline;
+}
+
+.itemFlex {
+    padding: 1rem;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.5rem;
 }
 
 .itemGrid {
@@ -251,7 +244,6 @@ main {
     grid-auto-flow: row;
     justify-content: center;
     justify-items: center;
-
 }
 
 #materialStorageTab {
@@ -274,7 +266,6 @@ main {
         width: 100%;
         height: auto;
         z-index: 1;
-        /* border-bottom: 1px solid; */
     }
 
     p.itemAmount {
@@ -283,7 +274,6 @@ main {
         max-width: 100%;
         position: absolute;
         top: 58px;
-        /* color: white; */
         z-index: 2;
         padding: 0 4px 4px;
         background-color: rgb(0, 0, 0, 0.8);
@@ -297,15 +287,6 @@ main {
         line-height: 0.8rem;
         max-width: 100%;
     }
-}
-
-
-
-
-
-
-#dataoutput {
-    word-wrap: break-word;
 }
 
 

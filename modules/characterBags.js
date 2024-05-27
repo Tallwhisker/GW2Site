@@ -161,13 +161,14 @@ function populateCharacterBagsTab(inventoryArray, charName) {
         //Create H2 Element for character name
         const newH2 = document.createElement('h2');
         newH2.setAttribute('id', charName);
+        newH2.setAttribute('class', 'gridCategory');
         newH2.innerHTML = charName;
 
         //Set new H2 Element event listener to hide the category grid
         newH2.addEventListener('click', () => {
             let target = document.getElementById(`Grid${charName}`);
             if(target.style.display === 'none') {
-                target.style.display = 'grid';
+                target.style.display = '';
             } else {target.style.display = 'none'}
         });
         charInventoryTab.appendChild(newH2);

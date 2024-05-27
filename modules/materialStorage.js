@@ -97,7 +97,7 @@ async function populateMatStorage() {
             newH2.addEventListener('click', () => {
                 let target = document.getElementById(`Grid${cat}`);
                 if(target.style.display === 'none') {
-                    target.style.display = 'grid';
+                    target.style.display = '';
                 } else {target.style.display = 'none'}
             });
 
@@ -155,6 +155,8 @@ async function populateMatStorage() {
             //If no icon from above check, Give 'em the spaghet.
             newItemImg.setAttribute('class', `itemImg ${rarity}`);
             newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
+            newItemImg.setAttribute('alt',
+             itemInfo[itemID].name ? itemInfo[itemID].name : `Icon of item ${itemID}`);
             document.getElementById(`MST${itemID}i${i}`).appendChild(newItemImg);
 
             //Create P Element for item name
