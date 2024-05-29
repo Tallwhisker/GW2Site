@@ -6,7 +6,6 @@ import {
 
 import { 
     setStorage,
-    getStorageObject,
     getStorageArray
 } from "./storageHandler.js";
 
@@ -16,24 +15,27 @@ import {
     itemInfo
 } from './dataHandler.js'
 
+
+//Get current item data
 let bankStorage = getStorageArray('bankStorage');
 
 //Bank tab & button
 const bankTab = document.getElementById('bankTab');
 const bankBtn = document.getElementById('bankButton');
 
-
 //Toggle visibility between the tabs
 bankBtn.addEventListener('click', showBankTab);
     async function showBankTab() {
-            hideTabs();  //->Main.js
-            bankTab.style.display = 'block';
+        hideTabs();
+        bankTab.style.display = 'block';
 };
 
 
 //Fetch bank and format data return
 async function fetchBank() {
 
+    //Check for permissions because function can be triggered manually
+    if(permissionInventory === 1) {
     const newItems = [];
 
     fetch(`https://api.guildwars2.com/v2/account/bank?access_token=${authToken}`)
@@ -71,22 +73,21 @@ async function fetchBank() {
         };
 
         //Start the populating of bank tab
-        setTimeout(populateBank, 1000);
+        populateBank();
     })
     .catch(error => {
         console.log(error);
     })
+    }
 };
 
 
 //Function to populate bank tab
 async function populateBank() {
-    // const bankStorage = getStorageObject('bankStorage');
-
     
     //Set parentDiv to the bank itemGrid then reset it
     let parentDiv = document.getElementById(`GridBank`);
-    parentDiv.textContent = ''
+    parentDiv.innerHTML = '';
 
     //Primary bank iterator
     bankStorage.forEach(item => {
@@ -107,8 +108,7 @@ async function populateBank() {
         newItemDiv.setAttribute('class', 'item');
         parentDiv.appendChild(newItemDiv);
 
-        //Imagecheck because some items don't have an icon.
-        //Alternatively they have a web-hosted icon and not a local one.
+        //If icon exists, return that. Else the caller will use 'The Spaghet'
         let iconURL ;
         if(itemInfo[itemID]){
             if(itemInfo[itemID].localIcon) {
@@ -118,15 +118,15 @@ async function populateBank() {
             }
         };
 
+        //Check if item has a rarity, else set it to blank
         let rarity;
         if(itemInfo[itemID].rarity) {
             rarity = itemInfo[itemID].rarity
         } else {rarity = ""};
 
         //Create IMG Element for item image
-        //If no icon from above check, Give 'em the spaghet.
         newItemImg.setAttribute('class', `itemImg ${rarity}`);
-        newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
+        newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png'); 
         document.getElementById(`BS${itemID}RI${RI}`).appendChild(newItemImg);
 
         //Create P Element for item name

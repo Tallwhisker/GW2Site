@@ -1,7 +1,6 @@
 import { 
     getStorageString, 
     fetchToStorage,
-    setStorage, 
     getStorageObject
 } from "./modules/storageHandler.js";
 
@@ -21,12 +20,11 @@ import {
 } from "./modules/characterBags.js"
 
 import {
-    coldStartItemInfo,
-    itemInfo,
-    itemInformationStart
+    coldStartItemInfo
 } from "./modules/dataHandler.js"
 
-//Set version of itemInfo database
+
+//Set version of itemInfo database (in ./data/itemInfo.js)
 const localVersion = 1;
 
 //Set up initial values for module export
@@ -88,10 +86,12 @@ async function getNewToken() {
         setTimeout(fetchCharactersList,3000);
     } else {
         //If no key or incorrect length, show error.
-        alert('Input error, min length is 70')
+        alert('Input error, min length is 70');
     };
 };
 
+
+//Function to delete all localStorage data
 document.getElementById('resetData').addEventListener('click', () => {
    let confirmDelete = confirm('Are you sure you want to reset everything?');
    if(confirmDelete) {
@@ -149,7 +149,7 @@ window.onload = function onLoadFunction() {
 };
 
 
-//Check if there's stored data + permissions and if so, create inventories.
+//Check if there's stored data & permissions and if so, create inventories.
 async function populateInventories() {
 
     if(localStorage.getItem('matStorageCategories') &&
@@ -225,14 +225,14 @@ async function hideTabs() {
     charInventoryTab.style.display = 'none';
 };
 
-
+//Function to reset the itemInfo data if the base data is newer.
 function dataVersion() {
 
     let dataV = localStorage.getItem('dataVersion');
     if(dataV < localVersion) {
         coldStartItemInfo();
         localStorage.setItem('dataVersion', localVersion);
-        console.log('Data reset to new version.')
+        console.log('itemInfo data reset to new version.');
     }
 }
 

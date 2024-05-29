@@ -1,34 +1,22 @@
 import { 
     getStorageObject, 
-    setStorage,
-    getStorageArray 
+    setStorage
 } from "./storageHandler.js";
 
+//Item data to reduce initial setup load. Activates on new API key.
 import { 
     baseItemInfo 
 } from "../data/itemInfo.js"; 
 
-import { 
-    populateBank 
-} from "./bankStorage.js";
-
-//Item data to reduce initial setup load. Activates on new API key.
-import { 
-    populateMatStorage 
-} from "./materialStorage.js";
 
 //Get current itemInfo
 let itemInfo = getStorageObject('itemInfo');
 
+//Function called from new API key or data version in main.js
 async function coldStartItemInfo() {
     setStorage('itemInfo', baseItemInfo);
     itemInfo = baseItemInfo;
 };
-
-
-//Define output element for status 
-// const statusOutput = document.getElementById('statusOutput');
-
 
 //Item information request controller
 let itemQueueSignal = 0;
@@ -50,7 +38,6 @@ async function itemInformationStart(inputArray) {
         itemQueueSignal = 1;
         itemQueueHandler();
         // console.log('Starting itemQueueHandler');
-        // statusOutput.innerText = 'New items found, starting download.'
     };
 };
 
@@ -58,34 +45,29 @@ async function itemInformationStart(inputArray) {
 //Function to split itemQueue into bits to not overload API. Timed.
 function itemQueueHandler() {
 
-//Primary interval
-const queueHandler = setInterval(() => {
+    //Primary interval
+    const queueHandler = setInterval(() => {
 
-    //If the queue is empty, save the new data and turn itself off.
-    if (itemQueue.length === 0) {
-        populateBank();
-        populateMatStorage();
-        
-        itemQueueSignal = 0;
-        // statusOutput.innerText = 'idle';
-        // console.log('Stopped itemQueueHandler');
-        clearInterval(queueHandler);
-    } 
+        //If the queue is empty, turn itself off.
+        if (itemQueue.length === 0) {
+            
+            itemQueueSignal = 0;
+            // console.log('Stopped itemQueueHandler');
+            clearInterval(queueHandler);
+        } 
 
-    //If the queue is bigger than 200 items, send 200. (API MAX is 200)
-    else if(itemQueue.length > 200) {
-        fetchItemInfo(itemQueue.splice(0, 200).toString());
-        // statusOutput.innerText =`Items remaining in queue: ${itemQueue.length}`
-    } 
+        //If the queue is bigger than 200 items, send 200. (API MAX is 200)
+        else if(itemQueue.length > 200) {
+            fetchItemInfo(itemQueue.splice(0, 200).toString());
+        } 
 
-    //If the queue is less than 200 items, send the remaining.
-    else {
-        // statusOutput.innerText =`${itemQueue.length} items downloading.`
-        fetchItemInfo(itemQueue.splice(0, itemQueue.length).toString());
-    };
+        //If the queue is less than 200 items, send the remaining.
+        else {
+            fetchItemInfo(itemQueue.splice(0, itemQueue.length).toString());
+        };
 
-    //Interval number
-}, 1000); //1.5s
+        //Interval number
+    }, 1000); //1s
 };
 
 
@@ -95,7 +77,7 @@ function itemNameChecker(inputId) {
     let name = [];
     let nameSplit = [];
 
-    //If item HAS any data, process it.
+    //If item data exists, process it.
     if(itemInfo[inputId]) {
         nameSplit = itemInfo[inputId].name.split(' ');
 
@@ -107,13 +89,13 @@ function itemNameChecker(inputId) {
             name[3] = nameSplit[nameSplit.length - 1];
         } 
         else {
-            name = nameSplit
+            name = nameSplit;
         };
 
         //Check the word length
         for(let i = 0; i < name.length; i++) {
             if(name[i].length > 9) {
-                name[i] = `${name[i].split('').splice(0,7).join('')}..`
+                name[i] = `${name[i].split('').splice(0,7).join('')}..`;
             };
         };
 
@@ -123,7 +105,7 @@ function itemNameChecker(inputId) {
     //If it doesn't have any local data, return Unknown.
     } 
     else {
-        return name = `Unknown ID: ${inputId}`
+        return name = `Unknown ID: ${inputId}`;
     };
 };
 

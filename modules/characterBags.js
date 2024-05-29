@@ -19,13 +19,13 @@ import {
 //Define the status and character status output.
 const charQueueOutput = document.getElementById('charQueueOutput');
 
-
 //Character Inventory tab
 const charInventoryTab = document.getElementById('charInventoryTab');
 const characterInvBtn = document.getElementById('charInventoryButton');
 
+//Toggle visibility between the tabs
 characterInvBtn.addEventListener('click', showInventoryTab);
-async function showInventoryTab() {
+    async function showInventoryTab() {
         hideTabs();
         charInventoryTab.style.display = 'block';
 };
@@ -33,6 +33,8 @@ async function showInventoryTab() {
 
 //Function to fetch the list of characters. Pass data downwards.
 function fetchCharactersList() {
+
+    //Check for permissions because function can be triggered manually
     if(permissionCharacters === 1) {
     characterInvBtn.style.backgroundColor = '#ff7f50';
     charQueueOutput.innerHTML = 'Getting characters from servers.';
@@ -49,11 +51,11 @@ function fetchCharactersList() {
     .catch(error => {
         console.log(error);
     })
-}
+    }
 };
 
 
-//Function to first modify the character names for fetchURL specifics.
+//Function to modify the character names to URL specifics.
 //Then handle the staggering of requesting character inventories.
 let characters = {};
 async function characterQueueManager(input) {
@@ -65,7 +67,7 @@ async function characterQueueManager(input) {
         charQueue.push(encodeURIComponent(char));
     });
 
-    //Primary iterator, send a character name & request name every 1.5s.
+    //Primary iterator, send a character name & URL name every 1.5s.
     //When queue is empty, turn itself off and refresh tab.
     setStorage('characters', characters);
     let charInterval = setInterval(() => {
@@ -115,10 +117,11 @@ async function fetchCharacterData(inputName, char) {
                 }
             )}
         }
+        //Input the empty slots count into inventory array
         characters[char].unshift( ['EmptySlot', emptyCount] );
 
         //Send each finished character to be populated on the page and save to storage.
-        setTimeout(populateCharacterBagsTab(characters[char], char), 2000);
+        populateCharacterBagsTab(characters[char], char);
         setStorage('characters', characters);
 
         //If any unknown items were found, they get sent to dataHandler module.
@@ -127,15 +130,17 @@ async function fetchCharacterData(inputName, char) {
             itemInformationStart(newItems);
         };
     })
+    //If the fetch of a character fails, this will send info that indicates it failed.
     .catch(error => {
         console.log(error);
         console.log(`Fetch of character: ${char} failed.`);
+
+        //Send Char name and append with "Failed Downloading."
         populateCharacterBagsTab([['EmptySlot', 0]] , `${char} - Failed downloading.`)
         characters[`${char} - Error.`] = [['EmptySlot', 0]];
         setStorage('characters', characters);
     })
 };
-
 
 
 //When triggered it formats the stored data for the populating function.
@@ -146,7 +151,6 @@ function popCharTabOnLoad() {
         populateCharacterBagsTab(characters[char], char);
     };
 };
-
 
 
 //Main function for creating character titles and their inventories.
@@ -182,7 +186,7 @@ function populateCharacterBagsTab(inventoryArray, charName) {
 
     //Set parentDiv to the itemGrid of the character, then reset it.
     let parentDiv = document.getElementById(`Grid${charName}`);
-    parentDiv. innerHTML = '';
+    parentDiv.innerHTML = '';
 
     //Primary iterator for items
     inventoryArray.forEach(item => {
@@ -201,8 +205,7 @@ function populateCharacterBagsTab(inventoryArray, charName) {
         newItemDiv.setAttribute('class', 'item');
         parentDiv.appendChild(newItemDiv);
 
-        //Imagecheck because some items don't have an icon,
-        //Alternatively they have a web-hosted icon and not a local one.
+        //If icon exists, return that. Else the caller will use 'The Spaghet'
         let iconURL ;
         if(itemInfo[itemID]){
             if(itemInfo[itemID].localIcon) {
@@ -212,13 +215,13 @@ function populateCharacterBagsTab(inventoryArray, charName) {
             }
         };
 
+        //Check if item has a rarity, else set it to blank
         let rarity;
         if(itemInfo[itemID]) {
             rarity = itemInfo[itemID].rarity
         } else {rarity = ""};
 
         //Create IMG Element for item image
-        //If no icon from above check, Give 'em the spaghet.
         newItemImg.setAttribute('class', `itemImg ${rarity}`);
         newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
         document.getElementById(`BAG${itemID}RI${RI}`).appendChild(newItemImg);

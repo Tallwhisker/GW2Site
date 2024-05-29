@@ -16,26 +16,26 @@ import {
 } from './dataHandler.js';
 
 
+//Get current item data
+let matStorageCategories = getStorageObject('matStorageCategories');
+
 //Material Storage Tab & button
 const materialStorageTab = document.getElementById('materialStorageTab');
 const matStorageBtn = document.getElementById('matStorageButton');
 
-//Function to hide everyone then show itself
+//Toggle visibility between the tabs
 matStorageBtn.addEventListener('click', showMatTab);
     async function showMatTab() {
-            hideTabs();
-            materialStorageTab.style.display = 'block';
+        hideTabs();
+        materialStorageTab.style.display = 'block';
 };
 
-//Get current item data
-let matStorageCategories = getStorageObject('matStorageCategories');
 
 //Fetch the material storage and format data
 async function fetchMatStorage() {
     
     //Check for permissions because function can be triggered manually
     if(permissionInventory === 1) {
-    // const itemInfo = getStorageObject('itemInfo');
     const newItems = [];
 
     fetch(`https://api.guildwars2.com/v2/account/materials?access_token=${authToken}`)
@@ -71,12 +71,12 @@ async function fetchMatStorage() {
         };
 
         //Start the populating of material storage tab
-        setTimeout(populateMatStorage, 1000);
+        populateMatStorage();
     })
     .catch(error => {
         console.error(error);
     });
-}
+    }
 };
 
 
@@ -135,8 +135,7 @@ async function populateMatStorage() {
             newItemDiv.setAttribute('id', `MST${itemID}i${i}`);
             parentDiv.appendChild(newItemDiv);
 
-            //Imagecheck because some items don't have an icon.
-            //Alternatively they have a web-hosted icon and not a local one.
+            //If icon exists, return that. Else the caller will use 'The Spaghet'
             let iconURL ;
             if(itemInfo[itemID]){
                 if(itemInfo[itemID].localIcon) {
@@ -145,14 +144,14 @@ async function populateMatStorage() {
                     iconURL = itemInfo[itemID].webIcon
                 };
             };
-
+        
+            //Check if item has a rarity, else set it to blank
             let rarity;
             if(itemInfo[itemID]) {
                 rarity = itemInfo[itemID].rarity
             } else {rarity = ""};
     
             //Create IMG Element for item image
-            //If no icon from above check, Give 'em the spaghet.
             newItemImg.setAttribute('class', `itemImg ${rarity}`);
             newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
             newItemImg.setAttribute('alt',
