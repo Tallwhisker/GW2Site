@@ -23,6 +23,9 @@ let bankStorage = getStorageArray('bankStorage');
 const bankTab = document.getElementById('bankTab');
 const bankBtn = document.getElementById('bankButton');
 
+//Set parentDiv to the bank itemGrid
+const parentDiv = document.getElementById(`GridBank`);
+
 //Toggle visibility between the tabs
 bankBtn.addEventListener('click', showBankTab);
     async function showBankTab() {
@@ -46,7 +49,7 @@ async function fetchBank() {
         return response.json();
     })
     .then(data => {
-        let bankStorage = [];
+        bankStorage.length = 0;
         let emptyCount = 1;
         data.forEach(item => {
             if(item) {
@@ -85,8 +88,6 @@ async function fetchBank() {
 //Function to populate bank tab
 async function populateBank() {
     
-    //Set parentDiv to the bank itemGrid then reset it
-    let parentDiv = document.getElementById(`GridBank`);
     parentDiv.innerHTML = '';
 
     //Primary bank iterator
@@ -113,20 +114,29 @@ async function populateBank() {
         if(itemInfo[itemID]){
             if(itemInfo[itemID].localIcon) {
                 iconURL = `./icons/${itemInfo[itemID].localIcon}`
-            } else if (itemInfo[itemID].webIcon) {
+            } 
+            else if (itemInfo[itemID].webIcon) {
                 iconURL = itemInfo[itemID].webIcon
+            }
+            else {
+                iconURL = './icons/spaghet.png';
             }
         };
 
         //Check if item has a rarity, else set it to blank
         let rarity;
-        if(itemInfo[itemID].rarity) {
-            rarity = itemInfo[itemID].rarity
-        } else {rarity = ""};
+        if(itemInfo[itemID]) {
+            if(itemInfo[itemID].rarity) {
+                rarity = itemInfo[itemID].rarity;
+            }
+            else {
+                rarity =  "";
+            } 
+        };
 
         //Create IMG Element for item image
         newItemImg.setAttribute('class', `itemImg ${rarity}`);
-        newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png'); 
+        newItemImg.setAttribute('src', iconURL); 
         document.getElementById(`BS${itemID}RI${RI}`).appendChild(newItemImg);
 
         //Create P Element for item name
@@ -136,7 +146,7 @@ async function populateBank() {
 
         //Create P Element for item amount
         countP.setAttribute('class', 'itemAmount');
-        countP.innerHTML = itemCount;
+        countP.innerHTML = itemCount ? itemCount : 0;
         document.getElementById(`BS${itemID}RI${RI}`).appendChild(countP);
 
     //End iterator

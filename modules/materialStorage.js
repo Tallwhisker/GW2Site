@@ -140,22 +140,29 @@ async function populateMatStorage() {
             if(itemInfo[itemID]){
                 if(itemInfo[itemID].localIcon) {
                     iconURL = `./icons/${itemInfo[itemID].localIcon}`
-                } else if (itemInfo[itemID].webIcon) {
+                } 
+                else if (itemInfo[itemID].webIcon) {
                     iconURL = itemInfo[itemID].webIcon
-                };
+                }
+                else {
+                    iconURL = './icons/spaghet.png';
+                }
             };
         
             //Check if item has a rarity, else set it to blank
             let rarity;
             if(itemInfo[itemID]) {
-                rarity = itemInfo[itemID].rarity
-            } else {rarity = ""};
+                if(itemInfo[itemID].rarity) {
+                    rarity = itemInfo[itemID].rarity;
+                }
+                else {
+                    rarity =  "";
+                } 
+            };
     
             //Create IMG Element for item image
             newItemImg.setAttribute('class', `itemImg ${rarity}`);
-            newItemImg.setAttribute('src', iconURL ? iconURL : './icons/spaghet.png');
-            newItemImg.setAttribute('alt',
-             itemInfo[itemID].name ? itemInfo[itemID].name : `Icon of item ${itemID}`);
+            newItemImg.setAttribute('src', iconURL);
             document.getElementById(`MST${itemID}i${i}`).appendChild(newItemImg);
 
             //Create P Element for item name
