@@ -17,11 +17,11 @@ import {
 import {
     popCharTabOnLoad,
     fetchCharactersList
-} from "./modules/characterBags.js"
+} from "./modules/characterBags.js";
 
 import {
     coldStartItemInfo
-} from "./modules/dataHandler.js"
+} from "./modules/dataHandler.js";
 
 
 //Set version of itemInfo database (in ./data/itemInfo.js)
@@ -58,11 +58,16 @@ function hideMenu() {
 
 //Function to ask for API key, then initialize setup
 async function getNewToken() {
-
+    let getToken;
     //Ask user for their API key via prompt
-    let getToken = window.prompt(
-    `Insert API Key. This will reset all stored data.
-     "inventories" and "characters" permissions needed`);
+    try {
+        getToken = window.prompt(
+        `Insert API Key. This will reset all stored data.
+        "inventories" and "characters" permissions needed`);
+    }
+    catch {
+        console.error();
+    };
 
     //If provided key matches length
     if(getToken.length > 70) {
@@ -72,11 +77,10 @@ async function getNewToken() {
         //Set new key and fetch basic data structures
         authToken = getToken;
         localStorage.setItem('authToken', getToken);
-        coldStartItemInfo();
+        dataVersion();
         fetchToStorage('tokeninfo', 'tokenInfo');
         fetchToStorage('account', 'accountInfo');
         localStorage.setItem('aboutSeen', 'seen');
-        localStorage.setItem('dataVersion', localVersion);
 
         //Delayed start for data download.
         setTimeout(displayAccountName, 1000);
@@ -84,7 +88,8 @@ async function getNewToken() {
         setTimeout(fetchBank,3000);
         setTimeout(fetchMatStorage,3000);
         setTimeout(fetchCharactersList,3000);
-    } else {
+    } 
+    else {
         //If no key or incorrect length, show error.
         alert('Input error, min length is 70');
     };
@@ -95,8 +100,8 @@ async function getNewToken() {
 document.getElementById('resetData').addEventListener('click', () => {
    let confirmDelete = confirm('Are you sure you want to reset everything?');
    if(confirmDelete) {
-    localStorage.clear();
-   }
+        localStorage.clear();
+   };
 });
 
 
@@ -112,6 +117,9 @@ async function checkPermissions() {
     permissionsArray.includes('inventories')
     ) {
         permissionInventory = 1;
+
+        //Check for updated itemInfo DB
+        dataVersion();
     };
 
     //Check and set characters signal
@@ -127,7 +135,7 @@ async function checkPermissions() {
 window.onload = function onLoadFunction() {
 
     //If you haven't seen the about window, show it.
-    if(!localStorage.getItem('aboutSeen')) {
+    if( ! localStorage.getItem('aboutSeen')) {
         projectInfoDiv.style.display = 'block';
     };
 
@@ -143,9 +151,6 @@ window.onload = function onLoadFunction() {
 
     //Call for inventory creation
     populateInventories();
-
-    //Check for updated itemInfo DB
-    dataVersion();
 };
 
 
@@ -176,8 +181,9 @@ const accountNameSpan = document.getElementById('accountName');
 async function displayAccountName() {
     if(localStorage.getItem('accountInfo')) {
         let accOjb = getStorageObject('accountInfo');
-        accountNameSpan.innerHTML = ` - ${accOjb.name}`
-    } else {
+        accountNameSpan.innerHTML = ` - ${accOjb.name}`;
+    } 
+    else {
         accountNameSpan.innerHTML = '';
     };
 };
@@ -188,14 +194,14 @@ const matStorageTrigger = document.getElementById('updateInventory');
 
 matStorageTrigger.addEventListener('click', () => {
 
-    if(localStorage.getItem('authToken')) {
-    fetchMatStorage();
-    fetchBank();
-    fetchCharactersList();
+    if(authToken) {
+        fetchMatStorage();
+        fetchBank();
+        fetchCharactersList();
     }
     else {
         getNewToken();
-    }
+    };
 });
 
 
@@ -203,7 +209,7 @@ matStorageTrigger.addEventListener('click', () => {
 const aboutProjectTrigger = document.getElementById('aboutProject');
 
 aboutProjectTrigger.addEventListener('click', () => {
-    projectInfoDiv.style.display = 'block'
+    projectInfoDiv.style.display = 'block';
 });
 
 
@@ -233,8 +239,8 @@ function dataVersion() {
         coldStartItemInfo();
         localStorage.setItem('dataVersion', localVersion);
         console.log('itemInfo data reset to new version.');
-    }
-}
+    };
+};
 
 export { 
     displayAccountName,

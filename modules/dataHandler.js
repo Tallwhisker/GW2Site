@@ -50,18 +50,14 @@ function itemQueueHandler() {
 
         //If the queue is empty, turn itself off.
         if (itemQueue.length === 0) {
-            
             itemQueueSignal = 0;
-            // console.log('Stopped itemQueueHandler');
             clearInterval(queueHandler);
-        } 
-
-        //If the queue is bigger than 200 items, send 200. (API MAX is 200)
+        }
+            //If the queue is bigger than 200 items, send 200. (API MAX is 200)
         else if(itemQueue.length > 200) {
             fetchItemInfo(itemQueue.splice(0, 200).toString());
         } 
-
-        //If the queue is less than 200 items, send the remaining.
+            //If the queue is less than 200 items, send the remaining.
         else {
             fetchItemInfo(itemQueue.splice(0, itemQueue.length).toString());
         };
@@ -83,10 +79,12 @@ function itemNameChecker(inputId) {
 
         //Check the word count
         if(nameSplit.length > 3) {
-            name[0] = nameSplit[0];
-            name[1] = " ... ";
-            name[2] = nameSplit[nameSplit.length - 2];
-            name[3] = nameSplit[nameSplit.length - 1];
+            name = [
+                nameSplit[0],
+                " ... ",
+                nameSplit[nameSplit.length - 2],
+                nameSplit[nameSplit.length - 1]
+            ];
         } 
         else {
             name = nameSplit;
@@ -105,7 +103,7 @@ function itemNameChecker(inputId) {
     //If it doesn't have any local data, return Unknown.
     } 
     else {
-        return name = `Unknown ID: ${inputId}`;
+        return `Unknown ID: ${inputId}`;
     };
 };
 

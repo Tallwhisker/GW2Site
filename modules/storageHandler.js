@@ -30,7 +30,7 @@ async function fetchToStorage(target, key) {
 //Get localStorage from input 'key' and return OBJECT
 function getStorageObject (key) {
     if(!localStorage.getItem(key)) {
-        console.log(`No local data for ${key}`);
+        // console.log(`No local data for ${key}`);
         return {};
     };
     let tempData = localStorage.getItem(key);
@@ -41,7 +41,7 @@ function getStorageObject (key) {
 //Get localStorage from input 'key' and return ARRAY
 function getStorageArray (key) {
     if(!localStorage.getItem(key)) {
-        console.log(`No local data for ${key}`);
+        // console.log(`No local data for ${key}`);
         return [];
     };
     let tempData = localStorage.getItem(key);
@@ -52,7 +52,7 @@ function getStorageArray (key) {
 //Get localStorage from input 'key' and return STRING
 function getStorageString (key) {
     if(!localStorage.getItem(key)) {
-        console.log(`No local data for ${key}`);
+        // console.log(`No local data for ${key}`);
         return '';
     };
     return localStorage.getItem(key).toString();
