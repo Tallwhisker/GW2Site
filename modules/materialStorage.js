@@ -101,29 +101,29 @@ async function populateMatStorage() {
     //Primary iterator for categories
     for(let cat in matStorageCategories) {
 
-        //If the item grid exists, delete it.
+        //If no grid exists, create it and add event triggers
         const matGridExists = document.getElementById(`Grid${cat}`);
-        if(matGridExists) {
-            matGridExists.remove();
+        if( ! matGridExists) {
+            spawnCategoryGrid(`Grid${cat}`, `Cat${cat}`);
+            
+            //Add trigger to collapse all categories
+            document.getElementById('matStCollapseAll').addEventListener('click',
+            () => {
+                document.getElementById(`Grid${cat}`).style.display = 'none';
+            });
+
+            document.getElementById(`Cat${cat}`).addEventListener('click', () => {
+                const targetGrid = document.getElementById(`Grid${cat}`);
+                if(targetGrid.style.display === 'none') {
+                    targetGrid.style.display = "";
+                } 
+                else {
+                    targetGrid.style.display = 'none';
+                };
+            });
         };
-
-        spawnCategoryGrid(`Grid${cat}`, `Cat${cat}`);
-
-        //Add trigger to collapse all categories
-        document.getElementById('matStCollapseAll').addEventListener('click',
-        () => {
-           document.getElementById(`Grid${cat}`).style.display = 'none';
-        });
-
-        document.getElementById(`Cat${cat}`).addEventListener('click', () => {
-            const targetGrid = document.getElementById(`Grid${cat}`);
-            if(targetGrid.style.display === 'none') {
-                targetGrid.style.display = '';
-            } 
-            else {
-                targetGrid.style.display = 'none';
-            };
-        });
+        
+        document.getElementById(`Grid${cat}`).innerHTML = "";
 
         //Secondary iterator for items. Iterator variable to prevent the Soybean incident.
         let i = 0; 
