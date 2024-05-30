@@ -32,13 +32,18 @@ Also contains the function to write to localStorage.
 Exports the **itemInfo** variable for item data
 Imports the .data/itemInfo module at setup
 
+
 ### .data/itemInfo
-This module exists entirely for the purpose of providing some starting data as well as hosting icons for said items.
+This "module" exists entirely for the purpose of providing some starting data as well as hosting icons for said items.
 It reduces the initial setup time and reduces the amount of off-site traffic.
 
 It contains data for ~900+ items with itemID, itemName, localIcon, webIcon and rarity.
 Upon inserting an API key this information is saved to the localStorage.
 
+
+### elementModule
+This module creates and appends all elements that the inventory modules need.
+Initially they handled the creation themselves, but was then centralized to reduce duplicate code and enable easier expansion.
 
 
 ### dataHandler
@@ -48,7 +53,7 @@ The dataHandler module then adds the recieved items to a queue, and an iterator 
 *There was a lesson in data management to be learnt before I ended up at this setup.*
 
 #### dataHandler Functions
->**itemInformationStart** uses a global variable called *itemQueueSignal* that is initialized to **0**. Upon being called the function iterates through the provided array and adds any items not already queued to the queue, and **if** the *itemQueueSignal* is **0**, set it to **1** and call the **itemQueueHandler**.
+>**itemInformationStart** uses a variable called *itemQueueSignal* that is initialized to **0**. Upon being called the function iterates through the provided array and adds any items not already queued to the queue, and **if** the *itemQueueSignal* is **0**, set it to **1** and call the **itemQueueHandler**.
 >
 >The **itemQueueHandler** in turn is essentially a loop at 1s intervals that perform some checks on the *itemQueue*. 
 >Send a max of 200 items per iteration, if the queue is empty it turns itself off and sets the signal to **0**.

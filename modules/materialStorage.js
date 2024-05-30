@@ -80,6 +80,9 @@ async function fetchMatStorage() {
             if(newItems.length > 0) {
                 console.log(`MatStorage Module found ${newItems.length} new items`);
                 itemInformationStart(newItems);
+
+                //If new items were found, refresh after 4 seconds.
+                setTimeout(populateMatStorage, 4000);
             };
 
             //Start the populating of material storage tab

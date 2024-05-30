@@ -92,7 +92,7 @@ async function characterQueueManager(input) {
             ${charQueue.length -1} remaining`;
             fetchCharacterData(charQueue.shift(), characterNames.shift());
         };
-    },1500);
+    },100); //Timer 0.1s
 };
 
 
@@ -142,7 +142,7 @@ async function fetchCharacterData(inputName, char) {
             console.log(`Character Module found ${newItems.length} new items`);
             itemInformationStart(newItems);
 
-            //If new items were found, recreate after 4 seconds.
+            //If new items were found, refresh after 4 seconds.
             setTimeout(populateCharacterBagsTab, 4000, characters[char], char);
         };
     })
@@ -158,7 +158,7 @@ async function fetchCharacterData(inputName, char) {
         };
 
         //Remove existing itemGrid
-        let charGrid = document.getElementById(`Grid${charName}`);
+        let charGrid = document.getElementById(`Grid${char}`);
         if(charGrid) {
             charGrid.remove();
         };

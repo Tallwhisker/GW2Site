@@ -87,6 +87,7 @@ async function spawnItemName(itemID, target) {
     document.getElementById(target).appendChild(nameP);
 };
 
+
 //Creates new element for item amount and appends to target
 async function spawnItemCount(amount, target) {
     const countP = document.createElement('p');
