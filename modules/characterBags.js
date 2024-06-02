@@ -34,9 +34,9 @@ const characterInvBtn = document.getElementById('charInventoryButton');
 
 //Toggle visibility between the tabs
 characterInvBtn.addEventListener('click', showInventoryTab);
-    async function showInventoryTab() {
-        hideTabs();
-        charInventoryTab.style.display = 'block';
+async function showInventoryTab() {
+    hideTabs();
+    charInventoryTab.style.display = 'block';
 };
 
 
@@ -76,9 +76,9 @@ async function characterQueueManager(input) {
         charQueue.push(encodeURIComponent(char));
     });
 
-    //Primary iterator, send a character name & URL name every 1.5s.
+    //Primary iterator, send a character name & URL name every interval.
     //When queue is empty, turn itself off.
-    setStorage('characters', characters);
+    // setStorage('characters', characters);
     let charInterval = setInterval(() => {
         if(charQueue.length < 1) {
 

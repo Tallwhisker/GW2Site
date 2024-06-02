@@ -290,6 +290,49 @@ main {
 }
 
 
+#searchTab {
+
+    #searchForm {
+        padding: 1rem;
+
+        input {
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid var(--ColorGray);
+        }
+
+        button {
+            margin: 1rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid var(--ColorGray);
+        }
+    }
+
+    #searchResults {
+
+        .searchContainer {
+            max-width: fit-content;
+            text-align: left;
+            padding: 1rem;
+            margin: 0.5rem;
+        }
+
+        .searchTitle {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid var(--ColorGray);
+        }
+
+        .itemList {
+            list-style-type: none;
+        }
+
+        .itemPoint {
+            padding: 0.5rem;
+        }
+    }
+}
+
 #kittycat {
     position: absolute;
     right: 1%;

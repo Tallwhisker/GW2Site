@@ -61,6 +61,7 @@
                 <button id="matStorageButton" type="button">Material Storage</button>
                 <button id="bankButton" type="button">Bank</button>
                 <button id="charInventoryButton" type="button">Character Inventories</button>
+                <button id="searchInventoryButton" type="button">Search</button>
             </nav>
             <section id="materialStorageTab" class="itemSection">
                 <h2 style="color: var(--OffWhite)">Material Storage</h2>
@@ -102,8 +103,14 @@
                 <h2 style="color: var(--OffWhite)">Character Inventories</h2>
                 <p id="charQueueOutput">No character info</p>
             </section>
-            <section id="dataDownloadTab" class="dataSection">
-                <p id="dataoutput">Output</p>
+            <section id="searchTab" class="searchSection">
+                <form id="searchForm" action="">
+                    <label for="searchTerm">Search for:</label><br>
+                    <input id="searchTerm" type="text" name="search term"><br>
+                    <button id="searchButton" type="button">Search Inventory</button>
+                </form>
+                <div id="searchResults">
+                </div>
             </section>
         </main>
         <footer>

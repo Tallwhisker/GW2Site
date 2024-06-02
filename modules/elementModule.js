@@ -97,6 +97,41 @@ async function spawnItemCount(amount, target) {
     document.getElementById(target).appendChild(countP);
 };
 
+async function spawnSearchList(id, target) {
+
+    const newListDiv = document.createElement('div');
+    const newH2 = document.createElement('h2');
+    const newUL = document.createElement('ul');
+
+
+    let name = itemInfo[id].name;
+
+    newListDiv.setAttribute('id', `SC-${id}`);
+    newListDiv.setAttribute('class', 'searchContainer');
+    document.getElementById(target).appendChild(newListDiv);
+
+    newH2.setAttribute('id', `searchTitle-${id}`);
+    newH2.setAttribute('class', 'searchTitle');
+    newH2.innerHTML = name;
+    document.getElementById(`SC-${id}`).appendChild(newH2);
+
+    newUL.setAttribute('id', `UL-${id}`);
+    newUL.setAttribute('class', "itemList");
+    document.getElementById(`SC-${id}`).appendChild(newUL);
+
+};
+
+async function spawnListItem(name, amount, ri, id) {
+
+    const newLI = document.createElement('li');
+
+    newLI.setAttribute('id',`LI-${id}${ri}`);
+    newLI.setAttribute('class', 'itemPoint');
+    newLI.innerHTML = `${amount} - ${name}`;
+    document.getElementById(`UL-${id}`).appendChild(newLI);
+
+};
+
 
 export {
     spawnCategoryTitle,
@@ -104,5 +139,7 @@ export {
     spawnItemDiv,
     spawnItemIcon,
     spawnItemName,
-    spawnItemCount
+    spawnItemCount,
+    spawnListItem,
+    spawnSearchList
 };

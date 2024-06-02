@@ -23,6 +23,10 @@ import {
     coldStartItemInfo
 } from "./modules/dataHandler.js";
 
+import {
+    startSearch
+} from "./modules/searchModule.js";
+
 
 //Set version of itemInfo database (in ./data/itemInfo.js)
 const localVersion = 1;
@@ -229,6 +233,7 @@ async function hideTabs() {
     materialStorageTab.style.display = 'none';
     bankTab.style.display = 'none';
     charInventoryTab.style.display = 'none';
+    searchTab.style.display = 'none';
 };
 
 //Function to reset the itemInfo data if the base data is newer.
