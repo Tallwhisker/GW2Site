@@ -10,7 +10,7 @@
         <title>GW2 Inventory Viewer</title>
     </head>
     <body>
-        <div class="aside" id="projectInfo" aria-label="about project">
+        <div class="aside" id="projectInfo" aria-label="about project popup">
             <h1>About <span class="redText">GuildWars 2</span> Inventory Viewer</h1>
             <p>I wanted a way to see the inventory of my account and characters outside of the game,
                 so I decided to create this unofficial webapp.
@@ -40,29 +40,33 @@
                    are trademarks or registered trademarks of NCSOFT Corporation.</p>
         </div>
         <header>
-            <nav id="controlPanel">
-                <h3>Control Panel<span id="accountName"></span></h3>
-                <button id="mainMenu" type="button">Menu</button>
-                <button id="updateInventory" type="button">Update Inventory</button>
-                <button id="aboutProject" type="button">About</button>
-                <img id="kittycat" src="./media/PixelCalico128x48.png">
-            </nav>
-            <div id="mainMenuList">
-                <ul>
-                    <li id="fetchToken">Set API key</li>
-                    <li id="resetData">Delete all data</li>
+            <nav>
+                <ul id="mainNav">
+                    <li id="mainMenu">Menu</li>
+                    <li id="updateInventory">Refresh</li>
+                    <li id="inventoryMenu">Inventories</li>
+                    <li id="searchInventoryButton">Search</li>
+                    <li id="accountName"></li>
                 </ul>
-            </div>
+                <div id="mainMenuList">
+                    <ul>
+                        <li id="fetchToken">Set API key</li>
+                        <li id="resetData">Delete all data</li>
+                        <li id="aboutProject">About</li>
+                    </ul>
+                </div>
+                <div id="inventoryMenuList">
+                    <ul>
+                        <li id="matStorageButton" >Material Storage</li>
+                        <li id="bankButton" >Bank</li>
+                        <li id="charInventoryButton">Characters</li>
+                    </ul>
+                </div>
+            </nav>
+            <img id="kittycat" src="./media/PixelCalico128x48.png">
         </header>
         <main>
             <h1><span class="redText">GuildWars 2</span> Inventory Viewer</h1>
-            <p> </p>
-            <nav id="inventoryTypes">
-                <button id="matStorageButton" type="button">Material Storage</button>
-                <button id="bankButton" type="button">Bank</button>
-                <button id="charInventoryButton" type="button">Characters</button>
-                <button id="searchInventoryButton" type="button">Search</button>
-            </nav>
             <section id="materialStorageTab" class="itemSection">
                 <h2 style="color: var(--OffWhite)">Material Storage</h2>
                 <nav id="categoryNav">
@@ -91,7 +95,7 @@
             </section>
             <section id="bankTab" class="itemSection">
                 <h2 style="color: var(--OffWhite)">Bank Storage</h2>
-                <div class="itemGrid" id="GridBank">
+                <div class="itemFlex" id="GridBank">
                     <div class="item" id="MST0000i0">
                         <img class="itemImg" src="./icons/emptyslot.png" alt="Empty Slot">
                         <p class="itemName">No data</p>
@@ -104,11 +108,12 @@
                 <p id="charQueueOutput">No character info</p>
             </section>
             <section id="searchTab" class="searchSection">
-                <form id="searchForm" action="">
+                <form id="searchForm" action="" method="dialog">
                     <label for="searchTerm">Search for:</label><br>
                     <input id="searchTerm" type="text" name="search term"><br>
                     <button id="searchButton" type="button">Search Inventory</button>
                 </form>
+                <p id="searchInformation">0 Results.</p>
                 <div id="searchResults">
                 </div>
             </section>

@@ -104,7 +104,7 @@ async function populateMatStorage() {
         //If no grid exists, create it and add event triggers
         const matGridExists = document.getElementById(`Grid${cat}`);
         if( ! matGridExists) {
-            spawnCategoryGrid(`Grid${cat}`, `Cat${cat}`);
+            spawnCategoryGrid(`Grid${cat}`, `Cat${cat}`, 'itemGrid');
             
             //Add trigger to collapse all categories
             document.getElementById('matStCollapseAll').addEventListener('click',

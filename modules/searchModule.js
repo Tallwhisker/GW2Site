@@ -35,10 +35,13 @@ function showSearchTab() {
 //Button to trigger search and get value of text field
 const searchButton = document.getElementById("searchButton");
 searchButton.addEventListener('click', startSearch);
+const searchInput = document.getElementById("searchTerm");
+searchInput.addEventListener("keyup", startSearch);
+
 
 function startSearch() {
     document.getElementById('searchResults').innerHTML = "";
-    let searchTerm = document.querySelector("#searchTerm").value;
+    let searchTerm = searchInput.value;
     searchInventories(searchForName(searchTerm), constructSearch());
 };
 
@@ -77,6 +80,7 @@ function searchForName(key) {
             matches.push( itemID );
         };
     };
+
     return matches;
 };
 
@@ -100,6 +104,13 @@ function searchInventories(keyArray, invArrays) {
         });
     };
     presentSearchResults(searchResults);
+    
+    let countResults = 0;
+    for (let item in searchResults) {
+        countResults++;
+    };
+
+    document.getElementById("searchInformation").innerHTML = `${countResults} Results.`;
 };
 
 
@@ -121,17 +132,24 @@ function searchArray(key, arrayInput) {
 function presentSearchResults(input) {
 
     for (let category in input) {
-        let index = 1;
+        let index = 0;
         
         //Create the container and title
         spawnSearchList(category, "searchResults");
         
+        let totalCount = 0;
         input[category].forEach(item => {
             
             //Create the item holder
             spawnListItem(item[0], item[1], index, category);
+            totalCount += item[1];
             index++;
         });
+        if (index > 1) {
+            //Show a total if there's more than 1 list entry
+            spawnListItem("- - - -", "- - - - -",index, category);
+            spawnListItem(totalCount, "Total owned", index, category);
+        };
     };
 };
 

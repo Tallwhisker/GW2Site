@@ -83,7 +83,6 @@ async function characterQueueManager(input) {
         if(charQueue.length < 1) {
 
             clearInterval(charInterval);
-            // popCharTabOnLoad();
             charQueueOutput.innerHTML = '';
             characterInvBtn.style.backgroundColor = null;
         }
@@ -195,8 +194,8 @@ function populateCharacterBagsTab(inventoryArray, charName) {
         charGrid.remove();
     };
 
-    //Call for creation of Category and Grid
-    spawnCategoryGrid(`Grid${charName}`, charName);
+    //Call for creation of Grid
+    spawnCategoryGrid(`Grid${charName}`, charName, 'itemGrid');
 
     //Primary iterator for items
     inventoryArray.forEach(item => {

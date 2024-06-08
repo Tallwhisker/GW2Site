@@ -42,23 +42,43 @@ const permissionTrigger = document.getElementById('fetchToken');
 permissionTrigger.addEventListener('click', getNewToken);
 
 
-//Menu
+//MenuList
 const mainMenu = document.getElementById('mainMenu');
 const mainMenuList = document.getElementById('mainMenuList');
 
-mainMenu.addEventListener('mouseover', showMenu);
-mainMenuList.addEventListener('mouseover', showMenu);
+mainMenu.addEventListener('mouseover', showMenuList);
+mainMenuList.addEventListener('mouseover', showMenuList);
 
-function showMenu() {
+function showMenuList() {
     mainMenuList.style.display = 'block';
 };
 
-mainMenu.addEventListener('mouseout', hideMenu);
-mainMenuList.addEventListener('mouseout', hideMenu);
+mainMenu.addEventListener('mouseout', hideMenuList);
+mainMenuList.addEventListener('mouseout', hideMenuList);
 
-function hideMenu() {
+function hideMenuList() {
     mainMenuList.style.display = 'none';
 };
+
+
+//InventoryList
+const mainInventory = document.getElementById('inventoryMenu');
+const mainInventoryList = document.getElementById('inventoryMenuList');
+
+mainInventory.addEventListener('mouseover', showInvList);
+mainInventoryList.addEventListener('mouseover', showInvList);
+
+function showInvList() {
+    mainInventoryList.style.display = 'block';
+};
+
+mainInventory.addEventListener('mouseout', hideInvList);
+mainInventoryList.addEventListener('mouseout', hideInvList);
+
+function hideInvList() {
+    mainInventoryList.style.display = 'none';
+};
+
 
 //Function to ask for API key, then initialize setup
 async function getNewToken() {
@@ -185,7 +205,7 @@ const accountNameSpan = document.getElementById('accountName');
 async function displayAccountName() {
     if(localStorage.getItem('accountInfo')) {
         let accOjb = getStorageObject('accountInfo');
-        accountNameSpan.innerHTML = ` - ${accOjb.name}`;
+        accountNameSpan.innerHTML = accOjb.name;
     } 
     else {
         accountNameSpan.innerHTML = '';

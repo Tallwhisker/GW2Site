@@ -29,10 +29,10 @@ async function spawnCategoryTitle(name, target, child) {
 
 
 //Creates new element for grid container and inserts after target
-async function spawnCategoryGrid(name, target) {
+async function spawnCategoryGrid(name, target, type) {
     const newItemGrid = document.createElement('div');
 
-    newItemGrid.setAttribute('class', 'itemGrid');
+    newItemGrid.setAttribute('class', type);
     newItemGrid.setAttribute('id', name);
 
     document.getElementById(target).insertAdjacentElement('afterend', newItemGrid);
@@ -102,13 +102,26 @@ async function spawnSearchList(id, target) {
     const newListDiv = document.createElement('div');
     const newH2 = document.createElement('h2');
     const newUL = document.createElement('ul');
-
+    const newIcon = document.createElement('img');
 
     let name = itemInfo[id].name;
+    let rarity = itemInfo[id].rarity;
+    let itemIcon = './icons/spaghet.png';
+
+    if(itemInfo[id].localIcon) {
+        itemIcon = `./icons/${itemInfo[id].localIcon}`;
+    } 
+    else if (itemInfo[id].webIcon) {
+        itemIcon = itemInfo[id].webIcon;
+    }
 
     newListDiv.setAttribute('id', `SC-${id}`);
     newListDiv.setAttribute('class', 'searchContainer');
     document.getElementById(target).appendChild(newListDiv);
+
+    newIcon.setAttribute('class', `${rarity}`);
+    newIcon.setAttribute('src', itemIcon);
+    document.getElementById(`SC-${id}`).appendChild(newIcon);
 
     newH2.setAttribute('id', `searchTitle-${id}`);
     newH2.setAttribute('class', 'searchTitle');
@@ -125,7 +138,7 @@ async function spawnListItem(name, amount, ri, id) {
 
     const newLI = document.createElement('li');
 
-    newLI.setAttribute('id',`LI-${id}${ri}`);
+    newLI.setAttribute('id',`LI-${id}RI${ri}`);
     newLI.setAttribute('class', 'itemPoint');
     newLI.innerHTML = `${amount} - ${name}`;
     document.getElementById(`UL-${id}`).appendChild(newLI);
