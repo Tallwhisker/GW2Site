@@ -33,16 +33,16 @@ async function itemInformationStart(inputArray) {
         };
     });
 
-    //If the "run signal" for the queueHandler is OFF, turn it on!
+    //If the "run signal" for the queueHandler is OFF, turn it on
     if(itemQueueSignal === 0) {
         itemQueueSignal = 1;
         itemQueueHandler();
-        // console.log('Starting itemQueueHandler');
     };
 };
 
 
 //Function to split itemQueue into bits to not overload API. Timed.
+//Max 200 items per request & 300 requests per minute.
 function itemQueueHandler() {
 
     //Primary interval
@@ -53,7 +53,7 @@ function itemQueueHandler() {
             itemQueueSignal = 0;
             clearInterval(queueHandler);
         }
-            //If the queue is bigger than 200 items, send 200. (API MAX is 200)
+            //If the queue is bigger than 200 items, send 200.
         else if(itemQueue.length > 200) {
             fetchItemInfo(itemQueue.splice(0, 200).toString());
         } 
@@ -67,8 +67,8 @@ function itemQueueHandler() {
 };
 
 
-//Function that is called from other modules to retrieve the item names.
-function itemNameChecker(inputId) {
+//Function that is called from other modules to get shortened item name.
+function itemNameShortener(inputId) {
 
     let name = [];
     let nameSplit = [];
@@ -108,6 +108,42 @@ function itemNameChecker(inputId) {
 };
 
 
+//Get the item name
+function getItemName(id) {
+    let itemName = `Unknown ID: ${inputId}`;
+
+    if(itemInfo[id]) {
+        itemName = itemInfo[id].name
+    };
+    return itemName;
+};
+
+
+//Get the item icon
+function getItemIcon(id) {
+    let itemIcon = './icons/spaghet.png';
+
+    if(itemInfo[id].localIcon) {
+        itemIcon = `./icons/${itemInfo[id].localIcon}`;
+    } 
+    else if (itemInfo[id].webIcon) {
+        itemIcon = itemInfo[id].webIcon;
+    }
+    return itemIcon;
+};
+
+
+//Get item rarity
+function getItemRarity(id) {
+    let itemRarity = "";
+
+    if(itemInfo[id].rarity) {
+        itemRarity = itemInfo[id].rarity;
+    }
+    return itemRarity;
+};
+
+
 //Main function for fetching and saving new item data.
 async function fetchItemInfo(items) {
 
@@ -140,7 +176,10 @@ async function fetchItemInfo(items) {
 
 export {
     itemInformationStart,
-    itemNameChecker,
+    itemNameShortener,
     itemInfo,
-    coldStartItemInfo
+    coldStartItemInfo,
+    getItemIcon,
+    getItemName,
+    getItemRarity
 };

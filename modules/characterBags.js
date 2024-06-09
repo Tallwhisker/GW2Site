@@ -11,7 +11,7 @@ import {
 
 import { 
     itemInformationStart,
-    itemNameChecker,
+    itemNameShortener,
     itemInfo
 } from './dataHandler.js';
 
