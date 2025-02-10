@@ -79,6 +79,3 @@ The dataHandler module then adds the recieved items to a queue, and an iterator 
 
 
 > https://www.arena.net/en/legal/content-terms-of-use
-
-
-I do not allow any redistribution of the project, in parts or in its entirety.
